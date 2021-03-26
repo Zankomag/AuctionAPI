@@ -25,8 +25,13 @@ namespace AuctionAPI.Infrastructure.Data {
 				.HasOne(x => x.WinningBid)
 				.WithOne(x => x.AuctionItem)
 				.HasForeignKey<AuctionItem>(x => x.WinningBidId);
-			
-			
+
+			//SQL Server doesn't allow to use Cascade here because of cycles in relationships
+			modelBuilder.Entity<Bid>()
+				.HasOne(x => x.Bidder)
+				.WithMany(x => x.Bids)
+				.OnDelete(DeleteBehavior.ClientCascade);
+
 			modelBuilder.Entity<AuctionItem>()
 				.Property(x => x.AuctionItemStatusCodeId)
 				.HasConversion<int>();
