@@ -9,9 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\AuctionAPI.Application\AuctionAPI.Application.csproj" />
-    <ProjectReference Include="..\..\AuctionAPI.Core\AuctionAPI.Core.csproj" />
-    <ProjectReference Include="..\..\AuctionAPI.Infrastructure\AuctionAPI.Infrastructure.csproj" />
+    <ProjectReference Include="..\AuctionAPI.Application\AuctionAPI.Application.csproj" />
+    <ProjectReference Include="..\AuctionAPI.Core\AuctionAPI.Core.csproj" />
+    <ProjectReference Include="..\AuctionAPI.Infrastructure\AuctionAPI.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
