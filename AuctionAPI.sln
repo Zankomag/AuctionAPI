@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionAPI.Web", "src\Aucti
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1B177F4A-5645-4310-AF9E-6614FD63B720}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionAPI.Core", "AuctionAPI.Core\AuctionAPI.Core.csproj", "{98667DC0-D139-4570-AAF6-0A4479CF62CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionAPI.Infrastructure", "AuctionAPI.Infrastructure\AuctionAPI.Infrastructure.csproj", "{E497E3FA-2BF7-4343-89F7-B4C3B19EC729}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionAPI.Application", "AuctionAPI.Application\AuctionAPI.Application.csproj", "{F58E4605-E398-4625-929E-71559DB15CF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +23,27 @@ Global
 		{44190A12-C7ED-466F-BD58-56386D8FC542}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44190A12-C7ED-466F-BD58-56386D8FC542}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44190A12-C7ED-466F-BD58-56386D8FC542}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98667DC0-D139-4570-AAF6-0A4479CF62CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98667DC0-D139-4570-AAF6-0A4479CF62CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98667DC0-D139-4570-AAF6-0A4479CF62CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98667DC0-D139-4570-AAF6-0A4479CF62CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E497E3FA-2BF7-4343-89F7-B4C3B19EC729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E497E3FA-2BF7-4343-89F7-B4C3B19EC729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E497E3FA-2BF7-4343-89F7-B4C3B19EC729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E497E3FA-2BF7-4343-89F7-B4C3B19EC729}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F58E4605-E398-4625-929E-71559DB15CF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F58E4605-E398-4625-929E-71559DB15CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F58E4605-E398-4625-929E-71559DB15CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F58E4605-E398-4625-929E-71559DB15CF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{44190A12-C7ED-466F-BD58-56386D8FC542} = {1B177F4A-5645-4310-AF9E-6614FD63B720}
+		{98667DC0-D139-4570-AAF6-0A4479CF62CE} = {1B177F4A-5645-4310-AF9E-6614FD63B720}
+		{E497E3FA-2BF7-4343-89F7-B4C3B19EC729} = {1B177F4A-5645-4310-AF9E-6614FD63B720}
+		{F58E4605-E398-4625-929E-71559DB15CF1} = {1B177F4A-5645-4310-AF9E-6614FD63B720}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {407AF733-A7F1-4800-96F1-A9463381E0D0}
