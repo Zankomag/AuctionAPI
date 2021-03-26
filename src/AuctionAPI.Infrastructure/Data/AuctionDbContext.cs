@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuctionAPI.Infrastructure.Data {
 
-	internal class AuctionDbContext : DbContext {
+	public class AuctionDbContext : DbContext {
 
 		public DbSet<AuctionItem> AuctionItems { get; set; }
 		public DbSet<AuctionItemCategory> AuctionItemCategories { get; set; }
