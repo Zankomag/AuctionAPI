@@ -156,7 +156,7 @@ namespace AuctionAPI.Infrastructure.Migrations
                         column: x => x.BidderId,
                         principalTable: "Bidders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
