@@ -15,7 +15,7 @@ namespace AuctionAPI.Core.Entities {
 		public int? WinningBidId { get; set; }
 
 		public Bid WinningBid { get; set; }
-		public List<Bid> Bids { get; set; }
+		public ICollection<Bid> Bids { get; set; }
 		public Seller Seller { get; set; }
 		public AuctionItemCategory AuctionItemCategory { get; set; }
 		public AuctionItemStatusCode AuctionItemStatusCode { get; set; }

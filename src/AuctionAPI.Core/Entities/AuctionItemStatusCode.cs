@@ -16,7 +16,7 @@ namespace AuctionAPI.Core.Entities {
 		public string Name { get; set; }
 
 
-		public List<AuctionItem> AuctionItems { get; set; }
+		public ICollection<AuctionItem> AuctionItems { get; set; }
 	}
 
 }

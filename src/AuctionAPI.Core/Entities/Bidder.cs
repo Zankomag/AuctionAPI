@@ -7,8 +7,8 @@ namespace AuctionAPI.Core.Entities {
 
 		
 		public User User { get; set; }
-		public List<Bid> Bids { get; set; }
-		public List<AuctionItem> AuctionItems { get; set; }
+		public ICollection<Bid> Bids { get; set; }
+		public ICollection<AuctionItem> AuctionItems { get; set; }
 	}
 
 }
