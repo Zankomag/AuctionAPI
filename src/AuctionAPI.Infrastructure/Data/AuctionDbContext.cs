@@ -20,6 +20,13 @@ namespace AuctionAPI.Infrastructure.Data {
 
 		/// <inheritdoc />
 		protected override void OnModelCreating(ModelBuilder modelBuilder) {
+			//EF core couldn't create this relation somehow, do it's done manually
+			modelBuilder.Entity<AuctionItem>()
+				.HasOne(x => x.WinningBid)
+				.WithOne(x => x.AuctionItem)
+				.HasForeignKey<AuctionItem>(x => x.WinningBidId);
+			
+			
 			modelBuilder.Entity<AuctionItem>()
 				.Property(x => x.AuctionItemStatusCodeId)
 				.HasConversion<int>();
