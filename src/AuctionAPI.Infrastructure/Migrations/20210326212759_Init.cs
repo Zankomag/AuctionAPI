@@ -95,13 +95,12 @@ namespace AuctionAPI.Infrastructure.Migrations
                     SellerId = table.Column<int>(type: "int", nullable: false),
                     AuctionItemStatusCodeId = table.Column<int>(type: "int", nullable: false),
                     AuctionItemCategoryId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PlannedCloseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ActualCloseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     StartingPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    WinningBidId = table.Column<int>(type: "int", nullable: true),
-                    BidderId = table.Column<int>(type: "int", nullable: true)
+                    WinningBidId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -118,12 +117,6 @@ namespace AuctionAPI.Infrastructure.Migrations
                         principalTable: "AuctionItemStatusCodes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AuctionItems_Bidders_BidderId",
-                        column: x => x.BidderId,
-                        principalTable: "Bidders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AuctionItems_Sellers_SellerId",
                         column: x => x.SellerId,
@@ -185,11 +178,6 @@ namespace AuctionAPI.Infrastructure.Migrations
                 column: "AuctionItemStatusCodeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuctionItems_BidderId",
-                table: "AuctionItems",
-                column: "BidderId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AuctionItems_SellerId",
                 table: "AuctionItems",
                 column: "SellerId");
@@ -243,14 +231,6 @@ namespace AuctionAPI.Infrastructure.Migrations
                 table: "AuctionItems");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_AuctionItems_Bidders_BidderId",
-                table: "AuctionItems");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Bids_Bidders_BidderId",
-                table: "Bids");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_AuctionItems_Bids_WinningBidId",
                 table: "AuctionItems");
 
@@ -261,13 +241,13 @@ namespace AuctionAPI.Infrastructure.Migrations
                 name: "AuctionItemStatusCodes");
 
             migrationBuilder.DropTable(
-                name: "Bidders");
-
-            migrationBuilder.DropTable(
                 name: "Bids");
 
             migrationBuilder.DropTable(
                 name: "AuctionItems");
+
+            migrationBuilder.DropTable(
+                name: "Bidders");
 
             migrationBuilder.DropTable(
                 name: "Sellers");

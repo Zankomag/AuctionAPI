@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuctionAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(AuctionDbContext))]
-    [Migration("20210326203901_Init")]
+    [Migration("20210326212759_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,11 +37,9 @@ namespace AuctionAPI.Infrastructure.Migrations
                     b.Property<int>("AuctionItemStatusCodeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BidderId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<DateTime>("PlannedCloseDate")
                         .HasColumnType("datetime2");
@@ -63,8 +61,6 @@ namespace AuctionAPI.Infrastructure.Migrations
                     b.HasIndex("AuctionItemCategoryId");
 
                     b.HasIndex("AuctionItemStatusCodeId");
-
-                    b.HasIndex("BidderId");
 
                     b.HasIndex("SellerId");
 
@@ -228,10 +224,6 @@ namespace AuctionAPI.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AuctionAPI.Core.Entities.Bidder", null)
-                        .WithMany("AuctionItems")
-                        .HasForeignKey("BidderId");
-
                     b.HasOne("AuctionAPI.Core.Entities.Seller", "Seller")
                         .WithMany("AuctionItems")
                         .HasForeignKey("SellerId")
@@ -307,8 +299,6 @@ namespace AuctionAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("AuctionAPI.Core.Entities.Bidder", b =>
                 {
-                    b.Navigation("AuctionItems");
-
                     b.Navigation("Bids");
                 });
 
