@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace AuctionAPI.Core.Entities {
+
+	public class AuctionItem : Entity<int> {
+		public int SellerId { get; set; }
+		public AuctionItemStatusCodeId AuctionItemStatusCodeId { get; set; }
+		public int AuctionItemCategoryId { get; set; }
+		public string Description { get; set; }
+		public DateTime StartDate { get; set; }
+		public DateTime PlannedCloseDate { get; set; }
+		public DateTime? ActualCloseDate { get; set; }
+		public decimal StartingPrice { get; set; }
+		public int? WinningBidId { get; set; }
+
+		public Bid WinningBid { get; set; }
+		public List<Bid> Bids { get; set; }
+		public Seller Seller { get; set; }
+		public AuctionItemCategory AuctionItemCategory { get; set; }
+		public AuctionItemStatusCode AuctionItemStatusCode { get; set; }
+	}
+
+}
