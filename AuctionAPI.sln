@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionAPI.Web", "src\Aucti
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1B177F4A-5645-4310-AF9E-6614FD63B720}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionAPI.Core", "AuctionAPI.Core\AuctionAPI.Core.csproj", "{98667DC0-D139-4570-AAF6-0A4479CF62CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionAPI.Core", "src\AuctionAPI.Core\AuctionAPI.Core.csproj", "{98667DC0-D139-4570-AAF6-0A4479CF62CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionAPI.Infrastructure", "AuctionAPI.Infrastructure\AuctionAPI.Infrastructure.csproj", "{E497E3FA-2BF7-4343-89F7-B4C3B19EC729}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionAPI.Infrastructure", "src\AuctionAPI.Infrastructure\AuctionAPI.Infrastructure.csproj", "{E497E3FA-2BF7-4343-89F7-B4C3B19EC729}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionAPI.Application", "AuctionAPI.Application\AuctionAPI.Application.csproj", "{F58E4605-E398-4625-929E-71559DB15CF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionAPI.Application", "src\AuctionAPI.Application\AuctionAPI.Application.csproj", "{F58E4605-E398-4625-929E-71559DB15CF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
