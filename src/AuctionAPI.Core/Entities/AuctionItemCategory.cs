@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AuctionAPI.Core.Entities {
 
@@ -6,6 +7,11 @@ namespace AuctionAPI.Core.Entities {
 		[Required]
 		[StringLength(30)]
 		public string Name { get; set; }
+		public int? ParentCategoryId { get; set; }
+		
+		
+		public AuctionItemCategory ParentCategory { get; set; }
+		public ICollection<AuctionItemCategory> ChildCategories { get; set; }
 	}
 
 }
