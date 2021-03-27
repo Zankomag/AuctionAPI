@@ -12,7 +12,8 @@ namespace AuctionAPI.Application.Models {
 
 		public int? ParentCategoryId { get; set; }
 
-
+		//TODO: fix serialization of parent and child categoies with lowercase id field with ordering in the end
+		//despite root Id works fine
 		public AuctionItemCategory ParentCategory { get; set; }
 		public IEnumerable<AuctionItemCategory> ChildCategories { get; set; }
 	}
