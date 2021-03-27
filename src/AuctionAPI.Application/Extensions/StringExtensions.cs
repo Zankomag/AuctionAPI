@@ -5,7 +5,7 @@ namespace AuctionAPI.Application.Extensions {
 	internal static class StringExtensions {
 		
 		///<summary>Escapes %, _, [, ^ and ~ chars with ~</summary>
-		public static string EscapeLikeText(string text) {
+		public static string EscapeLikeText(this string text) {
 
 			if(!text.Contains("%") && !text.Contains("_") && !text.Contains("[") && !text.Contains("^")) {
 				return text;
@@ -23,6 +23,18 @@ namespace AuctionAPI.Application.Extensions {
 				}
 				builder.Append(ch);
 			}
+			return builder.ToString();
+		}
+
+		/// <summary>
+		/// Escapes string with <see cref="EscapeLikeText"/> and wraps it to % chars 
+		/// </summary>
+		public static string ToLikeString(this string text) {
+			string escapedText = text.EscapeLikeText();
+			StringBuilder builder = new(escapedText.Length+2);
+			builder.Append('%')
+				.Append(escapedText)
+				.Append('%');
 			return builder.ToString();
 		}
 	}
