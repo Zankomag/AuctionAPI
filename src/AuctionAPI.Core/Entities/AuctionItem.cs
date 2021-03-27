@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AuctionAPI.Core.Entities {
 
@@ -14,6 +15,8 @@ namespace AuctionAPI.Core.Entities {
 		public DateTime StartDate { get; set; }
 		public DateTime PlannedCloseDate { get; set; }
 		public DateTime? ActualCloseDate { get; set; }
+
+		[Column(TypeName = "decimal(18,2)")]
 		public decimal StartingPrice { get; set; }
 		public int? WinningBidId { get; set; }
 		
