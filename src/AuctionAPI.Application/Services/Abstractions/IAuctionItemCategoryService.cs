@@ -5,8 +5,9 @@ using AuctionAPI.Application.Services.Abstractions.Generic;
 
 namespace AuctionAPI.Application.Services.Abstractions {
 
-	public interface IAuctionItemCategoryService : ICrudService<AuctionItemCategoryModel, int> {
-		Task<IEnumerable<AuctionItemCategoryModel>> GetByNameAsync(string categoryName);
+	public interface IAuctionItemCategoryService : ICrudService<AuctionItemCategoryDetailedModel,
+		AuctionItemCategoryInputModel, int> {
+		Task<IEnumerable<AuctionItemCategoryDetailedModel>> GetByNameAsync(string categoryName);
 	}
 
 }

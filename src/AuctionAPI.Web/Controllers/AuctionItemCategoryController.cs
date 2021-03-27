@@ -18,27 +18,29 @@ namespace AuctionAPI.Web.Controllers {
 
 		// GET api/AuctionItemCategory
 		[HttpGet]
-		public async Task<IEnumerable<AuctionItemCategoryModel>> GetAll()
+		public async Task<IEnumerable<AuctionItemCategoryDetailedModel>> GetAll()
 			=> await auctionItemCategoryService.GetAllAsync();
 
+		
 		// GET api/AuctionItemCategory/5
-		[HttpGet("{id}")]
-		public async Task<AuctionItemCategoryModel> GetById(int id)
+		//about {id:int}: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-3.1#route-constraint-reference
+		[HttpGet("{id:int}")]
+		public async Task<AuctionItemCategoryDetailedModel> GetById(int id)
 			=> await auctionItemCategoryService.GetByIdAsync(id);
 
 		// GET api/AuctionItemCategory/Books
 		[HttpGet("{name}")]
-		public async Task<IEnumerable<AuctionItemCategoryModel>> GetByName(string name)
+		public async Task<IEnumerable<AuctionItemCategoryDetailedModel>> GetByName(string name)
 			=> await auctionItemCategoryService.GetByNameAsync(name);
 
 		// POST api/AuctionItemCategory
 		[HttpPost]
-		public async Task<AuctionItemCategoryModel> Add([FromBody] AuctionItemCategoryModel model)
+		public async Task<AuctionItemCategoryInputModel> Add([FromBody] AuctionItemCategoryInputModel model)
 			=> await auctionItemCategoryService.AddAsync(model);
 
 		// PUT api/AuctionItemCategory/5
 		[HttpPut("{id}")]
-		public async Task<AuctionItemCategoryModel> Update(int id, [FromBody] AuctionItemCategoryModel model)
+		public async Task<AuctionItemCategoryDetailedModel> Update(int id, [FromBody] AuctionItemCategoryInputModel model)
 			=> await auctionItemCategoryService.UpdateAsync(id, model);
 
 		// DELETE api/AuctionItemCategory/5

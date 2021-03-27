@@ -29,11 +29,11 @@ namespace AuctionAPI.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<IEnumerable<AuctionItemCategoryModel>> GetAllAsync() {
+		public async Task<IEnumerable<AuctionItemCategoryDetailedModel>> GetAllAsync() {
 			try {
 				IEnumerable<AuctionItemCategory> auctionItemCategories =
 					await workUnit.AuctionItemCategoryRepository.GetAllWithDetailsAsync();
-				return mapper.Map<IEnumerable<AuctionItemCategoryModel>>(auctionItemCategories);
+				return mapper.Map<IEnumerable<AuctionItemCategoryDetailedModel>>(auctionItemCategories);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
 				throw;
@@ -41,10 +41,10 @@ namespace AuctionAPI.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<AuctionItemCategoryModel> GetByIdAsync(int id) {
+		public async Task<AuctionItemCategoryDetailedModel> GetByIdAsync(int id) {
 			try {
 				AuctionItemCategory auctionItemCategory = await workUnit.AuctionItemCategoryRepository.GetByIdWithDetailsAsync(id);
-				return mapper.Map<AuctionItemCategoryModel>(auctionItemCategory);
+				return mapper.Map<AuctionItemCategoryDetailedModel>(auctionItemCategory);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
 				throw;
@@ -52,15 +52,15 @@ namespace AuctionAPI.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<IEnumerable<AuctionItemCategoryModel>> GetByNameAsync(string categoryName) {
+		public async Task<IEnumerable<AuctionItemCategoryDetailedModel>> GetByNameAsync(string categoryName) {
 			try {
 				List<AuctionItemCategory> auctionItemCategories = await workUnit.AuctionItemCategoryRepository
-					.GetAllWithDetails()
+					.GetAll()
 					//If we'd used string.Contains, then expression wouldn't be case insensitive
 					//we use ~ as escape char because ToLikeString() escapes chars with ~
 					.Where(x => EF.Functions.Like(x.Name, categoryName.ToLikeString(), "~"))
 					.ToListAsync();
-				return mapper.Map<IEnumerable<AuctionItemCategoryModel>>(auctionItemCategories);
+				return mapper.Map<IEnumerable<AuctionItemCategoryDetailedModel>>(auctionItemCategories);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
 				throw;
@@ -68,7 +68,7 @@ namespace AuctionAPI.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<AuctionItemCategoryModel> AddAsync(AuctionItemCategoryModel model) {
+		public async Task<AuctionItemCategoryInputModel> AddAsync(AuctionItemCategoryInputModel model) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;
 			try {
@@ -84,7 +84,7 @@ namespace AuctionAPI.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<AuctionItemCategoryModel> UpdateAsync(int id, AuctionItemCategoryModel model) {
+		public async Task<AuctionItemCategoryDetailedModel> UpdateAsync(int id, AuctionItemCategoryInputModel model) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;
 			try {
@@ -93,7 +93,7 @@ namespace AuctionAPI.Application.Services {
 				workUnit.AuctionItemCategoryRepository.Update(auctionItemCategory);
 				await workUnit.SaveAsync();
 				var result = await workUnit.AuctionItemCategoryRepository.GetByIdWithDetailsAsync(id);
-				return mapper.Map<AuctionItemCategoryModel>(result);
+				return mapper.Map<AuctionItemCategoryDetailedModel>(result);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
 				throw;
