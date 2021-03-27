@@ -7,7 +7,7 @@ namespace AuctionAPI.Application.Extensions {
 		///<summary>Escapes %, _, [, ^ and ~ chars with ~</summary>
 		public static string EscapeLikeText(this string text) {
 
-			if(!text.Contains("%") && !text.Contains("_") && !text.Contains("[") && !text.Contains("^")) {
+			if(!text.Contains('%') && !text.Contains('_') && !text.Contains('[') && !text.Contains('^')) {
 				return text;
 			}
 			StringBuilder builder = new(text.Length);
