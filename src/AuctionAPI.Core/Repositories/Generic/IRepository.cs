@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AuctionAPI.Core.Entities;
 
-namespace AuctionAPI.Core.Repositories {
+namespace AuctionAPI.Core.Repositories.Generic {
 
 	public interface IRepository<TEntity, in TKey> where TEntity : Entity<TKey> {
 		IQueryable<TEntity> GetAll();

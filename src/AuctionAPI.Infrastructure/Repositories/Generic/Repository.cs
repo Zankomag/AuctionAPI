@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AuctionAPI.Core.Entities;
-using AuctionAPI.Core.Repositories;
+using AuctionAPI.Core.Repositories.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuctionAPI.Infrastructure.Repositories {
+namespace AuctionAPI.Infrastructure.Repositories.Generic {
 
 	public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : Entity<TKey>, new() {
 
