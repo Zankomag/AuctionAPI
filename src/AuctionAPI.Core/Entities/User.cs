@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace AuctionAPI.Core.Entities {
 
@@ -16,8 +15,8 @@ namespace AuctionAPI.Core.Entities {
 
 		[StringLength(64)]
 		public string PasswordHash { get; set; }
-		
-		
+
+
 		public Bidder Bidder { get; set; }
 		public Seller Seller { get; set; }
 	}
