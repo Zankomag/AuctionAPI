@@ -20,6 +20,9 @@ namespace AuctionAPI.Infrastructure.Data {
 
 		/// <inheritdoc />
 		protected override void OnModelCreating(ModelBuilder modelBuilder) {
+			modelBuilder.Entity<AuctionItemCategory>()
+				.HasIndex(x => x.Name).IsUnique();
+			
 			//EF core couldn't create this relation somehow, do it's done manually
 			modelBuilder.Entity<AuctionItem>()
 				.HasOne(x => x.WinningBid)

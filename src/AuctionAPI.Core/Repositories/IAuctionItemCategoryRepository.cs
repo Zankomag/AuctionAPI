@@ -1,4 +1,5 @@
 ﻿using AuctionAPI.Core.Entities;
+using AuctionAPI.Core.Repositories.Generic;
 
 namespace AuctionAPI.Core.Repositories {
 

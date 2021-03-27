@@ -83,6 +83,9 @@ namespace AuctionAPI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("AuctionItemCategories");
                 });
 

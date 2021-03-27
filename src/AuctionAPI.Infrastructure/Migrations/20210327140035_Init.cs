@@ -168,6 +168,12 @@ namespace AuctionAPI.Infrastructure.Migrations
                 values: new object[] { 2, "Finished" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AuctionItemCategories_Name",
+                table: "AuctionItemCategories",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AuctionItems_AuctionItemCategoryId",
                 table: "AuctionItems",
                 column: "AuctionItemCategoryId");
