@@ -15,14 +15,14 @@ namespace AuctionAPI.Infrastructure.Repositories {
 
 		/// <inheritdoc />
 		public async Task<IEnumerable<AuctionItemCategory>> GetAllWithDetailsAsync()
-			=> await GetAllWithDetails().ToListAsync();
+			=> await GetAll().Include(x => x.ChildCategories).Where(x => x.ParentCategoryId == null).ToListAsync();
 
 		/// <inheritdoc />
 		public async Task<AuctionItemCategory> GetByIdWithDetailsAsync(int id)
-			=> await GetAllWithDetails().FirstOrDefaultAsync(x => x.Id == id);
+			=> await GetAll().Include(x => x.ChildCategories).FirstOrDefaultAsync(x => x.Id == id);
 
 		public IQueryable<AuctionItemCategory> GetAllWithDetails() => GetAll()
-			.Include(x => x.ParentCategory)
+			//.Include(x => x.ParentCategory)
 			.Include(x => x.ChildCategories);
 	}
 

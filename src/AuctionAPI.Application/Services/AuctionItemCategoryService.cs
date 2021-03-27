@@ -88,11 +88,12 @@ namespace AuctionAPI.Application.Services {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;
 			try {
+				model.Id = id;
 				AuctionItemCategory auctionItemCategory = mapper.Map<AuctionItemCategory>(model);
-				auctionItemCategory.Id = id;
 				workUnit.AuctionItemCategoryRepository.Update(auctionItemCategory);
 				await workUnit.SaveAsync();
-				return model;
+				var result = await workUnit.AuctionItemCategoryRepository.GetByIdWithDetailsAsync(id);
+				return mapper.Map<AuctionItemCategoryModel>(result);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
 				throw;
