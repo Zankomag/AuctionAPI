@@ -83,11 +83,12 @@ namespace AuctionAPI.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<AuctionItemCategoryModel> UpdateAsync(AuctionItemCategoryModel model) {
+		public async Task<AuctionItemCategoryModel> UpdateAsync(int id, AuctionItemCategoryModel model) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;
 			try {
 				AuctionItemCategory auctionItemCategory = mapper.Map<AuctionItemCategory>(model);
+				auctionItemCategory.Id = id;
 				workUnit.AuctionItemCategoryRepository.Update(auctionItemCategory);
 				await workUnit.SaveAsync();
 				return model;

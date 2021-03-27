@@ -14,7 +14,7 @@ namespace AuctionAPI.Application.Services.Abstractions.Generic {
 		Task<TModel> AddAsync(TModel model);
 
 		/// <returns>Updated model on success or null on validation failure.</returns>
-		Task<TModel> UpdateAsync(TModel model);
+		Task<TModel> UpdateAsync(TKey id, TModel model);
 
 		Task DeleteByIdAsync(TKey id);
 	}
