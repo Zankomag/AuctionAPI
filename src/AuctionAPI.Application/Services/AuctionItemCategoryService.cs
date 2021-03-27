@@ -32,7 +32,7 @@ namespace AuctionAPI.Application.Services {
 		public async Task<IEnumerable<AuctionItemCategoryModel>> GetAllAsync() {
 			try {
 				IEnumerable<AuctionItemCategory> auctionItemCategories =
-					await workUnit.AuctionItemCategoryRepository.GetAllAsync();
+					await workUnit.AuctionItemCategoryRepository.GetAllWithDetailsAsync();
 				return mapper.Map<IEnumerable<AuctionItemCategoryModel>>(auctionItemCategories);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
@@ -43,7 +43,7 @@ namespace AuctionAPI.Application.Services {
 		/// <inheritdoc />
 		public async Task<AuctionItemCategoryModel> GetByIdAsync(int id) {
 			try {
-				AuctionItemCategory auctionItemCategory = await workUnit.AuctionItemCategoryRepository.GetByIdAsync(id);
+				AuctionItemCategory auctionItemCategory = await workUnit.AuctionItemCategoryRepository.GetByIdWithDetailsAsync(id);
 				return mapper.Map<AuctionItemCategoryModel>(auctionItemCategory);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
@@ -54,7 +54,8 @@ namespace AuctionAPI.Application.Services {
 		/// <inheritdoc />
 		public async Task<IEnumerable<AuctionItemCategoryModel>> GetByNameAsync(string categoryName) {
 			try {
-				List<AuctionItemCategory> auctionItemCategories = await workUnit.AuctionItemCategoryRepository.GetAll()
+				List<AuctionItemCategory> auctionItemCategories = await workUnit.AuctionItemCategoryRepository
+					.GetAllWithDetails()
 					//If we'd used string.Contains, then expression wouldn't be case insensitive
 					//we use ~ as escape char because ToLikeString() escapes chars with ~
 					.Where(x => EF.Functions.Like(x.Name, categoryName.ToLikeString(), "~"))
