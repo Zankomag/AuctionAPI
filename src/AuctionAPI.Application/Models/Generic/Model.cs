@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace AuctionAPI.Application.Models.Generic {
 
@@ -7,7 +7,8 @@ namespace AuctionAPI.Application.Models.Generic {
 		public TKey Id { get; set; }
 		
 		//This kludge is used to prevent Id field be Deserialized when posting input model
-		[JsonPropertyName(nameof(Id))]
+		//Id field should appear first, so it should have order -2 (https://stackoverflow.com/a/14035431/11101834, https://www.newtonsoft.com/json/help/html/JsonPropertyOrder.htm)
+		[JsonProperty(PropertyName = nameof(Id), Order = -2)]
 		private TKey id => Id;
 	}
 
