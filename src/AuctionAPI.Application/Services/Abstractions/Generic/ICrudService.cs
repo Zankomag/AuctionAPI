@@ -9,10 +9,12 @@ namespace AuctionAPI.Application.Services.Abstractions.Generic {
 		Task<IEnumerable<TModel>> GetAllAsync();
 
 		Task<TModel> GetByIdAsync(TKey id);
-
+		
+		/// <returns>Created model on success or null on validation failure.</returns>
 		Task<TModel> AddAsync(TModel model);
 
-		Task UpdateAsync(TModel model);
+		/// <returns>Updated model on success or null on validation failure.</returns>
+		Task<TModel> UpdateAsync(TModel model);
 
 		Task DeleteByIdAsync(TKey id);
 	}
