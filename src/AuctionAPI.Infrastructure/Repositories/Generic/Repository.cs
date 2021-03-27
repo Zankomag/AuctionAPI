@@ -21,7 +21,7 @@ namespace AuctionAPI.Infrastructure.Repositories.Generic {
 		public IQueryable<TEntity> GetAll() => DbSet.AsNoTracking();
 
 		/// <inheritdoc />
-		public virtual async Task<List<TEntity>> GetAllAsync() => await GetAll().ToListAsync();
+		public virtual async Task<IEnumerable<TEntity>> GetAllAsync() => await GetAll().ToListAsync();
 
 		/// <inheritdoc />
 		public async Task<TEntity> GetByIdAsync(TKey id) => await DbSet.FindAsync(id);

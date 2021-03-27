@@ -8,7 +8,7 @@ namespace AuctionAPI.Core.Repositories.Generic {
 	public interface IRepository<TEntity, in TKey> where TEntity : Entity<TKey> {
 		IQueryable<TEntity> GetAll();
 
-		Task<List<TEntity>> GetAllAsync();
+		Task<IEnumerable<TEntity>> GetAllAsync();
 
 		Task<TEntity> GetByIdAsync(TKey id);
 
