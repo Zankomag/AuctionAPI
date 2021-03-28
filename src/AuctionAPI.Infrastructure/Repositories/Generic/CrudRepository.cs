@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuctionAPI.Infrastructure.Repositories.Generic {
 
-	public class CrudRepository<TEntity, TKey> : Repository<TEntity, TKey>, ICrudRepository<TEntity, TKey>
+	public abstract class CrudRepository<TEntity, TKey> : Repository<TEntity, TKey>, ICrudRepository<TEntity, TKey>
 		where TEntity : Entity<TKey>, new() {
 
-		public CrudRepository(DbContext context) : base(context) { }
+		protected CrudRepository(DbContext context) : base(context) { }
 
 		/// <inheritdoc />
 		public IQueryable<TEntity> GetAll() => DbSet.AsNoTracking();
