@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace AuctionAPI.Core.Entities {
 
@@ -11,12 +10,18 @@ namespace AuctionAPI.Core.Entities {
 		[StringLength(50)]
 		public string LastName { get; set; }
 
+		//email is Username
 		[StringLength(50)]
+		[Required]
 		public string Email { get; set; }
-
-		[JsonIgnore]
+		
 		[StringLength(64)]
+		[Required]
 		public string PasswordHash { get; set; }
+		
+		[StringLength(20)]
+		[Required]
+		public string Role { get; set; }
 
 
 		public Bidder Bidder { get; set; }
