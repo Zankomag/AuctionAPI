@@ -39,6 +39,8 @@ namespace AuctionAPI.Web.Controllers {
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<AuctionItemCategoryDetailedModel>))]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<IActionResult> GetByName(string name) {
+			if(name == null)
+				return BadRequest();
 			var result = await auctionItemCategoryService.GetByNameAsync(name);
 			if(result?.Any() != true)
 				return NotFound();
@@ -50,7 +52,7 @@ namespace AuctionAPI.Web.Controllers {
 		public async Task<ActionResult<AuctionItemCategoryInputModel>> Add([FromBody] AuctionItemCategoryInputModel model) {
 			var result =  await auctionItemCategoryService.AddAsync(model);
 			if(result == null)
-				return NotFound();
+				return BadRequest();
 			return result;
 		}
 
@@ -59,7 +61,7 @@ namespace AuctionAPI.Web.Controllers {
 		public async Task<ActionResult<AuctionItemCategoryInputModel>> Update(int id, [FromBody] AuctionItemCategoryInputModel model) {
 			var result = await auctionItemCategoryService.UpdateAsync(id, model);
 			if(result == null)
-				return NotFound();
+				return BadRequest();
 			return result;
 		}
 
