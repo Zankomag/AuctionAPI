@@ -2,6 +2,8 @@
 using System.Linq;
 using AuctionAPI.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+// ReSharper disable MemberCanBeMadeStatic.Local
+// ReSharper disable ArrangeMethodOrOperatorBody
 
 namespace AuctionAPI.Infrastructure.Data {
 
@@ -20,21 +22,13 @@ namespace AuctionAPI.Infrastructure.Data {
 
 		/// <inheritdoc />
 		protected override void OnModelCreating(ModelBuilder modelBuilder) {
-			modelBuilder.Entity<AuctionItemCategory>()
-				.HasIndex(x => x.Name).IsUnique();
-			
-			//EF core couldn't create this relation somehow, do it's done manually
-			modelBuilder.Entity<AuctionItem>()
-				.HasOne(x => x.WinningBid)
-				.WithOne(x => x.AuctionItem)
-				.HasForeignKey<AuctionItem>(x => x.WinningBidId);
+			ConfigureAuctionItemCategory(modelBuilder);
+			ConfigureAuctionItem(modelBuilder);
+			ConfigureBids(modelBuilder);
+			ConfigureAuctionItemStatusCode(modelBuilder);
+		}
 
-			//SQL Server doesn't allow to use Cascade here because of cycles in relationships
-			modelBuilder.Entity<Bid>()
-				.HasOne(x => x.Bidder)
-				.WithMany(x => x.Bids)
-				.OnDelete(DeleteBehavior.ClientCascade);
-
+		private void ConfigureAuctionItemStatusCode(ModelBuilder modelBuilder) {
 			modelBuilder.Entity<AuctionItem>()
 				.Property(x => x.AuctionItemStatusCodeId)
 				.HasConversion<int>();
@@ -51,6 +45,28 @@ namespace AuctionAPI.Infrastructure.Data {
 						Name = x.ToString()
 					}));
 		}
+
+		private void ConfigureBids(ModelBuilder modelBuilder) {
+			//SQL Server doesn't allow to use Cascade here because of cycles in relationships
+			modelBuilder.Entity<Bid>()
+				.HasOne(x => x.Bidder)
+				.WithMany(x => x.Bids)
+				.OnDelete(DeleteBehavior.ClientCascade);
+		}
+
+		private void ConfigureAuctionItem(ModelBuilder modelBuilder) {
+			//EF core couldn't create this relation somehow, do it's done manually
+			modelBuilder.Entity<AuctionItem>()
+				.HasOne(x => x.WinningBid)
+				.WithOne(x => x.AuctionItem)
+				.HasForeignKey<AuctionItem>(x => x.WinningBidId);
+		}
+
+		private void ConfigureAuctionItemCategory(ModelBuilder modelBuilder) {
+			modelBuilder.Entity<AuctionItemCategory>()
+				.HasIndex(x => x.Name).IsUnique();
+		}
+		
 	}
 
 }
