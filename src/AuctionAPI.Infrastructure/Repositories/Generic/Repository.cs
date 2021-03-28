@@ -36,9 +36,12 @@ namespace AuctionAPI.Infrastructure.Repositories.Generic {
 		public void Delete(TEntity entity) => DbSet.Remove(entity);
 
 		/// <inheritdoc />
-		public async Task DeleteByIdAsync(TKey id) {
-			if(await DbSet.AnyAsync(x => x.Id.Equals(id)))
+		public async Task<bool> DeleteByIdAsync(TKey id) {
+			if(await DbSet.AnyAsync(x => x.Id.Equals(id))) {
 				DbSet.Remove(new TEntity {Id = id});
+				return true;
+			}
+			return false;
 		}
 	}
 

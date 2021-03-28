@@ -17,8 +17,9 @@ namespace AuctionAPI.Core.Repositories.Generic {
 		void Update(TEntity entity);
 
 		void Delete(TEntity entity);
-
-		Task DeleteByIdAsync(TKey id);
+		
+		/// <returns>True on success</returns>
+		Task<bool> DeleteByIdAsync(TKey id);
 	}
 
 
