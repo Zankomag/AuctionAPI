@@ -19,16 +19,16 @@ namespace AuctionAPI.Infrastructure.Repositories.Generic {
 		public virtual async Task<IEnumerable<TEntity>> GetAllAsync() => await GetAll().ToListAsync();
 
 		/// <inheritdoc />
-		public async Task<TEntity> GetByIdAsync(TKey id) => await DbSet.FindAsync(id);
+		public virtual async Task<TEntity> GetByIdAsync(TKey id) => await DbSet.FindAsync(id);
 
 		/// <inheritdoc />
-		public async Task AddAsync(TEntity entity) => await DbSet.AddAsync(entity);
+		public virtual async Task AddAsync(TEntity entity) => await DbSet.AddAsync(entity);
 
 		/// <inheritdoc />
 		public virtual void Update(TEntity entity) => Context.Entry(entity).State = EntityState.Modified;
 
 		/// <inheritdoc />
-		public async Task<bool> DeleteByIdAsync(TKey id) {
+		public virtual async Task<bool> DeleteByIdAsync(TKey id) {
 			if(await DbSet.AnyAsync(x => x.Id.Equals(id))) {
 				DbSet.Remove(new TEntity {Id = id});
 				return true;

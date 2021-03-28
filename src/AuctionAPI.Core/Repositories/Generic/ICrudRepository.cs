@@ -6,6 +6,7 @@ using AuctionAPI.Core.Entities;
 namespace AuctionAPI.Core.Repositories.Generic {
 
 	public interface ICrudRepository<TEntity, in TKey> : IRepository<TEntity, TKey> where TEntity : Entity<TKey> {
+		/// <returns>All records without Entity Framework tracking</returns>
 		IQueryable<TEntity> GetAll();
 
 		Task<IEnumerable<TEntity>> GetAllAsync();
