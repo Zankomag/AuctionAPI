@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AuctionAPI.Application.Models;
 using AuctionAPI.Application.Services.Abstractions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionAPI.Web.Controllers {
@@ -25,28 +27,48 @@ namespace AuctionAPI.Web.Controllers {
 		// GET api/AuctionItemCategory/5
 		//about {id:int}: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-3.1#route-constraint-reference
 		[HttpGet("{id:int}")]
-		public async Task<AuctionItemCategoryDetailedModel> GetById(int id)
-			=> await auctionItemCategoryService.GetByIdAsync(id);
+		public async Task<ActionResult<AuctionItemCategoryDetailedModel>> GetById(int id) {
+			var result =  await auctionItemCategoryService.GetByIdAsync(id);
+			if(result == null)
+				return NotFound();
+			return result;
+		}
 
 		// GET api/AuctionItemCategory/Books
 		[HttpGet("{name}")]
-		public async Task<IEnumerable<AuctionItemCategoryDetailedModel>> GetByName(string name)
-			=> await auctionItemCategoryService.GetByNameAsync(name);
+		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<AuctionItemCategoryDetailedModel>))]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<IActionResult> GetByName(string name) {
+			var result = await auctionItemCategoryService.GetByNameAsync(name);
+			if(result?.Any() != true)
+				return NotFound();
+			return Ok(result);
+		}
 
 		// POST api/AuctionItemCategory
 		[HttpPost]
-		public async Task<AuctionItemCategoryInputModel> Add([FromBody] AuctionItemCategoryInputModel model)
-			=> await auctionItemCategoryService.AddAsync(model);
+		public async Task<ActionResult<AuctionItemCategoryInputModel>> Add([FromBody] AuctionItemCategoryInputModel model) {
+			var result =  await auctionItemCategoryService.AddAsync(model);
+			if(result == null)
+				return NotFound();
+			return result;
+		}
 
 		// PUT api/AuctionItemCategory/5
 		[HttpPut("{id}")]
-		public async Task<AuctionItemCategoryDetailedModel> Update(int id, [FromBody] AuctionItemCategoryInputModel model)
-			=> await auctionItemCategoryService.UpdateAsync(id, model);
+		public async Task<ActionResult<AuctionItemCategoryInputModel>> Update(int id, [FromBody] AuctionItemCategoryInputModel model) {
+			var result = await auctionItemCategoryService.UpdateAsync(id, model);
+			if(result == null)
+				return NotFound();
+			return result;
+		}
 
 		// DELETE api/AuctionItemCategory/5
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id) {
-			await auctionItemCategoryService.DeleteByIdAsync(id);
+			var result = await auctionItemCategoryService.DeleteByIdAsync(id);
+			if(!result)
+				return BadRequest();
 			return Ok();
 		}
 	}
