@@ -32,7 +32,7 @@ namespace AuctionAPI.Application.Services {
 		public async Task<IEnumerable<AuctionItemCategoryDetailedModel>> GetAllAsync() {
 			try {
 				IEnumerable<AuctionItemCategory> auctionItemCategories =
-					await workUnit.AuctionItemCategoryRepository.GetAllWithDetailsAsync();
+					await workUnit.AuctionItemCategoryCrudRepository.GetAllWithDetailsAsync();
 				return mapper.Map<IEnumerable<AuctionItemCategoryDetailedModel>>(auctionItemCategories);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
@@ -44,7 +44,7 @@ namespace AuctionAPI.Application.Services {
 		public async Task<AuctionItemCategoryDetailedModel> GetByIdAsync(int id) {
 			try {
 				AuctionItemCategory auctionItemCategory =
-					await workUnit.AuctionItemCategoryRepository.GetByIdWithDetailsAsync(id);
+					await workUnit.AuctionItemCategoryCrudRepository.GetByIdWithDetailsAsync(id);
 				return mapper.Map<AuctionItemCategoryDetailedModel>(auctionItemCategory);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
@@ -55,7 +55,7 @@ namespace AuctionAPI.Application.Services {
 		/// <inheritdoc />
 		public async Task<IEnumerable<AuctionItemCategoryDetailedModel>> GetByNameAsync(string categoryName) {
 			try {
-				List<AuctionItemCategory> auctionItemCategories = await workUnit.AuctionItemCategoryRepository
+				List<AuctionItemCategory> auctionItemCategories = await workUnit.AuctionItemCategoryCrudRepository
 					.GetAll()
 
 					//If we'd used string.Contains, then expression wouldn't be case insensitive
@@ -75,7 +75,7 @@ namespace AuctionAPI.Application.Services {
 				return null;
 			try {
 				AuctionItemCategory auctionItemCategory = mapper.Map<AuctionItemCategory>(model);
-				await workUnit.AuctionItemCategoryRepository.AddAsync(auctionItemCategory);
+				await workUnit.AuctionItemCategoryCrudRepository.AddAsync(auctionItemCategory);
 				await workUnit.SaveAsync();
 				model.Id = auctionItemCategory.Id;
 				return model;
@@ -94,9 +94,9 @@ namespace AuctionAPI.Application.Services {
 			try {
 				model.Id = id;
 				AuctionItemCategory auctionItemCategory = mapper.Map<AuctionItemCategory>(model);
-				workUnit.AuctionItemCategoryRepository.Update(auctionItemCategory);
+				workUnit.AuctionItemCategoryCrudRepository.Update(auctionItemCategory);
 				await workUnit.SaveAsync();
-				AuctionItemCategory result = await workUnit.AuctionItemCategoryRepository.GetByIdWithDetailsAsync(id);
+				AuctionItemCategory result = await workUnit.AuctionItemCategoryCrudRepository.GetByIdWithDetailsAsync(id);
 				return mapper.Map<AuctionItemCategoryDetailedModel>(result);
 			} catch(DbUpdateException) {
 				return null;
@@ -109,7 +109,7 @@ namespace AuctionAPI.Application.Services {
 		/// <inheritdoc />
 		public async Task<bool> DeleteByIdAsync(int id) {
 			try {
-				if(!await workUnit.AuctionItemCategoryRepository.DeleteByIdAsync(id))
+				if(!await workUnit.AuctionItemCategoryCrudRepository.DeleteByIdAsync(id))
 					return false;
 				await workUnit.SaveAsync();
 				return true;
