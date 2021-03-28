@@ -22,7 +22,7 @@ namespace AuctionAPI.Infrastructure.Repositories {
 				.Where(x => x.ParentCategoryId == null)
 				.ToListAsync();
 			foreach(AuctionItemCategory category in rootCategories
-				.Where(category => category.ChildCategories != null && category.ChildCategories.Any())) {
+				.Where(category => category.ChildCategories?.Any() == true)) {
 				category.ChildCategories = await GetChildren(category);
 			}
 			return rootCategories;
@@ -43,7 +43,7 @@ namespace AuctionAPI.Infrastructure.Repositories {
 		/// <inheritdoc />
 		public async Task<AuctionItemCategory> GetByIdWithDetailsAsync(int id) {
 			var category =  await GetAllWithDetails().FirstOrDefaultAsync(x => x.Id == id);
-			if(category.ChildCategories != null && category.ChildCategories.Any()) {
+			if(category?.ChildCategories?.Any() == true) {
 				category.ChildCategories = await GetChildren(category);
 			}
 			return category;
