@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuctionAPI.Infrastructure.Repositories {
 
-	public class AuctionItemCategoryRepository : Repository<AuctionItemCategory, int>, IAuctionItemCategoryRepository {
+	public class AuctionItemCategoryRepository : CrudRepository<AuctionItemCategory, int>, IAuctionItemCategoryRepository {
 
 		/// <inheritdoc />
 		public AuctionItemCategoryRepository(DbContext context) : base(context) { }
