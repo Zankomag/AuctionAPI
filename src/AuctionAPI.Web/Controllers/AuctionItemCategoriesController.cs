@@ -11,20 +11,20 @@ namespace AuctionAPI.Web.Controllers {
 	[ApiController]
 	[Route("api/[controller]")]
 	[Produces("application/json")]
-	public class AuctionItemCategoryController : ControllerBase {
+	public class AuctionItemCategoriesController : ControllerBase {
 		private readonly IAuctionItemCategoryService auctionItemCategoryService;
 
-		public AuctionItemCategoryController(IAuctionItemCategoryService auctionItemCategoryService)
+		public AuctionItemCategoriesController(IAuctionItemCategoryService auctionItemCategoryService)
 			=> this.auctionItemCategoryService = auctionItemCategoryService;
 
 
-		// GET api/AuctionItemCategory
+		// GET api/AuctionItemCategories
 		[HttpGet]
 		public async Task<IEnumerable<AuctionItemCategoryDetailedModel>> GetAll()
 			=> await auctionItemCategoryService.GetAllAsync();
 
 		
-		// GET api/AuctionItemCategory/5
+		// GET api/AuctionItemCategories/5
 		//about {id:int}: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-3.1#route-constraint-reference
 		[HttpGet("{id:int}")]
 		public async Task<ActionResult<AuctionItemCategoryDetailedModel>> GetById(int id) {
@@ -34,7 +34,7 @@ namespace AuctionAPI.Web.Controllers {
 			return result;
 		}
 
-		// GET api/AuctionItemCategory/Books
+		// GET api/AuctionItemCategories/Books
 		[HttpGet("{name}")]
 		[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<AuctionItemCategoryDetailedModel>))]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -47,7 +47,7 @@ namespace AuctionAPI.Web.Controllers {
 			return Ok(result);
 		}
 
-		// POST api/AuctionItemCategory
+		// POST api/AuctionItemCategories
 		[HttpPost]
 		public async Task<ActionResult<AuctionItemCategoryInputModel>> Add([FromBody] AuctionItemCategoryInputModel model) {
 			var result =  await auctionItemCategoryService.AddAsync(model);
@@ -65,7 +65,7 @@ namespace AuctionAPI.Web.Controllers {
 			return result;
 		}
 
-		// DELETE api/AuctionItemCategory/5
+		// DELETE api/AuctionItemCategories/5
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id) {
 			var result = await auctionItemCategoryService.DeleteByIdAsync(id);
