@@ -75,15 +75,13 @@ namespace AuctionAPI.Application.Extensions {
 			string passwordHash = Convert.ToBase64String(hashBytes);
 			return passwordHash;
 		}
-		
-		public static class PasswordHashingConstants {
 
+
+		public static class PasswordHashingConstants {
 			public const int Iterations = 40000; //100000
 			public const int SaltLength = 32;
 			public const int PasswordHashLength = 20;
 			public const int TotalHashLength = SaltLength + PasswordHashLength;
-
-			
 		}
 	}
 
