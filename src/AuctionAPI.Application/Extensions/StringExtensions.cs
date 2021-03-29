@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using static AuctionAPI.Application.Extensions.StringExtensions.PasswordHashingConstants;
 
 namespace AuctionAPI.Application.Extensions {
 
 	internal static class StringExtensions {
-		
-		///<summary>Escapes %, _, [, ^ and ~ chars with ~</summary>
+
+		///
 		public static string EscapeLikeText(this string text) {
 
 			if(!text.Contains('%') && !text.Contains('_') && !text.Contains('[') && !text.Contains('^')) {
@@ -29,11 +30,11 @@ namespace AuctionAPI.Application.Extensions {
 		}
 
 		/// <summary>
-		/// Escapes string with <see cref="EscapeLikeText"/> and wraps it to % chars 
+		///     Escapes string with <see cref="EscapeLikeText" /> and wraps it to % chars
 		/// </summary>
 		public static string ToLikeString(this string text) {
 			string escapedText = text.EscapeLikeText();
-			StringBuilder builder = new(escapedText.Length+2);
+			StringBuilder builder = new(escapedText.Length + 2);
 			builder.Append('%')
 				.Append(escapedText)
 				.Append('%');
@@ -41,27 +42,48 @@ namespace AuctionAPI.Application.Extensions {
 		}
 
 		/// <summary>
-		/// Creates PBKDF2 Password hash.
-		/// <see href="https://stackoverflow.com/a/10402129/11101834">More info</see>
+		///     Creates PBKDF2 Password hash.
+		///     <see href="https://stackoverflow.com/a/10402129/11101834">More info</see>
 		/// </summary>
+		/// <param name="password"></param>
+		/// <param name="salt">Salt that will be created during hashing</param>
 		public static string ToPasswordHash(this string password, out byte[] salt) {
-			const int iterations = 40000; //100000
-			const int saltLength = 32;
-			const int passwordHashLength = 20;
-			const int totalHashLength = saltLength + passwordHashLength;
 
-			salt = new byte[saltLength];
+			salt = new byte[SaltLength];
 			new RNGCryptoServiceProvider().GetBytes(salt);
 
-			var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA256);
-			byte[] hash = pbkdf2.GetBytes(passwordHashLength);
+			return password.ToPasswordHashBySalt(salt);
+		}
 
-			byte[] hashBytes = new byte[totalHashLength];
-			Array.Copy(salt, 0, hashBytes, 0, saltLength);
-			Array.Copy(hash, 0, hashBytes, saltLength, passwordHashLength);
+		/// <summary>
+		///     Creates PBKDF2 Password hash by its salt.
+		///     <see href="https://stackoverflow.com/a/10402129/11101834">More info</see>
+		/// </summary>
+		/// <param name="password"></param>
+		/// <param name="salt">Salt with which password was hashed</param>
+		public static string ToPasswordHashBySalt(this string password, byte[] salt) {
+			if(salt.Length != SaltLength)
+				throw new ArgumentException($"Salt must be {SaltLength} bytes", nameof(salt));
+
+			var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA256);
+			byte[] hash = pbkdf2.GetBytes(PasswordHashLength);
+
+			byte[] hashBytes = new byte[TotalHashLength];
+			Array.Copy(salt, 0, hashBytes, 0, SaltLength);
+			Array.Copy(hash, 0, hashBytes, SaltLength, PasswordHashLength);
 
 			string passwordHash = Convert.ToBase64String(hashBytes);
 			return passwordHash;
+		}
+		
+		public static class PasswordHashingConstants {
+
+			public const int Iterations = 40000; //100000
+			public const int SaltLength = 32;
+			public const int PasswordHashLength = 20;
+			public const int TotalHashLength = SaltLength + PasswordHashLength;
+
+			
 		}
 	}
 
