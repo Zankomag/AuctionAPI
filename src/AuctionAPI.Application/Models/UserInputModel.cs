@@ -11,6 +11,7 @@ namespace AuctionAPI.Application.Models {
 		public string LastName { get; set; }
 
 		//email is Username
+		[EmailAddress]
 		[StringLength(50)]
 		[Required]
 		public string Email { get; set; }
