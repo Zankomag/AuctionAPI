@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AuctionAPI.Application.Models.Generic;
 
 namespace AuctionAPI.Application.Models {
-	public class UserInputModel {
+	public class UserInputModel : Model<int> {
 		[Required]
 		[StringLength(50)]
 		public string FirstName { get; set; }
