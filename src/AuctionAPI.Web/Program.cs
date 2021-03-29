@@ -10,8 +10,6 @@ namespace AuctionAPI.Web {
 		public static void Main(string[] args) {
 			var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-			Console.WriteLine(environment);
-			
 			string configFileName = environment == Environments.Development
 				? "appsettings.development.json"
 				: "appsettings.json";
