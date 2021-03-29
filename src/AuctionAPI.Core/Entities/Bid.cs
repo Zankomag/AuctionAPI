@@ -10,7 +10,7 @@ namespace AuctionAPI.Core.Entities {
 		public decimal Price { get; set; }
 
 
-		public Bidder Bidder { get; set; }
+		public User Bidder { get; set; }
 		public AuctionItem AuctionItem { get; set; }
 	}
 

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AuctionAPI.Core.Entities {
 
@@ -24,7 +25,7 @@ namespace AuctionAPI.Core.Entities {
 		public string Role { get; set; }
 
 
-		public Bidder Bidder { get; set; }
+		public ICollection<Bid> Bids { get; set; }
 		public Seller Seller { get; set; }
 	}
 
