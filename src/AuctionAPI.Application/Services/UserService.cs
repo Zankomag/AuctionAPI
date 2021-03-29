@@ -83,12 +83,11 @@ namespace AuctionAPI.Application.Services {
 			}
 		}
 
-		/// <inheritdoc />
-		public async Task<bool> UpdateRoleAsync(int userId, string role) {
+		private async Task<bool> UpdateRoleAsync(int userId, string role) {
 			if(String.IsNullOrEmpty(role))
 				return false;
 			try {
-				workUnit.UserRepository.UpdateRoleAsync(userId, role);
+				workUnit.UserRepository.UpdateRoleAsync(userId, Roles.Admin);
 				await workUnit.SaveAsync();
 				return true;
 			} catch(DbUpdateException) {
@@ -98,6 +97,12 @@ namespace AuctionAPI.Application.Services {
 				throw;
 			}
 		}
+		
+		/// <inheritdoc />
+		public async Task<bool> UpdateRoleToAdminAsync(int userId) => await UpdateRoleAsync(userId, Roles.Admin);
+
+		/// <inheritdoc />
+		public async Task<bool> UpdateRoleToUserAsync(int userId) => await UpdateRoleAsync(userId, Roles.User);
 
 		/// <inheritdoc />
 		public async Task<bool> DeleteAsync(int userId) {

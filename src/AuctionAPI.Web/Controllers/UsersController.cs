@@ -51,11 +51,19 @@ namespace AuctionAPI.Web.Controllers {
 			return result;
 		}
 
-		// POST api/Users/5?role=Admin
-		[HttpPost("{id}")]
-		public async Task<IActionResult> UpdateRole(int id, string role) {
+		// POST api/Users/5/promote
+		[HttpPost("{id}/promote")]
+		public async Task<IActionResult> UpdateRoleToAdmin(int id) {
+			var result = await userService.UpdateRoleToAdminAsync(id);
+			if(!result)
+				return BadRequest();
+			return Ok();
+		}
 
-			var result = await userService.UpdateRoleAsync(id, role);
+		// POST api/Users/5/demote
+		[HttpPost("{id}/demote")]
+		public async Task<IActionResult> UpdateRoleToUser(int id) {
+			var result = await userService.UpdateRoleToUserAsync(id);
 			if(!result)
 				return BadRequest();
 			return Ok();
