@@ -5,29 +5,41 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 
 namespace AuctionAPI.Web {
-    public static class Program {
-        public static void Main(string[] args) {
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build();
 
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(config)
-                .CreateLogger();
+	public static class Program {
+		public static void Main(string[] args) {
+			var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-            Log.Information("Application starting");
-            try {
-                CreateHostBuilder(args).Build().Run();
-            } catch(Exception ex) {
-                Log.Fatal(ex, "Application failed to start");
-            } finally {
-                Log.CloseAndFlush();
-            }
-        }
+			Console.WriteLine(environment);
+			
+			string configFileName = environment == Environments.Development
+				? "appsettings.development.json"
+				: "appsettings.json";
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .UseSerilog()
-                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
-    }
+			var config = new ConfigurationBuilder()
+				.AddJsonFile(configFileName)
+				.Build();
+
+			Log.Logger = new LoggerConfiguration()
+				.ReadFrom.Configuration(config)
+				//This filter cannot be applied in config due to syntax limitations
+				.Filter.ByExcluding(x => x.Exception is Microsoft.EntityFrameworkCore.DbUpdateException)
+				.CreateLogger();
+
+			Log.Information("Application starting");
+			try {
+				CreateHostBuilder(args).Build().Run();
+			} catch(Exception ex) {
+				Log.Fatal(ex, "Application failed to start");
+			} finally {
+				Log.CloseAndFlush();
+			}
+		}
+
+		public static IHostBuilder CreateHostBuilder(string[] args) =>
+			Host.CreateDefaultBuilder(args)
+				.UseSerilog()
+				.ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
+	}
+
 }
