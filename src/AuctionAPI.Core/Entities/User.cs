@@ -20,10 +20,10 @@ namespace AuctionAPI.Core.Entities {
 		[Required]
 		public string PasswordHash { get; set; }
 
-		[StringLength(64)]
+		[MaxLength(32)]
 		[Required]
-		public string PasswordSalt { get; set; }
-		
+		public byte[] PasswordSalt { get; set; }
+
 		[StringLength(20)]
 		[Required]
 		public string Role { get; set; }
