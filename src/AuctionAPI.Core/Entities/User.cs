@@ -19,6 +19,10 @@ namespace AuctionAPI.Core.Entities {
 		[StringLength(64)]
 		[Required]
 		public string PasswordHash { get; set; }
+
+		[StringLength(64)]
+		[Required]
+		public string PasswordSalt { get; set; }
 		
 		[StringLength(20)]
 		[Required]
