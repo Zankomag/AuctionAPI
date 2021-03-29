@@ -8,6 +8,9 @@ namespace AuctionAPI.Application.Mapping {
 		public EntityToModelProfile() {
 			CreateMap<AuctionItemCategory, AuctionItemCategoryInputModel>().ReverseMap();
 			CreateMap<AuctionItemCategory, AuctionItemCategoryDetailedModel>().ReverseMap();
+
+			CreateMap<User, UserInputModel>().ReverseMap();
+			CreateMap<User, UserModel>().ReverseMap();
 		}
 	}
 
