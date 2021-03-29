@@ -14,7 +14,6 @@ namespace AuctionAPI.Infrastructure.Data {
 		public DbSet<AuctionItemCategory> AuctionItemCategories { get; set; }
 		public DbSet<AuctionItemStatusCode> AuctionItemStatusCodes { get; set; }
 		public DbSet<User> Users { get; set; }
-		public DbSet<Seller> Sellers { get; set; }
 		public DbSet<Bid> Bids { get; set; }
 
 		public AuctionDbContext(DbContextOptions<AuctionDbContext> options) : base(options) { }
