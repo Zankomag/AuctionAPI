@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace AuctionAPI.Application.Extensions {
 
@@ -36,6 +38,30 @@ namespace AuctionAPI.Application.Extensions {
 				.Append(escapedText)
 				.Append('%');
 			return builder.ToString();
+		}
+
+		/// <summary>
+		/// Creates PBKDF2 Password hash.
+		/// <see href="https://stackoverflow.com/a/10402129/11101834">More info</see>
+		/// </summary>
+		public static string ToPasswordHash(this string password, out byte[] salt) {
+			const int iterations = 40000; //100000
+			const int saltLength = 32;
+			const int passwordHashLength = 20;
+			const int totalHashLength = saltLength + passwordHashLength;
+
+			salt = new byte[saltLength];
+			new RNGCryptoServiceProvider().GetBytes(salt);
+
+			var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA256);
+			byte[] hash = pbkdf2.GetBytes(passwordHashLength);
+
+			byte[] hashBytes = new byte[totalHashLength];
+			Array.Copy(salt, 0, hashBytes, 0, saltLength);
+			Array.Copy(hash, 0, hashBytes, saltLength, passwordHashLength);
+
+			string passwordHash = Convert.ToBase64String(hashBytes);
+			return passwordHash;
 		}
 	}
 
