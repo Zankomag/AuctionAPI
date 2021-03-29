@@ -15,8 +15,9 @@ namespace AuctionAPI.Application.Models {
 		[StringLength(50)]
 		[Required]
 		public string Email { get; set; }
-
-		[StringLength(64)]
+		
+		//MinimumLength = 8 only for test purpose
+		[StringLength(64, MinimumLength = 8)]
 		[Required]
 		public string Password { get; set; }
 		
