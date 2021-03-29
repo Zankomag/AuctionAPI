@@ -12,15 +12,25 @@ namespace AuctionAPI.Infrastructure.Repositories {
 		/// <inheritdoc />
 		public UserRepository(DbContext context) : base(context) { }
 
+		private IQueryable<User> GetAllExceptPasswordHash()
+			=> DbSet.Select(x => new User {
+				Id = x.Id,
+				Role = x.Role,
+				Email = x.Email,
+				FirstName = x.FirstName,
+				LastName = x.LastName
+			});
+		
 		/// <inheritdoc />
-		public async Task<IEnumerable<User>> GetAllAsync()
-			=> await DbSet.Select(x => new User {
-					Id = x.Id,
-					Role = x.Role,
-					Email = x.Email,
-					FirstName = x.FirstName,
-					LastName = x.LastName
-				}).ToListAsync();
+		public async Task<IEnumerable<User>> GetAllAsync() => await GetAllExceptPasswordHash().ToListAsync();
+
+		/// <inheritdoc />
+		public async Task<User> GetByIdAsync(int id) 
+			=> await GetAllExceptPasswordHash().FirstOrDefaultAsync(x => x.Id == id);
+
+		/// <inheritdoc />
+		public async Task<User> GetByEmailAsync(string email)
+			=> await GetAllExceptPasswordHash().FirstOrDefaultAsync(x => x.Email == email);
 
 		/// <inheritdoc />
 		public async Task AddAsync(User user) => await DbSet.AddAsync(user);
