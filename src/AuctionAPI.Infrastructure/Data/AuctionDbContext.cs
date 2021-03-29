@@ -2,6 +2,7 @@
 using System.Linq;
 using AuctionAPI.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+
 // ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable ArrangeMethodOrOperatorBody
 
@@ -16,7 +17,7 @@ namespace AuctionAPI.Infrastructure.Data {
 		public DbSet<Bidder> Bidders { get; set; }
 		public DbSet<Seller> Sellers { get; set; }
 		public DbSet<Bid> Bids { get; set; }
-		
+
 		public AuctionDbContext(DbContextOptions<AuctionDbContext> options) : base(options) { }
 
 
@@ -66,7 +67,6 @@ namespace AuctionAPI.Infrastructure.Data {
 			modelBuilder.Entity<AuctionItemCategory>()
 				.HasIndex(x => x.Name).IsUnique();
 		}
-		
 	}
 
 }
