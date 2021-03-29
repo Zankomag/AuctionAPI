@@ -87,7 +87,7 @@ namespace AuctionAPI.Application.Services {
 			if(String.IsNullOrEmpty(role))
 				return false;
 			try {
-				workUnit.UserRepository.UpdateRoleAsync(userId, Roles.Admin);
+				workUnit.UserRepository.UpdateRoleAsync(userId, role);
 				await workUnit.SaveAsync();
 				return true;
 			} catch(DbUpdateException) {
