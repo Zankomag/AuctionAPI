@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AuctionAPI.Core.Entities;
+﻿using System.Threading.Tasks;
 
 namespace AuctionAPI.Core.Repositories {
-    public interface IUnitOfWork {
 
-        IAuctionItemCategoryRepository AuctionItemCategoryRepository { get; }
+	public interface IUnitOfWork {
 
-        Task<int> SaveAsync();
-    }
+		IUserRepository UserRepository { get; }
+
+		IAuctionItemCategoryRepository AuctionItemCategoryRepository { get; }
+
+		Task<int> SaveAsync();
+	}
+
 }
