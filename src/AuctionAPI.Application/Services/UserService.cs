@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AuctionAPI.Application.Authorization;
+using AuctionAPI.Application.Extensions;
 using AuctionAPI.Application.Models;
 using AuctionAPI.Application.Services.Abstractions;
 using AuctionAPI.Core.Entities;
@@ -68,7 +69,8 @@ namespace AuctionAPI.Application.Services {
 			try {
 				User user = mapper.Map<User>(model);
 				user.Role = Roles.User;
-				//TODO: do password hashing
+				user.PasswordHash = model.Password.ToPasswordHash(out byte[] salt);
+				user.PasswordSalt = salt;
 				await workUnit.UserRepository.AddAsync(user);
 				await workUnit.SaveAsync();
 				var result = mapper.Map<UserModel>(user);
