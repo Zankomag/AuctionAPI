@@ -16,7 +16,7 @@ namespace AuctionAPI.Core.Entities {
 		[Required]
 		public string Email { get; set; }
 		
-		[StringLength(64)]
+		[StringLength(128)]
 		[Required]
 		public string PasswordHash { get; set; }
 
