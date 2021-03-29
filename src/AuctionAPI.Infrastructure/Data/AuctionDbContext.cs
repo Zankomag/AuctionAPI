@@ -21,6 +21,7 @@ namespace AuctionAPI.Infrastructure.Data {
 
 		/// <inheritdoc />
 		protected override void OnModelCreating(ModelBuilder modelBuilder) {
+			ConfigureUser(modelBuilder);
 			ConfigureAuctionItemCategory(modelBuilder);
 			ConfigureAuctionItem(modelBuilder);
 			ConfigureBids(modelBuilder);
@@ -64,6 +65,11 @@ namespace AuctionAPI.Infrastructure.Data {
 		private void ConfigureAuctionItemCategory(ModelBuilder modelBuilder) {
 			modelBuilder.Entity<AuctionItemCategory>()
 				.HasIndex(x => x.Name).IsUnique();
+		}
+
+		private void ConfigureUser(ModelBuilder modelBuilder) {
+			modelBuilder.Entity<User>()
+				.HasIndex(x => x.Email).IsUnique();
 		}
 	}
 
