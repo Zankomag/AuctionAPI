@@ -9,10 +9,10 @@ namespace AuctionAPI.Web.Controllers {
 	[ApiController]
 	[Route("api/[controller]")]
 	[Produces("application/json")]
-	public class UserController : ControllerBase {
+	public class UsersController : ControllerBase {
 		private readonly IUserService userService;
 
-		public UserController(IUserService userService)
+		public UsersController(IUserService userService)
 			=> this.userService = userService;
 
 
