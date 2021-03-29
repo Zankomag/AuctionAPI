@@ -15,6 +15,7 @@ namespace AuctionAPI.Core.Repositories {
 
 		void UpdateRoleAsync(int userId, string role);
 
+		/// <returns>True on success</returns>
 		Task<bool> DeleteAsync(int userId);
 	}
 
