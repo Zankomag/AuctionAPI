@@ -1,16 +1,19 @@
 using System;
 using System.Linq;
+using System.Text;
 using AuctionAPI.Infrastructure;
 using AuctionAPI.Web.Authentication;
+using AuctionAPI.Web.Authentication.Abstractions;
 using AuctionAPI.Web.Mapping;
-using AuctionAPI.Web.Services.Abstractions;
 using AuctionAPI.Web.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -27,7 +30,24 @@ namespace AuctionAPI.Web {
 			services.AddInfrastructure(Configuration, new ApplicationModelToWebApiModelProfile());
 
 			services.AddScoped<IAuthenticationService, AuthenticationService>();
-			services.Configure<JwtSettings>(Configuration.GetSection(nameof(JwtSettings)));
+			var jwtSettingsConfigSection = Configuration.GetSection(nameof(JwtSettings));
+			services.Configure<JwtSettings>(jwtSettingsConfigSection);
+
+			services.AddAuthentication(options => {
+					options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+					options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+					options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+				})
+				.AddJwtBearer(options =>
+					options.TokenValidationParameters = new TokenValidationParameters {
+						ValidateIssuerSigningKey = true,
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+							Configuration[$"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}"])),
+						ValidateIssuer = false,
+						ValidateAudience = false,
+						ValidateLifetime = true,
+						ClockSkew = TimeSpan.FromMinutes(5)
+					});
 
 			services.AddSwagger();
 
