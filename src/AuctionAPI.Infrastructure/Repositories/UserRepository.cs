@@ -24,7 +24,7 @@ namespace AuctionAPI.Infrastructure.Repositories {
 			=> await GetAllExceptPasswordHash().FirstOrDefaultAsync(x => x.Email == email);
 
 		/// <inheritdoc />
-		public async Task<User> GetByIdAndPasswordHashByEmailAsync(string email)
+		public async Task<User> GetAuthorizationInfoByEmailAsync(string email)
 			=> await DbSet.Select(x => new User {
 				Id = x.Id,
 				Role = x.Role,
