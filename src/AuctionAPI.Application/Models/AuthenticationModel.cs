@@ -2,7 +2,7 @@
 
 namespace AuctionAPI.Application.Models {
 
-	public class AuthenticateModel {
+	public class AuthenticationModel {
 		[Required]
 		public string Email { get; set; }
 
