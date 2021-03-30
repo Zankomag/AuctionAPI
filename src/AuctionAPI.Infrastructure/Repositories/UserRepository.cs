@@ -12,20 +12,11 @@ namespace AuctionAPI.Infrastructure.Repositories {
 		/// <inheritdoc />
 		public UserRepository(DbContext context) : base(context) { }
 
-		private IQueryable<User> GetAllExceptPasswordHash()
-			=> DbSet.Select(x => new User {
-				Id = x.Id,
-				Role = x.Role,
-				Email = x.Email,
-				FirstName = x.FirstName,
-				LastName = x.LastName
-			});
-		
 		/// <inheritdoc />
 		public async Task<IEnumerable<User>> GetAllAsync() => await GetAllExceptPasswordHash().ToListAsync();
 
 		/// <inheritdoc />
-		public async Task<User> GetByIdAsync(int id) 
+		public async Task<User> GetByIdAsync(int id)
 			=> await GetAllExceptPasswordHash().FirstOrDefaultAsync(x => x.Id == id);
 
 		/// <inheritdoc />
@@ -33,11 +24,20 @@ namespace AuctionAPI.Infrastructure.Repositories {
 			=> await GetAllExceptPasswordHash().FirstOrDefaultAsync(x => x.Email == email);
 
 		/// <inheritdoc />
+		public async Task<User> GetByIdAndPasswordHashByEmailAsync(string email)
+			=> await DbSet.Select(x => new User {
+				Id = x.Id,
+				Role = x.Role,
+				PasswordHash = x.PasswordHash,
+				PasswordSalt = x.PasswordSalt
+			}).FirstOrDefaultAsync(x => x.Email == email);
+
+		/// <inheritdoc />
 		public async Task AddAsync(User user) => await DbSet.AddAsync(user);
 
 		/// <inheritdoc />
 		public void UpdateRoleAsync(int userId, string role) {
-			var user = new User() {
+			var user = new User {
 				Id = userId,
 				Role = role
 			};
@@ -53,6 +53,14 @@ namespace AuctionAPI.Infrastructure.Repositories {
 			return false;
 		}
 
+		private IQueryable<User> GetAllExceptPasswordHash()
+			=> DbSet.Select(x => new User {
+				Id = x.Id,
+				Role = x.Role,
+				Email = x.Email,
+				FirstName = x.FirstName,
+				LastName = x.LastName
+			});
 	}
 
 }

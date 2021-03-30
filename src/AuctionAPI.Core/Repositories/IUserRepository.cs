@@ -10,6 +10,9 @@ namespace AuctionAPI.Core.Repositories {
 		Task<User> GetByIdAsync(int id);
 
 		Task<User> GetByEmailAsync(string email);
+		
+		/// <returns>User with Id, Role, PasswordHash and PasswordSalt</returns>
+		Task<User> GetAuthorizationInfoByEmailAsync(string email);
 
 		Task AddAsync(User user);
 
