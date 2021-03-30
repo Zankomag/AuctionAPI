@@ -21,6 +21,9 @@ namespace AuctionAPI.Application.Services.Abstractions {
 
 		/// <returns>True on success</returns>
 		Task<bool> DeleteAsync(int userId);
+		
+		/// <returns>User with Id and Role on success or null</returns>
+		Task<UserModel> GetAuthorizationInfoByEmailAndPasswordAsync(string email, string password);
 	}
 
 }
