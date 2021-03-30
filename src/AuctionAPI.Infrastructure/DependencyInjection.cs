@@ -12,7 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AuctionAPI.Infrastructure {
 
 	public static class DependencyInjection {
-		public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config) {
+		public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config,
+			Profile webApiMappingProfile) {
 			string connection = config.GetConnectionString("AuctionDb");
 			services.AddDbContext<AuctionDbContext>(options => options.UseSqlServer(connection));
 
@@ -21,7 +22,11 @@ namespace AuctionAPI.Infrastructure {
 			services.AddScoped<IAuctionItemCategoryService, AuctionItemCategoryService>();
 			services.AddScoped<IUserService, UserService>();
 
-			MapperConfiguration mapperConfig = new MapperConfiguration(x => x.AddProfile<EntityToModelProfile>());
+			MapperConfiguration mapperConfig = new MapperConfiguration(x => {
+				x.AddProfile<EntityToModelProfile>();
+				x.AddProfile(webApiMappingProfile);
+			});
+
 			services.AddSingleton(mapperConfig.CreateMapper());
 
 			return services;

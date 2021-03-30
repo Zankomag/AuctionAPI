@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using AuctionAPI.Infrastructure;
+using AuctionAPI.Web.Mapping;
 using AuctionAPI.Web.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,7 +22,7 @@ namespace AuctionAPI.Web {
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services) {
 			//Configure all infrastructure services
-			services.AddInfrastructure(Configuration);
+			services.AddInfrastructure(Configuration, new ApplicationModelToWebApiModelProfile());
 
 			services.AddSwagger();
 
