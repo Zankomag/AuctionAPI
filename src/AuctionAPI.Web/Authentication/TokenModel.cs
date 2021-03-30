@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AuctionAPI.Web.Models {
+namespace AuctionAPI.Web.Authentication {
 
 	public class TokenModel {
 		public string Token { get; set; }
