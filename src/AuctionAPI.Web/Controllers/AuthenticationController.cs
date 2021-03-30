@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AuctionAPI.Application.Models;
-using AuctionAPI.Web.Models;
-using AuctionAPI.Web.Services.Abstractions;
+using AuctionAPI.Web.Authentication;
+using AuctionAPI.Web.Authentication.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionAPI.Web.Controllers {
