@@ -23,7 +23,7 @@ namespace AuctionAPI.Web.Controllers {
 			if(tokenModel == null)
 				return BadRequest("Wrong username or password");
 
-			return Ok(tokenModel);
+			return tokenModel;
 		}
 	}
 
