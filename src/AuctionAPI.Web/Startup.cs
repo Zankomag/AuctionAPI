@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
 using AuctionAPI.Infrastructure;
+using AuctionAPI.Web.Authentication;
 using AuctionAPI.Web.Mapping;
+using AuctionAPI.Web.Services.Abstractions;
 using AuctionAPI.Web.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +25,9 @@ namespace AuctionAPI.Web {
 		public void ConfigureServices(IServiceCollection services) {
 			//Configure all infrastructure services
 			services.AddInfrastructure(Configuration, new ApplicationModelToWebApiModelProfile());
+
+			services.AddScoped<IAuthenticationService, AuthenticationService>();
+			services.Configure<JwtSettings>(Configuration.GetSection(nameof(JwtSettings)));
 
 			services.AddSwagger();
 
@@ -58,6 +63,7 @@ namespace AuctionAPI.Web {
 
 			app.UseRouting();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints => endpoints.MapControllers());
