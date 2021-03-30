@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AuctionAPI.Infrastructure;
+using AuctionAPI.Web.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,7 @@ namespace AuctionAPI.Web {
 						new List<string>()
 					}
 				});
+				c.SchemaFilter<SwaggerExcludeIdFieldFromInputModel>();
 			});
 
 			services.AddControllers()
