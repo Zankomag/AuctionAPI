@@ -25,12 +25,12 @@ namespace AuctionAPI.Infrastructure.Repositories {
 
 		/// <inheritdoc />
 		public async Task<User> GetAuthorizationInfoByEmailAsync(string email)
-			=> await DbSet.Select(x => new User {
+			=> await DbSet.Where(x => x.Email == email).Select(x => new User {
 				Id = x.Id,
 				Role = x.Role,
 				PasswordHash = x.PasswordHash,
 				PasswordSalt = x.PasswordSalt
-			}).FirstOrDefaultAsync(x => x.Email == email);
+			}).FirstOrDefaultAsync();
 
 		/// <inheritdoc />
 		public async Task AddAsync(User user) => await DbSet.AddAsync(user);
