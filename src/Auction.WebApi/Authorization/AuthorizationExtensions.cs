@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Auction.WebApi.Authorization {
 
-	public static class AuthenticationExtensions {
+	public static class AuthorizationExtensions {
 
 		public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration) {
 			services.AddScoped<IAuthenticationService, AuthenticationService>();
