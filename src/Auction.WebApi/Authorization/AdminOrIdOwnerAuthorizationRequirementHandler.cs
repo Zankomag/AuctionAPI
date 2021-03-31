@@ -22,14 +22,13 @@ namespace Auction.WebApi.Authorization {
 			=> this.httpContextAccessor = httpContextAccessor;
 
 		/// <inheritdoc />
-		protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
+		protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
 			AdminOrIdOwnerAuthorizationRequirement requirement) {
 
 			//TODO try use AuthorizationHandler<TRequirement, TResource>
-			//TODO deal with async
 			if (context.User.IsInRole(Role.Admin)) {
 				context.Succeed(requirement);
-				return;
+				return Task.CompletedTask;
 			}
 			
 			var userId = context.User.FindFirstValue(JwtOpenIdProperty.Sub);
@@ -38,11 +37,12 @@ namespace Auction.WebApi.Authorization {
 
 				if(routeData.Values["id"] is string id && id == userId) {
 					context.Succeed(requirement);
-					return;
+					return Task.CompletedTask;
 				}
 			}
 
 			context.Fail();
+			return Task.CompletedTask;
 		}
 	}
 
