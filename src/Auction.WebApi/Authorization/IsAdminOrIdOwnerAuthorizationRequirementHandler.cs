@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using Auction.Application.Authorization;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +23,7 @@ namespace Auction.WebApi.Authorization {
 		/// <inheritdoc />
 		protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
 			IsAdminOrIdOwnerAuthorizationRequirement requirement) {
-			
+
 			if(context.User.IsInRole(Role.Admin)) {
 				context.Succeed(requirement);
 				return Task.CompletedTask;

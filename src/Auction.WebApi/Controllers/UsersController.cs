@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Auction.Application.Authorization;
 using Auction.Application.Models;
@@ -87,7 +86,7 @@ namespace Auction.WebApi.Controllers {
 				return BadRequest();
 			return Ok();
 		}
-		
+
 		//TODO add password changing
 	}
 
