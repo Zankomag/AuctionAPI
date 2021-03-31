@@ -27,7 +27,7 @@ namespace Auction.WebApi.Authorization {
 
 			//TODO try use AuthorizationHandler<TRequirement, TResource>
 			
-			var userId = context.User.FindFirstValue(JwtOpenIdConstants.Sub);
+			var userId = context.User.FindFirstValue(JwtOpenIdProperty.Sub);
 			if(userId != null) {
 				var routeData = httpContextAccessor.HttpContext.GetRouteData();
 

@@ -35,14 +35,16 @@ namespace Auction.WebApi.Authorization {
 						ValidateAudience = false,
 						ValidateLifetime = true,
 						ClockSkew = TimeSpan.FromMinutes(5),
-						NameClaimType = JwtOpenIdConstants.Username,
-						RoleClaimType = JwtOpenIdConstants.Role
+						NameClaimType = JwtOpenIdProperty.Username,
+						RoleClaimType = JwtOpenIdProperty.Role
 					});
 
-			services.AddAuthorization(x => x.AddPolicy(AuthorizationPolicy.AdminOrIdOwner, policy => policy.Requirements.Add(new AdminOrIdOwnerAuthorizationRequirement())))
+			services.AddAuthorization(x => x.AddPolicy(AuthorizationPolicyName.AdminOrIdOwner,
+				policy => policy.Requirements.Add(new AdminOrIdOwnerAuthorizationRequirement())));
 			
 			return services;
 		}
+
 	}
 
 }

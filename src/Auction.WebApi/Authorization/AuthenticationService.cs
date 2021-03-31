@@ -34,8 +34,8 @@ namespace Auction.WebApi.Authorization {
 			var expiration = DateTime.Now.AddDays(1);
 
 			var claims = new List<Claim> {
-				new(JwtOpenIdConstants.Role, user.Role),
-				new(JwtOpenIdConstants.Sub, user.Id.ToString())
+				new(JwtOpenIdProperty.Role, user.Role),
+				new(JwtOpenIdProperty.Sub, user.Id.ToString())
 			};
 
 			var signingKey = new SymmetricSecurityKey(jwtSettings.SecretBytes);

@@ -8,7 +8,6 @@ using Auction.Application.Services.Abstractions;
 using Auction.WebApi.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using AuthorizationPolicy = Auction.WebApi.Authorization.AuthorizationPolicy;
 
 namespace Auction.WebApi.Controllers {
 
@@ -29,13 +28,13 @@ namespace Auction.WebApi.Controllers {
 			=> await userService.GetAllAsync();
 		
 		// GET api/Users/5
-		[Authorize(AuthorizationPolicy.AdminOrIdOwner)]
+		[Authorize(AuthorizationPolicyName.AdminOrIdOwner)]
 		[HttpGet("{id:int}")]
 		public async Task<ActionResult<UserModel>> GetById(int id) {
 			//TODO move to method block of custom authorization
 			// User can get only theirs own account, Admin can get any
 			//if(User.IsInRole(Role.Admin)
-			//	|| (Int32.TryParse(User.FindFirstValue(JwtOpenIdConstants.Sub), out int userId) && id == userId)) {
+			//	|| (Int32.TryParse(User.FindFirstValue(JwtOpenIdProperty.Sub), out int userId) && id == userId)) {
 				
 				var result = await userService.GetByIdAsync(id);
 				if(result == null)

@@ -7,7 +7,7 @@
 	///         info
 	///     </see>
 	/// </summary>
-	public static class JwtOpenIdConstants {
+	public static class JwtOpenIdProperty {
 		public const string Sub = "sub";
 		public const string Role = "role";
 		public const string Username = "username";
