@@ -12,7 +12,7 @@ namespace Auction.WebApi.Authentication {
 
 	public static class AuthenticationExtensions {
 
-		public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration) {
+		public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration) {
 			services.AddScoped<IAuthenticationService, AuthenticationService>();
 			var jwtSettingsConfigSection = configuration.GetSection(nameof(JwtSettings));
 			services.Configure<JwtSettings>(jwtSettingsConfigSection);
@@ -39,6 +39,8 @@ namespace Auction.WebApi.Authentication {
 						RoleClaimType = JwtOpenIdConstants.Role
 					});
 
+			services.AddAuthorization(x => x.AddPolicy(AuthorizationPolicy.AdminOrIdOwner, policy => policy.Requirements.Add(new AdminOrIdOwnerAuthorizationRequirement())))
+			
 			return services;
 		}
 	}
