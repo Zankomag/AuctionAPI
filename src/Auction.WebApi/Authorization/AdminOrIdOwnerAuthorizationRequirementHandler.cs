@@ -24,7 +24,7 @@ namespace Auction.WebApi.Authorization {
 		/// <inheritdoc />
 		protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
 			AdminOrIdOwnerAuthorizationRequirement requirement) {
-
+			
 			//TODO try use AuthorizationHandler<TRequirement, TResource>
 			if(context.User.IsInRole(Role.Admin)) {
 				context.Succeed(requirement);

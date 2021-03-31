@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Auction.Application.Services.Abstractions;
 using Auction.WebApi.Authorization.Abstractions;
-using Auction.WebApi.Authorization.Models;
+using Auction.WebApi.Authorization.Types;
 using AutoMapper;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

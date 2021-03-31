@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Auction.WebApi.Authorization.Models {
+namespace Auction.WebApi.Authorization.Types {
 
 	public class JwtSettings {
 

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Auction.WebApi.Authorization.Models;
+using Auction.WebApi.Authorization.Types;
 
 namespace Auction.WebApi.Authorization.Abstractions {
 
