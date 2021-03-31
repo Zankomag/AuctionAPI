@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Auction.Application.Services.Abstractions;
 using Auction.WebApi.Authorization.Abstractions;
@@ -32,16 +30,10 @@ namespace Auction.WebApi.Authorization {
 			var user = mapper.Map<UserIdentity>(userModel);
 
 			var expiration = DateTime.Now.AddDays(1);
-
-			var claims = new List<Claim> {
-				new(JwtOpenIdProperty.Role, user.Role),
-				new(JwtOpenIdProperty.Sub, user.Id.ToString())
-			};
-
 			var signingKey = new SymmetricSecurityKey(jwtSettings.SecretBytes);
 
 			var token = new JwtSecurityToken(expires: expiration,
-				claims: claims,
+				claims: user.GetClaims(),
 				signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256));
 
 			return new TokenModel {
