@@ -1,5 +1,5 @@
 ﻿using Auction.Application.Models;
-using Auction.WebApi.Authentication;
+using Auction.WebApi.Authentication.Models;
 using AutoMapper;
 
 namespace Auction.WebApi.Mapping {
