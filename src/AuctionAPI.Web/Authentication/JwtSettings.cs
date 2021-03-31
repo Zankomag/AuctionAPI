@@ -6,9 +6,10 @@ namespace AuctionAPI.Web.Authentication {
 
 		public string Secret { get; set; }
 
-		public byte[] SecretBytes { get; }
+		private byte[] secretBytes;
 
-		public JwtSettings() => SecretBytes = Encoding.UTF8.GetBytes(Secret);
+		public byte[] SecretBytes => secretBytes ??= Encoding.UTF8.GetBytes(Secret);
+		
 	}
 
 }
