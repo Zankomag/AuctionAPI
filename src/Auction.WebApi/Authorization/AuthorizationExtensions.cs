@@ -47,7 +47,7 @@ namespace Auction.WebApi.Authorization {
 				policy => policy.Requirements.Add(new AdminOrIdOwnerAuthorizationRequirement())));
 
 			services.AddScoped<IAuthorizationHandler, AdminOrIdOwnerAuthorizationRequirementHandler>();
-			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+			services.AddHttpContextAccessor();
 
 			return services;
 		}
