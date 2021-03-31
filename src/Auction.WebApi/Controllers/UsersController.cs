@@ -79,11 +79,9 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// DELETE api/Users/5
+		[Authorize(AuthorizationPolicyName.IsAdminOrIdOwner)]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id) {
-
-			//TODO add same authorization as in GetById()
-			throw new NotImplementedException();
 			bool result = await userService.DeleteAsync(id);
 			if(!result)
 				return BadRequest();
