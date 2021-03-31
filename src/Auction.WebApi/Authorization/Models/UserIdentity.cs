@@ -1,4 +1,4 @@
-﻿namespace Auction.WebApi.Authentication.Models {
+﻿namespace Auction.WebApi.Authorization.Models {
 
 	public class UserIdentity {
 		public int Id { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace Auction.WebApi.Authentication {
+﻿namespace Auction.WebApi.Authorization {
 
 	/// <summary>
 	///     <see

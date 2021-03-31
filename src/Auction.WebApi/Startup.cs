@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Auction.Infrastructure;
-using Auction.WebApi.Authentication;
+using Auction.WebApi.Authorization;
 using Auction.WebApi.Mapping;
 using Auction.WebApi.Swagger;
 using Microsoft.AspNetCore.Builder;
@@ -25,7 +25,7 @@ namespace Auction.WebApi {
 			//Configure all infrastructure services
 			services.AddInfrastructure(Configuration, new ApplicationModelToWebApiModelProfile());
 
-			services.AddAuthentication(Configuration);
+			services.AddAuthenticationAndAuthorization(Configuration);
 
 			services.AddSwagger();
 
