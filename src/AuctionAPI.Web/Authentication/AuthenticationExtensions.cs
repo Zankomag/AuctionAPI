@@ -34,8 +34,8 @@ namespace AuctionAPI.Web.Authentication {
 						ValidateAudience = false,
 						ValidateLifetime = true,
 						ClockSkew = TimeSpan.FromMinutes(5),
-						NameClaimType = "username",
-						RoleClaimType = "role"
+						NameClaimType = JwtOpenIdConstants.Username,
+						RoleClaimType = JwtOpenIdConstants.Role
 					});
 
 			return services;
