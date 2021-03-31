@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Auction.Application.Authorization;
+using Auction.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -17,8 +19,7 @@ namespace Auction.WebApi.Authorization {
 		private readonly IHttpContextAccessor httpContextAccessor;
 
 		public AdminOrIdOwnerAuthorizationRequirementHandler(IHttpContextAccessor httpContextAccessor)
-			=> this.httpContextAccessor =
-				httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+			=> this.httpContextAccessor = httpContextAccessor;
 
 		/// <inheritdoc />
 		protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
@@ -26,6 +27,10 @@ namespace Auction.WebApi.Authorization {
 
 			//TODO try use AuthorizationHandler<TRequirement, TResource>
 			//TODO deal with async
+			if (context.User.IsInRole(Role.Admin)) {
+				context.Succeed(requirement);
+				return;
+			}
 			
 			var userId = context.User.FindFirstValue(JwtOpenIdProperty.Sub);
 			if(userId != null) {
@@ -33,6 +38,7 @@ namespace Auction.WebApi.Authorization {
 
 				if(routeData.Values["id"] is string id && id == userId) {
 					context.Succeed(requirement);
+					return;
 				}
 			}
 
