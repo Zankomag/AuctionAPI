@@ -4,6 +4,7 @@ using System.Text;
 using Auction.WebApi.Authorization.Abstractions;
 using Auction.WebApi.Authorization.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -42,6 +43,8 @@ namespace Auction.WebApi.Authorization {
 
 			services.AddAuthorization(x => x.AddPolicy(AuthorizationPolicyName.AdminOrIdOwner,
 				policy => policy.Requirements.Add(new AdminOrIdOwnerAuthorizationRequirement())));
+
+			services.AddScoped<IAuthorizationHandler, AdminOrIdOwnerAuthorizationRequirementHandler>();
 
 			return services;
 		}
