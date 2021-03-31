@@ -5,8 +5,10 @@ using Auction.WebApi.Authorization.Abstractions;
 using Auction.WebApi.Authorization.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Auction.WebApi.Authorization {
@@ -45,6 +47,7 @@ namespace Auction.WebApi.Authorization {
 				policy => policy.Requirements.Add(new AdminOrIdOwnerAuthorizationRequirement())));
 
 			services.AddScoped<IAuthorizationHandler, AdminOrIdOwnerAuthorizationRequirementHandler>();
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 			return services;
 		}
