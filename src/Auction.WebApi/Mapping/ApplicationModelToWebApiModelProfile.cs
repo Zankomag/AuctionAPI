@@ -1,8 +1,8 @@
-﻿using AuctionAPI.Application.Models;
-using AuctionAPI.Web.Authentication;
+﻿using Auction.Application.Models;
+using Auction.WebApi.Authentication;
 using AutoMapper;
 
-namespace AuctionAPI.Web.Mapping {
+namespace Auction.WebApi.Mapping {
 
 	public class ApplicationModelToWebApiModelProfile : Profile {
 		public ApplicationModelToWebApiModelProfile() => CreateMap<UserModel, UserIdentity>();

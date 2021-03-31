@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AuctionAPI.Core.Entities;
-using AuctionAPI.Core.Repositories.Generic;
+using Auction.Core.Entities;
+using Auction.Core.Repositories.Generic;
 
-namespace AuctionAPI.Core.Repositories {
+namespace Auction.Core.Repositories {
 
 	public interface IAuctionItemCategoryRepository : ICrudRepository<AuctionItemCategory, int> {
 

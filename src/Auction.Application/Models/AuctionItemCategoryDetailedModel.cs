@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using AuctionAPI.Core.Entities;
 
-namespace AuctionAPI.Application.Models {
+namespace Auction.Application.Models {
 
 	public class AuctionItemCategoryDetailedModel : AuctionItemCategoryInputModel {
 		

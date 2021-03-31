@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AuctionAPI.Application.Models {
+namespace Auction.Application.Models {
 
 	public class AuthenticationModel {
 		[Required]

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace AuctionAPI.Web.Swagger {
+namespace Auction.WebApi.Swagger {
 
 	public static class SwaggerExtensions {
 		public static IServiceCollection AddSwagger(this IServiceCollection services) {

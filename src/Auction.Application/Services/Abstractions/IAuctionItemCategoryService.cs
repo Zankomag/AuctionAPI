@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AuctionAPI.Application.Models;
-using AuctionAPI.Application.Services.Abstractions.Generic;
+using Auction.Application.Models;
+using Auction.Application.Services.Abstractions.Generic;
 
-namespace AuctionAPI.Application.Services.Abstractions {
+namespace Auction.Application.Services.Abstractions {
 
 	public interface IAuctionItemCategoryService : ICrudService<AuctionItemCategoryDetailedModel,
 		AuctionItemCategoryInputModel, int> {

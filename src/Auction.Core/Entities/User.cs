@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AuctionAPI.Core.Entities {
+namespace Auction.Core.Entities {
 
 	public class User : Entity<int> {
 		[Required]

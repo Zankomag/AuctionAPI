@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AuctionAPI.Core.Entities {
+namespace Auction.Core.Entities {
 
 	public class Entity<TKey> {
 		[Key] public TKey Id { get; set; }

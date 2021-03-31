@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AuctionAPI.Core.Entities;
+using Auction.Core.Entities;
 
-namespace AuctionAPI.Core.Repositories.Generic {
+namespace Auction.Core.Repositories.Generic {
 
 	public interface ICrudRepository<TEntity, in TKey> : IRepository<TEntity, TKey> where TEntity : Entity<TKey> {
 		/// <returns>All records without Entity Framework tracking</returns>

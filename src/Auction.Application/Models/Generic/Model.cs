@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace AuctionAPI.Application.Models.Generic {
+namespace Auction.Application.Models.Generic {
 
 	public class Model<TKey> {
 		[JsonIgnore]

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AuctionAPI.Core.Entities;
+using Auction.Core.Entities;
 
-namespace AuctionAPI.Core.Repositories {
+namespace Auction.Core.Repositories {
 
 	public interface IUserRepository {
 		Task<IEnumerable<User>> GetAllAsync();

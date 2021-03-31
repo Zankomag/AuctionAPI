@@ -1,6 +1,6 @@
-﻿using AuctionAPI.Core.Entities;
+﻿using Auction.Core.Entities;
 
-namespace AuctionAPI.Core.Repositories.Generic {
+namespace Auction.Core.Repositories.Generic {
 
 	public interface IRepository<TEntity, in TKey> where TEntity : Entity<TKey> { }
 

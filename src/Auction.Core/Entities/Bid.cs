@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AuctionAPI.Core.Entities {
+namespace Auction.Core.Entities {
 
 	public class Bid : Entity<int> {
 		public int BidderId { get; set; }

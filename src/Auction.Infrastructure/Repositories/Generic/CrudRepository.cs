@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AuctionAPI.Core.Entities;
-using AuctionAPI.Core.Repositories.Generic;
+using Auction.Core.Entities;
+using Auction.Core.Repositories.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuctionAPI.Infrastructure.Repositories.Generic {
+namespace Auction.Infrastructure.Repositories.Generic {
 
 	public abstract class CrudRepository<TEntity, TKey> : Repository<TEntity, TKey>, ICrudRepository<TEntity, TKey>
 		where TEntity : Entity<TKey>, new() {

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AuctionAPI.Application.Authorization;
-using AuctionAPI.Application.Models;
-using AuctionAPI.Application.Services.Abstractions;
-using AuctionAPI.Web.Authentication;
+using Auction.Application.Authorization;
+using Auction.Application.Models;
+using Auction.Application.Services.Abstractions;
+using Auction.WebApi.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AuctionAPI.Web.Controllers {
+namespace Auction.WebApi.Controllers {
 
 	[Authorize]
 	[ApiController]

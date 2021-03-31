@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AuctionAPI.Core.Entities {
+namespace Auction.Core.Entities {
 
 	public class AuctionItem : Entity<int> {
 		public int SellerId { get; set; }

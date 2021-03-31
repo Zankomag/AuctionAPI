@@ -1,15 +1,15 @@
-﻿using AuctionAPI.Application.Mapping;
-using AuctionAPI.Application.Services;
-using AuctionAPI.Application.Services.Abstractions;
-using AuctionAPI.Core.Repositories;
-using AuctionAPI.Infrastructure.Data;
-using AuctionAPI.Infrastructure.Repositories;
+﻿using Auction.Application.Mapping;
+using Auction.Application.Services;
+using Auction.Application.Services.Abstractions;
+using Auction.Core.Repositories;
+using Auction.Infrastructure.Data;
+using Auction.Infrastructure.Repositories;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AuctionAPI.Infrastructure {
+namespace Auction.Infrastructure {
 
 	public static class DependencyInjection {
 		public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config,

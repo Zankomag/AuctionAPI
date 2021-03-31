@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using AuctionAPI.Application.Models;
-using AuctionAPI.Web.Authentication;
-using AuctionAPI.Web.Authentication.Abstractions;
+using Auction.Application.Models;
+using Auction.WebApi.Authentication;
+using Auction.WebApi.Authentication.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AuctionAPI.Web.Controllers {
+namespace Auction.WebApi.Controllers {
 
 	[ApiController]
 	[Route("api/token")]

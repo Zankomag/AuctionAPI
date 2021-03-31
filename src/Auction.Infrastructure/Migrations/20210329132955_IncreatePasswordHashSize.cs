@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace AuctionAPI.Infrastructure.Migrations
+namespace Auction.Infrastructure.Migrations
 {
     public partial class IncreatePasswordHashSize : Migration
     {

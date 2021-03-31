@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using AuctionAPI.Core.Repositories;
-using AuctionAPI.Infrastructure.Data;
+using Auction.Core.Repositories;
+using Auction.Infrastructure.Data;
 
-namespace AuctionAPI.Infrastructure.Repositories {
+namespace Auction.Infrastructure.Repositories {
 
 	public class UnitOfWork : IUnitOfWork {
 		protected AuctionDbContext Context;

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace AuctionAPI.Core.Repositories {
+namespace Auction.Core.Repositories {
 
 	public interface IUnitOfWork {
 

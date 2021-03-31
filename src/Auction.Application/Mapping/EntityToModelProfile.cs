@@ -1,8 +1,8 @@
-﻿using AuctionAPI.Application.Models;
-using AuctionAPI.Core.Entities;
+﻿using Auction.Application.Models;
+using Auction.Core.Entities;
 using AutoMapper;
 
-namespace AuctionAPI.Application.Mapping {
+namespace Auction.Application.Mapping {
 
 	public class EntityToModelProfile : Profile {
 		public EntityToModelProfile() {

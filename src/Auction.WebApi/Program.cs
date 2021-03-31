@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace AuctionAPI.Web {
+namespace Auction.WebApi {
 
 	public static class Program {
 		public static void Main(string[] args) {

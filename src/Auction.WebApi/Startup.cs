@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using AuctionAPI.Infrastructure;
-using AuctionAPI.Web.Authentication;
-using AuctionAPI.Web.Mapping;
-using AuctionAPI.Web.Swagger;
+using Auction.Infrastructure;
+using Auction.WebApi.Authentication;
+using Auction.WebApi.Mapping;
+using Auction.WebApi.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog;
 
-namespace AuctionAPI.Web {
+namespace Auction.WebApi {
 
 	public class Startup {
 

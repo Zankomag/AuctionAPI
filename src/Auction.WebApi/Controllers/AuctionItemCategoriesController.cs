@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AuctionAPI.Application.Models;
-using AuctionAPI.Application.Services.Abstractions;
+using Auction.Application.Models;
+using Auction.Application.Services.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AuctionAPI.Web.Controllers {
+namespace Auction.WebApi.Controllers {
 
 	[ApiController]
 	[Route("api/[controller]")]

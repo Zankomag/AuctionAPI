@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AuctionAPI.Application.Models.Generic;
+using Auction.Application.Models.Generic;
 
-namespace AuctionAPI.Application.Services.Abstractions.Generic {
+namespace Auction.Application.Services.Abstractions.Generic {
 
 	public interface ICrudService<TModel, TInputModel, in TKey>
 		where TModel : TInputModel 

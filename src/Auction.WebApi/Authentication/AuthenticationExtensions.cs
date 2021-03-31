@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using AuctionAPI.Web.Authentication.Abstractions;
+using Auction.WebApi.Authentication.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.Configuration;
 
-namespace AuctionAPI.Web.Authentication {
+namespace Auction.WebApi.Authentication {
 
 	public static class AuthenticationExtensions {
 

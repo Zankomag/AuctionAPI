@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using AuctionAPI.Core.Entities;
+using Auction.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable ArrangeMethodOrOperatorBody
 
-namespace AuctionAPI.Infrastructure.Data {
+namespace Auction.Infrastructure.Data {
 
 	public class AuctionDbContext : DbContext {
 

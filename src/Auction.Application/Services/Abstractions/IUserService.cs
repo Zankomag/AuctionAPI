@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AuctionAPI.Application.Models;
+using Auction.Application.Models;
 
-namespace AuctionAPI.Application.Services.Abstractions {
+namespace Auction.Application.Services.Abstractions {
 
 	public interface IUserService {
 		Task<IEnumerable<UserModel>> GetAllAsync();

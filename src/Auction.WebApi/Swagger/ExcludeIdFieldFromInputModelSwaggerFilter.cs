@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace AuctionAPI.Web.Swagger {
+namespace Auction.WebApi.Swagger {
 	
 	public class ExcludeIdFieldFromInputModelSwaggerFilter : ISchemaFilter {
 

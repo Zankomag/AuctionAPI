@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
-using static AuctionAPI.Application.Extensions.StringExtensions.PasswordHashingConstants;
+using static Auction.Application.Extensions.StringExtensions.PasswordHashingConstants;
 
-namespace AuctionAPI.Application.Extensions {
+namespace Auction.Application.Extensions {
 
 	internal static class StringExtensions {
 

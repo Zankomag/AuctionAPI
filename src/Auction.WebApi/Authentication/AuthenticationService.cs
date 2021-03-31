@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AuctionAPI.Application.Services.Abstractions;
-using AuctionAPI.Web.Authentication.Abstractions;
+using Auction.Application.Services.Abstractions;
+using Auction.WebApi.Authentication.Abstractions;
 using AutoMapper;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AuctionAPI.Web.Authentication {
+namespace Auction.WebApi.Authentication {
 
 	public class AuthenticationService : IAuthenticationService {
 		private readonly IUserService userService;

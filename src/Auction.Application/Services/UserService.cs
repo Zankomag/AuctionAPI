@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using AuctionAPI.Application.Authorization;
-using AuctionAPI.Application.Extensions;
-using AuctionAPI.Application.Models;
-using AuctionAPI.Application.Services.Abstractions;
-using AuctionAPI.Core.Entities;
-using AuctionAPI.Core.Repositories;
+using Auction.Application.Authorization;
+using Auction.Application.Extensions;
+using Auction.Application.Models;
+using Auction.Application.Services.Abstractions;
+using Auction.Core.Entities;
+using Auction.Core.Repositories;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using static AuctionAPI.Application.Utils.LoggingMessages;
+using static Auction.Application.Utils.LoggingMessages;
 using ValidationContext = System.ComponentModel.DataAnnotations.ValidationContext;
 
-namespace AuctionAPI.Application.Services {
+namespace Auction.Application.Services {
 
 	public class UserService : IUserService {
 

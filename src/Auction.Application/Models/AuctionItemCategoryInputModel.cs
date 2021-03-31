@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using AuctionAPI.Application.Models.Generic;
+using Auction.Application.Models.Generic;
 
-namespace AuctionAPI.Application.Models {
+namespace Auction.Application.Models {
 
 	public class AuctionItemCategoryInputModel : Model<int> {
 		[Required(AllowEmptyStrings = false)]
