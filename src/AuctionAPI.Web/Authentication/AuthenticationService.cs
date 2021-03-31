@@ -8,7 +8,6 @@ using AuctionAPI.Web.Authentication.Abstractions;
 using AutoMapper;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace AuctionAPI.Web.Authentication {
 
@@ -32,7 +31,7 @@ namespace AuctionAPI.Web.Authentication {
 			var user = mapper.Map<UserIdentity>(userModel);
 
 			var expiration = DateTime.Now.AddDays(1);
-			
+
 			var claims = new List<Claim> {
 				new("role", user.Role),
 				new("sub", user.Id.ToString())
@@ -43,8 +42,8 @@ namespace AuctionAPI.Web.Authentication {
 			var token = new JwtSecurityToken(expires: expiration,
 				claims: claims,
 				signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256));
-			
-			return new TokenModel() {
+
+			return new TokenModel {
 				Expiration = expiration,
 				Token = new JwtSecurityTokenHandler().WriteToken(token)
 			};
