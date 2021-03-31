@@ -32,7 +32,7 @@ namespace AuctionAPI.Web.Controllers {
 			//TODO move to method block of custom authorization
 			// User can get only theirs own account, Admin can get any
 			if(User.IsInRole(Role.Admin)
-				|| (Int32.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId) && id == userId)) {
+				|| (Int32.TryParse(User.FindFirstValue("sub"), out int userId) && id == userId)) {
 				
 				var result = await userService.GetByIdAsync(id);
 				if(result == null)

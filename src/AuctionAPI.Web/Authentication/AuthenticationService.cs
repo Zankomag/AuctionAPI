@@ -34,8 +34,8 @@ namespace AuctionAPI.Web.Authentication {
 			var expiration = DateTime.Now.AddDays(1);
 			
 			var claims = new List<Claim> {
-				new(ClaimTypes.Role, user.Role),
-				new(ClaimTypes.NameIdentifier, user.Id.ToString())
+				new("role", user.Role),
+				new("sub", user.Id.ToString())
 			};
 
 			var signingKey = new SymmetricSecurityKey(jwtSettings.SecretBytes);
