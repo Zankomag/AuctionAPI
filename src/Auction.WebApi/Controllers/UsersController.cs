@@ -87,6 +87,8 @@ namespace Auction.WebApi.Controllers {
 				return BadRequest();
 			return Ok();
 		}
+		
+		//TODO add password changing
 	}
 
 }
