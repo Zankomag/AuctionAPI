@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AuctionAPI.Application\AuctionAPI.Application.csproj" />
-    <ProjectReference Include="..\AuctionAPI.Core\AuctionAPI.Core.csproj" />
-    <ProjectReference Include="..\AuctionAPI.Infrastructure\AuctionAPI.Infrastructure.csproj" />
+    <ProjectReference Include="..\Auction.Application\Auction.Application.csproj" />
+    <ProjectReference Include="..\Auction.Core\Auction.Core.csproj" />
+    <ProjectReference Include="..\Auction.Infrastructure\Auction.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

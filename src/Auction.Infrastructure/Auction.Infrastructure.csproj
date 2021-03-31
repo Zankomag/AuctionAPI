@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AuctionAPI.Application\AuctionAPI.Application.csproj" />
-    <ProjectReference Include="..\AuctionAPI.Core\AuctionAPI.Core.csproj" />
+    <ProjectReference Include="..\Auction.Application\Auction.Application.csproj" />
+    <ProjectReference Include="..\Auction.Core\Auction.Core.csproj" />
   </ItemGroup>
 
 </Project>
