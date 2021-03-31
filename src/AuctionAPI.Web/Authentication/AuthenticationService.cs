@@ -35,6 +35,8 @@ namespace AuctionAPI.Web.Authentication {
 			
 			var claims = new List<Claim> {
 				new(ClaimTypes.Role, user.Role),
+				//Name is used because it nicely automanically maps to User.Identity.Name
+				//TODO use 'sub' instead
 				new(ClaimTypes.Name, user.Id.ToString())
 			};
 
