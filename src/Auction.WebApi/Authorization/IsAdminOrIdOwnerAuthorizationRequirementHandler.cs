@@ -13,17 +13,17 @@ namespace Auction.WebApi.Authorization {
 	/// <summary>
 	///     Policy requirement that authorizes only Admins or Users that do own 'id' parameter of request (self Id owners)
 	/// </summary>
-	public class AdminOrIdOwnerAuthorizationRequirementHandler
-		: AuthorizationHandler<AdminOrIdOwnerAuthorizationRequirement> {
+	public class IsAdminOrIdOwnerAuthorizationRequirementHandler
+		: AuthorizationHandler<IsAdminOrIdOwnerAuthorizationRequirement> {
 
 		private readonly IHttpContextAccessor httpContextAccessor;
 
-		public AdminOrIdOwnerAuthorizationRequirementHandler(IHttpContextAccessor httpContextAccessor)
+		public IsAdminOrIdOwnerAuthorizationRequirementHandler(IHttpContextAccessor httpContextAccessor)
 			=> this.httpContextAccessor = httpContextAccessor;
 
 		/// <inheritdoc />
 		protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-			AdminOrIdOwnerAuthorizationRequirement requirement) {
+			IsAdminOrIdOwnerAuthorizationRequirement requirement) {
 			
 			//TODO try use AuthorizationHandler<TRequirement, TResource>
 			if(context.User.IsInRole(Role.Admin)) {

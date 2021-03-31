@@ -43,10 +43,10 @@ namespace Auction.WebApi.Authorization {
 						RoleClaimType = JwtOpenIdProperty.Role
 					});
 
-			services.AddAuthorization(x => x.AddPolicy(AuthorizationPolicyName.AdminOrIdOwner,
-				policy => policy.Requirements.Add(new AdminOrIdOwnerAuthorizationRequirement())));
+			services.AddAuthorization(x => x.AddPolicy(AuthorizationPolicyName.IsAdminOrIdOwner,
+				policy => policy.Requirements.Add(new IsAdminOrIdOwnerAuthorizationRequirement())));
 
-			services.AddScoped<IAuthorizationHandler, AdminOrIdOwnerAuthorizationRequirementHandler>();
+			services.AddScoped<IAuthorizationHandler, IsAdminOrIdOwnerAuthorizationRequirementHandler>();
 			services.AddHttpContextAccessor();
 
 			return services;
