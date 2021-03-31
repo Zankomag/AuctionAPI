@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AuctionAPI.Application.Authorization;
 using AuctionAPI.Application.Models;
@@ -31,9 +32,8 @@ namespace AuctionAPI.Web.Controllers {
 			//TODO move to method block of custom authorization
 			// User can get only theirs own account, Admin can get any
 			if(User.IsInRole(Role.Admin)
-				|| (Int32.TryParse(User.Identity.Name!, out int userId) && id == userId)) {
-
-
+				|| (Int32.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId) && id == userId)) {
+				
 				var result = await userService.GetByIdAsync(id);
 				if(result == null)
 					return NotFound();
@@ -43,10 +43,9 @@ namespace AuctionAPI.Web.Controllers {
 		}
 
 		// GET api/Users/amanda@gmail.com
+		[Authorize(Roles = Role.Admin)]
 		[HttpGet("{email}")]
 		public async Task<ActionResult<UserModel>> GetByEmail(string email) {
-			//TODO add same authorization as in GetById()
-			throw new NotImplementedException();
 			if(email == null)
 				return BadRequest();
 			var result = await userService.GetByEmailAsync(email);
