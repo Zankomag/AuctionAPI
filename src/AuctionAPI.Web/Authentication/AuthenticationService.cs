@@ -8,6 +8,7 @@ using AuctionAPI.Web.Authentication.Abstractions;
 using AutoMapper;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace AuctionAPI.Web.Authentication {
 
@@ -34,7 +35,7 @@ namespace AuctionAPI.Web.Authentication {
 			
 			var claims = new List<Claim> {
 				new(ClaimTypes.Role, user.Role),
-				new(ClaimTypes.NameIdentifier, user.Id.ToString())
+				new(ClaimTypes.Name, user.Id.ToString())
 			};
 
 			var signingKey = new SymmetricSecurityKey(jwtSettings.SecretBytes);
