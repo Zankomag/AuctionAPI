@@ -12,12 +12,13 @@ namespace Auction.WebApi.Authorization {
 
 	public static class AuthorizationExtensions {
 
-		public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration) {
+		public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services,
+			IConfiguration configuration) {
 			services.AddScoped<IAuthenticationService, AuthenticationService>();
 			var jwtSettingsConfigSection = configuration.GetSection(nameof(JwtSettings));
 			services.Configure<JwtSettings>(jwtSettingsConfigSection);
-			
-			
+
+
 			//This disables mapping normal claim names to urls microsoft uses
 			JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 			services.AddAuthentication(options => {
@@ -41,10 +42,9 @@ namespace Auction.WebApi.Authorization {
 
 			services.AddAuthorization(x => x.AddPolicy(AuthorizationPolicyName.AdminOrIdOwner,
 				policy => policy.Requirements.Add(new AdminOrIdOwnerAuthorizationRequirement())));
-			
+
 			return services;
 		}
-
 	}
 
 }
