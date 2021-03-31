@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Auction.Application.Authorization;
 using Auction.Application.Models;
 using Auction.Application.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auction.WebApi.Controllers {
 
+	[Authorize]
 	[ApiController]
 	[Route("api/[controller]")]
 	[Produces("application/json")]
@@ -49,6 +52,7 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// POST api/AuctionItemCategories
+		[Authorize(Roles = Role.Admin)]
 		[HttpPost]
 		public async Task<ActionResult<AuctionItemCategoryInputModel>> Add(
 			[FromBody] AuctionItemCategoryInputModel model) {
@@ -60,6 +64,7 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// PUT api/AuctionItemCategory/5
+		[Authorize(Roles = Role.Admin)]
 		[HttpPut("{id}")]
 		public async Task<ActionResult<AuctionItemCategoryInputModel>> Update(int id,
 			[FromBody] AuctionItemCategoryInputModel model) {
@@ -72,6 +77,7 @@ namespace Auction.WebApi.Controllers {
 
 		// DELETE api/AuctionItemCategories/5
 		[HttpDelete("{id}")]
+		[Authorize(Roles = Role.Admin)]
 		public async Task<IActionResult> Delete(int id) {
 			bool result = await auctionItemCategoryService.DeleteByIdAsync(id);
 			if(!result)
