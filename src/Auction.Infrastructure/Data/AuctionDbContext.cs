@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Auction.Infrastructure.Data {
 
-	public class AuctionDbContext : DbContext {
+	public sealed class AuctionDbContext : DbContext {
 
 		public DbSet<AuctionItem> AuctionItems { get; set; }
 		public DbSet<AuctionItemCategory> AuctionItemCategories { get; set; }
@@ -16,7 +16,8 @@ namespace Auction.Infrastructure.Data {
 		public DbSet<User> Users { get; set; }
 		public DbSet<Bid> Bids { get; set; }
 
-		public AuctionDbContext(DbContextOptions<AuctionDbContext> options) : base(options) { }
+		public AuctionDbContext(DbContextOptions<AuctionDbContext> options) : base(options) 
+			=> Database.Migrate();
 
 
 		/// <inheritdoc />
