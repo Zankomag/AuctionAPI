@@ -1,4 +1,5 @@
-﻿using Auction.Application.Mapping;
+﻿using System;
+using Auction.Application.Mapping;
 using Auction.Application.Services;
 using Auction.Application.Services.Abstractions;
 using Auction.Core.Repositories;
@@ -30,6 +31,11 @@ namespace Auction.Infrastructure {
 			services.AddSingleton(mapperConfig.CreateMapper());
 
 			return services;
+		}
+
+		public static void ConfigureInfrastructure(this IServiceProvider serviceProvider) {
+			var dbContext = serviceProvider.GetService<AuctionDbContext>();
+			dbContext?.Database.Migrate();
 		}
 	}
 

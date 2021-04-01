@@ -28,7 +28,7 @@ namespace Auction.WebApi {
 			services.AddInfrastructure(Configuration, new ApplicationModelToWebApiModelProfile());
 
 			services.AddAuthenticationAndAuthorization(Configuration);
-
+			
 			services.AddSwagger();
 
 			services.AddControllers()
@@ -47,14 +47,17 @@ namespace Auction.WebApi {
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AuctionDbContext dbContext) {
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
 			if(env.IsDevelopment()) {
 				app.UseDeveloperExceptionPage();
 				app.UseSwagger();
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuctionAPI v1"));
-				dbContext.Database.Migrate();
 			}
 
+			//Using just app.ApplicationServices as IServiceProvider doesn't work
+			app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
+				.CreateScope().ServiceProvider.ConfigureInfrastructure();
+			
 			app.UseHttpsRedirection();
 			app.UseHsts();
 
