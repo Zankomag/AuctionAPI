@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Auction.Infrastructure {
 
-	public static class DependencyInjection {
+	public static class Extensions {
 		public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config,
 			Profile webApiMappingProfile) {
 			string connection = config.GetConnectionString("AuctionDb");
