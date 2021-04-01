@@ -13,6 +13,7 @@ namespace Auction.Infrastructure.Data {
 		public DbSet<AuctionItem> AuctionItems { get; set; }
 		public DbSet<AuctionItemCategory> AuctionItemCategories { get; set; }
 		public DbSet<AuctionItemStatusCode> AuctionItemStatusCodes { get; set; }
+		public DbSet<AuctionItemImage> AuctionItemImages { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Bid> Bids { get; set; }
 
