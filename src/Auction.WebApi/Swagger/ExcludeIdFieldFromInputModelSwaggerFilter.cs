@@ -4,6 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Auction.WebApi.Swagger {
 	
+	//TODO do this via attributes on model classes
 	public class ExcludeIdFieldFromInputModelSwaggerFilter : ISchemaFilter {
 
 		/// <inheritdoc />
