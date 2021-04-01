@@ -17,8 +17,7 @@ namespace Auction.Infrastructure.Data {
 		public DbSet<User> Users { get; set; }
 		public DbSet<Bid> Bids { get; set; }
 
-		public AuctionDbContext(DbContextOptions<AuctionDbContext> options) : base(options) 
-			=> Database.Migrate();
+		public AuctionDbContext(DbContextOptions<AuctionDbContext> options) : base(options) { }
 
 
 		/// <inheritdoc />
