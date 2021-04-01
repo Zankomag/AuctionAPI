@@ -21,6 +21,7 @@ namespace Auction.Core.Entities {
 		public int? WinningBidId { get; set; }
 		
 		
+		public ICollection<AuctionItemImage> Images { get; set; }
 		public Bid WinningBid { get; set; }
 		public ICollection<Bid> Bids { get; set; }
 		public User Seller { get; set; }
