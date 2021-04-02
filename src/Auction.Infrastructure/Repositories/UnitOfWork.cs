@@ -8,6 +8,7 @@ namespace Auction.Infrastructure.Repositories {
 		protected AuctionDbContext Context;
 		private IAuctionItemCategoryRepository auctionItemCategoryRepository;
 		private IUserRepository userRepository;
+		private IAuctionItemRepository auctionItemRepository;
 
 		public UnitOfWork(AuctionDbContext context) => Context = context;
 
@@ -15,6 +16,9 @@ namespace Auction.Infrastructure.Repositories {
 		public IUserRepository UserRepository
 			=> userRepository ??= new UserRepository(Context);
 
+		public IAuctionItemRepository AuctionItemRepository
+			=> auctionItemRepository ??= new AuctionItemRepository(Context);
+		
 		/// <inheritdoc />
 		public IAuctionItemCategoryRepository AuctionItemCategoryRepository
 			=> auctionItemCategoryRepository ??= new AuctionItemCategoryRepository(Context);

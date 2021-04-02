@@ -5,8 +5,9 @@ namespace Auction.Core.Repositories {
 	public interface IUnitOfWork {
 
 		IUserRepository UserRepository { get; }
-
+		IAuctionItemRepository AuctionItemRepository { get; }
 		IAuctionItemCategoryRepository AuctionItemCategoryRepository { get; }
+		
 
 		Task<int> SaveAsync();
 	}
