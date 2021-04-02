@@ -14,10 +14,12 @@ namespace Auction.Application.Mapping {
 			CreateMap<User, UserDetailedModel>();
 
 			CreateMap<BidInputModel, Bid>();
-			CreateMap<Bid, BidModel>();
+			CreateMap<Bid, BidModel>()
+				.PreserveReferences();
 
 			CreateMap<AuctionItemInputModel, AuctionItem>();
-			CreateMap<AuctionItem, AuctionItemModel>();
+			CreateMap<AuctionItem, AuctionItemModel>()
+				.PreserveReferences();
 		}
 	}
 
