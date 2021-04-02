@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
@@ -14,9 +13,10 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 		//Inheritdoc does not inherit from interface
 		/// <summary>
-		/// Requirement category
+		///     Requirement category
 		/// </summary>
 		public abstract class Category { }
+
 
 		/// <summary>
 		///     Requirement handler
@@ -32,7 +32,6 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 			protected HandlerBase(IHttpContextAccessor httpContextAccessor)
 				=> HttpContextAccessor = httpContextAccessor;
-			
 		}
 	}
 
