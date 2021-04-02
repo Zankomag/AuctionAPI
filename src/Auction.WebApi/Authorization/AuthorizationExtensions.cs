@@ -16,6 +16,15 @@ namespace Auction.WebApi.Authorization {
 
 		public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services,
 			IConfiguration configuration) {
+
+			services.AddAuthentication(configuration);
+			services.AddAuthorization();
+			return services;
+		}
+
+		private static void AddAuthentication(this IServiceCollection services,
+			IConfiguration configuration) {
+			
 			services.AddScoped<IAuthenticationService, AuthenticationService>();
 			var jwtSettingsConfigSection = configuration.GetSection(nameof(JwtSettings));
 			services.Configure<JwtSettings>(jwtSettingsConfigSection);
@@ -41,7 +50,9 @@ namespace Auction.WebApi.Authorization {
 						NameClaimType = JwtOpenIdProperty.Username,
 						RoleClaimType = JwtOpenIdProperty.Role
 					});
+		}
 
+		public static void AddAuthorization(this IServiceCollection services) {
 			services.AddAuthorization(x => {
 				x.AddPolicy(Requirement.IsAdminOrOwnerOf.User.Policy,
 					policy => policy.Requirements.Add(new Requirement.IsAdminOrOwnerOf.User()));
@@ -52,9 +63,8 @@ namespace Auction.WebApi.Authorization {
 			//These services are scoped because they use cached RouteData and JWT values at each request
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.User.Handler>();
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.AuctionItem.Handler>();
-			services.AddHttpContextAccessor();
 
-			return services;
+			services.AddHttpContextAccessor();
 		}
 	}
 
