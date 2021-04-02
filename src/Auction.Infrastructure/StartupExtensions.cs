@@ -21,6 +21,7 @@ namespace Auction.Infrastructure {
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 			services.AddScoped<IAuctionItemCategoryService, AuctionItemCategoryService>();
+			services.AddScoped<IAuctionItemService, AuctionItemService>();
 			services.AddScoped<IUserService, UserService>();
 
 			MapperConfiguration mapperConfig = new MapperConfiguration(x => {
