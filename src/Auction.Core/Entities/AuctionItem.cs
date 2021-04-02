@@ -8,8 +8,11 @@ namespace Auction.Core.Entities {
 	public class AuctionItem : Entity<int> {
 		public int SellerId { get; set; }
 		public AuctionItemStatusCodeId AuctionItemStatusCodeId { get; set; }
-		public int AuctionItemCategoryId { get; set; }
+		public int? AuctionItemCategoryId { get; set; }
 		
+		[Required]
+		[StringLength(256)]
+		public string Name { get; set; }
 		[StringLength(1024)]
 		public string Description { get; set; }
 		public DateTime StartDate { get; set; }
