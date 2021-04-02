@@ -27,6 +27,12 @@ namespace Auction.Infrastructure.Repositories {
 				.Include(x => x.Bids)
 				.Include(x => x.Seller)
 				.Include(x => x.AuctionItemCategory);
+
+		/// <inheritdoc />
+		public override Task<bool> DeleteByIdAsync(int id) {
+			DbSet.Remove(new AuctionItem() {Id = id});
+			return Task.FromResult(true);
+		}
 	}
 
 }

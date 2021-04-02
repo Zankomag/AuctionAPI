@@ -15,6 +15,7 @@ using static Auction.Application.Utils.LoggingMessages;
 using ValidationContext = System.ComponentModel.DataAnnotations.ValidationContext;
 
 namespace Auction.Application.Services {
+
 	public class AuctionItemService : IAuctionItemService {
 
 		private readonly IUnitOfWork workUnit;
@@ -27,7 +28,7 @@ namespace Auction.Application.Services {
 			this.mapper = mapper;
 			this.logger = logger;
 		}
-		
+
 		/// <inheritdoc />
 		public async Task<IEnumerable<AuctionItemModel>> GetAllAsync() {
 			try {
@@ -125,8 +126,13 @@ namespace Auction.Application.Services {
 		/// <inheritdoc />
 		public async Task<bool> DeleteByIdAsync(int id) {
 			try {
-				if(!await workUnit.AuctionItemRepository.DeleteByIdAsync(id))
+				//We can delete only not started auctions
+				if(!await workUnit.AuctionItemRepository.GetAll().AnyAsync(x => x.Id == id
+					&& x.AuctionItemStatusCodeId == AuctionItemStatusCodeId.Scheduled)) {
+					
 					return false;
+				}
+				await workUnit.AuctionItemRepository.DeleteByIdAsync(id);
 				await workUnit.SaveAsync();
 				return true;
 			} catch(Exception ex) {
@@ -135,4 +141,5 @@ namespace Auction.Application.Services {
 			}
 		}
 	}
+
 }
