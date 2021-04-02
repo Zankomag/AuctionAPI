@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Auction.WebApi.Swagger {
 
+	//TODO add Trimming Model and InputModel words (https://stackoverflow.com/questions/31999967/swashbuckle-rename-data-type-in-model)
 	public static class SwaggerExtensions {
 		public static IServiceCollection AddSwagger(this IServiceCollection services) {
 			services.AddSwaggerGen(c => {
