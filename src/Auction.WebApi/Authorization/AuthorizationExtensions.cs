@@ -42,9 +42,9 @@ namespace Auction.WebApi.Authorization {
 					});
 
 			services.AddAuthorization(x => x.AddPolicy(AuthorizationPolicyName.IsAdminOrIdOwner,
-				policy => policy.Requirements.Add(new IsAdminOrIdOwnerAuthorizationRequirement())));
+				policy => policy.Requirements.Add(new IsAdminOrUserOwnerAuthorizationRequirement())));
 
-			services.AddScoped<IAuthorizationHandler, IsAdminOrIdOwnerAuthorizationRequirementHandler>();
+			services.AddScoped<IAuthorizationHandler, IsAdminOrUserOwnerAuthorizationRequirementHandler>();
 			services.AddHttpContextAccessor();
 
 			return services;
