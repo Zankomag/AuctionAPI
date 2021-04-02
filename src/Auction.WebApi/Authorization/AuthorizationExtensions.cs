@@ -49,8 +49,9 @@ namespace Auction.WebApi.Authorization {
 					policy => policy.Requirements.Add(new Requirement.IsAdminOrOwnerOf.AuctionItem()));
 			});
 
-			services.AddSingleton<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.User.Handler>();
-			services.AddSingleton<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.AuctionItem.Handler>();
+			//These services are scoped because they use cached RouteData and JWT values at each request
+			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.User.Handler>();
+			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.AuctionItem.Handler>();
 			services.AddHttpContextAccessor();
 
 			return services;
