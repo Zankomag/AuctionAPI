@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Auction.WebApi.Authorization.Abstractions;
+using Auction.WebApi.Authorization.Requirements;
 using Auction.WebApi.Authorization.Types;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -41,10 +42,10 @@ namespace Auction.WebApi.Authorization {
 						RoleClaimType = JwtOpenIdProperty.Role
 					});
 
-			services.AddAuthorization(x => x.AddPolicy(AuthorizationPolicyName.IsAdminOrIdOwner,
-				policy => policy.Requirements.Add(new IsAdminOrUserOwnerAuthorizationRequirement())));
+			services.AddAuthorization(x => x.AddPolicy(Requirement.IsAdminOrOwnerOf.User.Policy,
+				policy => policy.Requirements.Add(new Requirement.IsAdminOrOwnerOf.User())));
 
-			services.AddScoped<IAuthorizationHandler, IsAdminOrUserOwnerAuthorizationRequirementHandler>();
+			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.User.Handler>();
 			services.AddHttpContextAccessor();
 
 			return services;

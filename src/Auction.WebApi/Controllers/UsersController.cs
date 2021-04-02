@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Auction.Application.Authorization;
 using Auction.Application.Models;
 using Auction.Application.Services.Abstractions;
-using Auction.WebApi.Authorization;
+using Auction.WebApi.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +26,7 @@ namespace Auction.WebApi.Controllers {
 			=> await userService.GetAllAsync();
 
 		// GET api/Users/5
-		[Authorize(AuthorizationPolicyName.IsAdminOrIdOwner)]
+		[Authorize(Requirement.IsAdminOrOwnerOf.User.Policy)]
 		[HttpGet("{id:int}")]
 		public async Task<ActionResult<UserDetailedModel>> GetById(int id) {
 			var result = await userService.GetByIdAsync(id);
@@ -78,7 +78,7 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// DELETE api/Users/5
-		[Authorize(AuthorizationPolicyName.IsAdminOrIdOwner)]
+		[Authorize(Requirement.IsAdminOrOwnerOf.User.Policy)]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id) {
 			bool result = await userService.DeleteAsync(id);
