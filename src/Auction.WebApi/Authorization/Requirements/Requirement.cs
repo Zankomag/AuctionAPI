@@ -32,15 +32,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 			protected HandlerBase(IHttpContextAccessor httpContextAccessor)
 				=> HttpContextAccessor = httpContextAccessor;
-
-			/// <inheritdoc />
-			protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-				TRequirement requirement) {
-
-				//To make unimplemented handlers fail
-				context.Fail();
-				return Task.CompletedTask;
-			}
+			
 		}
 	}
 
