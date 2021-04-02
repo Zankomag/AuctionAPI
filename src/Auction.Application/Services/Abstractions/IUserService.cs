@@ -5,13 +5,13 @@ using Auction.Application.Models;
 namespace Auction.Application.Services.Abstractions {
 
 	public interface IUserService {
-		Task<IEnumerable<UserModel>> GetAllAsync();
+		Task<IEnumerable<UserDetailedModel>> GetAllAsync();
 
-		Task<UserModel> GetByIdAsync(int id);
+		Task<UserDetailedModel> GetByIdAsync(int id);
 
-		Task<UserModel> GetByEmailAsync(string email);
+		Task<UserDetailedModel> GetByEmailAsync(string email);
 
-		Task<UserModel> AddAsync(UserInputModel model);
+		Task<UserDetailedModel> AddAsync(UserInputModel model);
 		
 		/// <returns>True on success</returns>
 		Task<bool> UpdateRoleToAdminAsync(int userId);
@@ -23,7 +23,7 @@ namespace Auction.Application.Services.Abstractions {
 		Task<bool> DeleteAsync(int userId);
 		
 		/// <returns>User with Id and Role on success or null</returns>
-		Task<UserModel> GetAuthorizationInfoByEmailAndPasswordAsync(string email, string password);
+		Task<UserDetailedModel> GetAuthorizationInfoByEmailAndPasswordAsync(string email, string password);
 	}
 
 }

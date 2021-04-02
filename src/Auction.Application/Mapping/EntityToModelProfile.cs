@@ -10,7 +10,7 @@ namespace Auction.Application.Mapping {
 			CreateMap<AuctionItemCategory, AuctionItemCategoryDetailedModel>().ReverseMap();
 
 			CreateMap<User, UserInputModel>().ReverseMap();
-			CreateMap<User, UserModel>().ReverseMap();
+			CreateMap<User, UserDetailedModel>().ReverseMap();
 		}
 	}
 

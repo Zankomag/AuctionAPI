@@ -22,13 +22,13 @@ namespace Auction.WebApi.Controllers {
 		// GET api/Users
 		[Authorize(Roles = Role.Admin)]
 		[HttpGet]
-		public async Task<IEnumerable<UserModel>> GetAll()
+		public async Task<IEnumerable<UserDetailedModel>> GetAll()
 			=> await userService.GetAllAsync();
 
 		// GET api/Users/5
 		[Authorize(AuthorizationPolicyName.IsAdminOrIdOwner)]
 		[HttpGet("{id:int}")]
-		public async Task<ActionResult<UserModel>> GetById(int id) {
+		public async Task<ActionResult<UserDetailedModel>> GetById(int id) {
 			var result = await userService.GetByIdAsync(id);
 			if(result == null)
 				return NotFound();
@@ -38,7 +38,7 @@ namespace Auction.WebApi.Controllers {
 		// GET api/Users/amanda@gmail.com
 		[Authorize(Roles = Role.Admin)]
 		[HttpGet("{email}")]
-		public async Task<ActionResult<UserModel>> GetByEmail(string email) {
+		public async Task<ActionResult<UserDetailedModel>> GetByEmail(string email) {
 			if(email == null)
 				return BadRequest();
 			var result = await userService.GetByEmailAsync(email);
@@ -50,7 +50,7 @@ namespace Auction.WebApi.Controllers {
 		// POST api/Users
 		[AllowAnonymous]
 		[HttpPost]
-		public async Task<ActionResult<UserModel>> Add([FromBody] UserInputModel model) {
+		public async Task<ActionResult<UserDetailedModel>> Add([FromBody] UserInputModel model) {
 			var result = await userService.AddAsync(model);
 			if(result == null)
 				return BadRequest();

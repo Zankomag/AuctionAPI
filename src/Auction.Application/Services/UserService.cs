@@ -30,10 +30,10 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<IEnumerable<UserModel>> GetAllAsync() {
+		public async Task<IEnumerable<UserDetailedModel>> GetAllAsync() {
 			try {
 				IEnumerable<User> users = await workUnit.UserRepository.GetAllAsync();
-				return mapper.Map<IEnumerable<UserModel>>(users);
+				return mapper.Map<IEnumerable<UserDetailedModel>>(users);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
 				throw;
@@ -41,10 +41,10 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<UserModel> GetByIdAsync(int id) {
+		public async Task<UserDetailedModel> GetByIdAsync(int id) {
 			try {
 				User user = await workUnit.UserRepository.GetByIdAsync(id);
-				return mapper.Map<UserModel>(user);
+				return mapper.Map<UserDetailedModel>(user);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
 				throw;
@@ -52,10 +52,10 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<UserModel> GetByEmailAsync(string email) {
+		public async Task<UserDetailedModel> GetByEmailAsync(string email) {
 			try {
 				User user = await workUnit.UserRepository.GetByEmailAsync(email);
-				return mapper.Map<UserModel>(user);
+				return mapper.Map<UserDetailedModel>(user);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
 				throw;
@@ -63,7 +63,7 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<UserModel> GetAuthorizationInfoByEmailAndPasswordAsync(string email, string password) {
+		public async Task<UserDetailedModel> GetAuthorizationInfoByEmailAndPasswordAsync(string email, string password) {
 			try {
 				User user = await workUnit.UserRepository.GetAuthorizationInfoByEmailAsync(email);
 				if(user == null)
@@ -71,7 +71,7 @@ namespace Auction.Application.Services {
 				var passwordHash = password.ToPasswordHashBySalt(user.PasswordSalt);
 				if(passwordHash != user.PasswordHash)
 					return null;
-				var result = mapper.Map<UserModel>(user);
+				var result = mapper.Map<UserDetailedModel>(user);
 				return result;
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
@@ -80,7 +80,7 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<UserModel> AddAsync(UserInputModel model) {
+		public async Task<UserDetailedModel> AddAsync(UserInputModel model) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;
 			try {
@@ -90,7 +90,7 @@ namespace Auction.Application.Services {
 				user.PasswordSalt = salt;
 				await workUnit.UserRepository.AddAsync(user);
 				await workUnit.SaveAsync();
-				var result = mapper.Map<UserModel>(user);
+				var result = mapper.Map<UserDetailedModel>(user);
 				return result;
 			} catch(DbUpdateException) {
 				return null;
