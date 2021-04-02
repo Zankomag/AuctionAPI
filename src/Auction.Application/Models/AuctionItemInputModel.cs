@@ -5,7 +5,6 @@ using Auction.Application.Models.Generic;
 namespace Auction.Application.Models {
 
 	public class AuctionItemInputModel : Model<int> {
-		public int SellerId { get; set; }
 		public int? AuctionItemCategoryId { get; set; }
 
 		[Required]
