@@ -65,6 +65,27 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
+		public async Task<int> GetOwnerId(int id) {
+			try {
+				int ownerId = await workUnit.AuctionItemRepository.GetAll()
+					.Where(x => x.Id == id)
+					.Select(x => x.SellerId)
+					.FirstOrDefaultAsync();
+				return ownerId;
+			} catch(Exception ex) {
+				logger.LogError(ex, ExceptionThrownInService);
+				throw;
+			}
+		}
+
+		/// <inheritdoc />
+		public async Task<bool> IsUserOwner(int auctionItemId, int userId) {
+			if(!await workUnit.UserRepository.UserExists(userId))
+				return false;
+			return userId == await GetOwnerId(auctionItemId);
+		}
+
+		/// <inheritdoc />
 		public async Task<AuctionItemInputModel> AddAsync(AuctionItemInputModel model) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;
