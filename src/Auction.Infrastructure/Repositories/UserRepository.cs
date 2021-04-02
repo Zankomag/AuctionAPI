@@ -53,6 +53,9 @@ namespace Auction.Infrastructure.Repositories {
 			return false;
 		}
 
+		/// <inheritdoc />
+		public async Task<bool> UserExists(int userId) => await DbSet.AnyAsync(x => x.Id == userId);
+
 		private IQueryable<User> GetAllExceptPasswordHash()
 			=> DbSet.Select(x => new User {
 				Id = x.Id,
