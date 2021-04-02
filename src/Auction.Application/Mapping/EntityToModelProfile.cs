@@ -6,11 +6,18 @@ namespace Auction.Application.Mapping {
 
 	public class EntityToModelProfile : Profile {
 		public EntityToModelProfile() {
-			CreateMap<AuctionItemCategory, AuctionItemCategoryInputModel>().ReverseMap();
-			CreateMap<AuctionItemCategory, AuctionItemCategoryDetailedModel>().ReverseMap();
+			CreateMap<AuctionItemCategoryInputModel, AuctionItemCategory>();
+			CreateMap<AuctionItemCategory, AuctionItemCategoryDetailedModel>();
 
-			CreateMap<User, UserInputModel>().ReverseMap();
-			CreateMap<User, UserDetailedModel>().ReverseMap();
+			CreateMap<UserInputModel, User>();
+			CreateMap<User, UserModel>();
+			CreateMap<User, UserDetailedModel>();
+
+			CreateMap<BidInputModel, Bid>();
+			CreateMap<Bid, BidModel>();
+
+			CreateMap<AuctionItemInputModel, AuctionItem>();
+			CreateMap<AuctionItem, AuctionItemModel>();
 		}
 	}
 
