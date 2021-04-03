@@ -11,6 +11,11 @@ namespace Auction.WebApi.Authorization.Requirements {
 			/// </summary>
 			public partial class AuctionItemId : IAuthorizationRequirement {
 				public const string Policy = IsAdminOrOwnerOf.policy + nameof(AuctionItemId);
+
+				private AuctionItemId() { }
+				
+				public static IAuthorizationRequirement Get => new AuctionItemId();
+				
 			}
 		}
 	}
