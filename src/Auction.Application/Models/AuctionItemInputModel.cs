@@ -17,8 +17,8 @@ namespace Auction.Application.Models {
 		public DateTime StartDate { get; set; }
 		public DateTime PlannedCloseDate { get; set; }
 
-		[RegularExpression(@"^\d+\.\d{0,2}$")]
-		[Range(0, 9999999999999999.99)]
+		[RegularExpression(@"^\d+(\.?\d{0,2})$")]
+		[Range(0.1, 9999999999999999.99)]
 		public decimal StartingPrice { get; set; }
 	}
 
