@@ -39,32 +39,17 @@ namespace Auction.WebApi.Authorization {
 					options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 					options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 				})
-				.AddJwtBearer(options => {
-					options.TokenValidationParameters = new TokenValidationParameters {
-						ValidateIssuerSigningKey = true,
-						IssuerSigningKey = new SymmetricSecurityKey(
-							Encoding.UTF8.GetBytes(
-								configuration[$"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}"])),
-						ValidateIssuer = false,
-						ValidateAudience = false,
-						ValidateLifetime = true,
-						ClockSkew = TimeSpan.FromMinutes(5),
-						NameClaimType = JwtOpenIdProperty.Username,
-						RoleClaimType = JwtOpenIdProperty.Role
-					};
-					options.Events = new JwtBearerEvents {
-						OnTokenValidated = context => {
-							//Check if token contains 'sub' and that sub is integer, otherwise authorization fails
-							var userIdString = context.Principal.FindFirstValue(JwtOpenIdProperty.Sub);
-							if(userIdString == null)
-								context.Fail(JwtMessage.SubPropertyDoesntExist);
-							if(!Int32.TryParse(userIdString, out _)) {
-								context.Fail(JwtMessage.SubPropertyIsNotInteger);
-							}
-							return Task.CompletedTask;
-						}
-
-					};
+				.AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters {
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = new SymmetricSecurityKey(
+						Encoding.UTF8.GetBytes(
+							configuration[$"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}"])),
+					ValidateIssuer = false,
+					ValidateAudience = false,
+					ValidateLifetime = true,
+					ClockSkew = TimeSpan.FromMinutes(5),
+					NameClaimType = JwtOpenIdProperty.Username,
+					RoleClaimType = JwtOpenIdProperty.Role
 				});
 		}
 
