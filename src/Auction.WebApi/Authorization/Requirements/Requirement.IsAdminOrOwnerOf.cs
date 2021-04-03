@@ -35,14 +35,12 @@ namespace Auction.WebApi.Authorization.Requirements {
 					UserIdString = context.User.FindFirstValue(JwtOpenIdProperty.Sub);
 					if(UserIdString == null) {
 						context.Fail();
-						throw new ArgumentException("JWT doesn't have 'sub' field", nameof(context));
+						return;
 					}
-					if(Int32.TryParse(UserIdString, out int userId)) {
+					if(Int32.TryParse(UserIdString, out int userId))
 						UserId = userId;
-					} else {
+					else
 						context.Fail();
-						throw new ArgumentException("'sub' JWT field is not an integer", nameof(context));
-					}
 				}
 
 				/// <inheritdoc />
