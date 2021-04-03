@@ -17,7 +17,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 			/// Succeeds if user role is Admin, does not fail
 			/// </summary>
 			/// <typeparam name="TRequirement"></typeparam>
-			public abstract class IsAdminHandler<TRequirement> : AuthorizationHandler<TRequirement>
+			public abstract class IsAdminOrOwnerOfHandler<TRequirement> : AuthorizationHandler<TRequirement>
 				where TRequirement : IAuthorizationRequirement {
 
 				protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,

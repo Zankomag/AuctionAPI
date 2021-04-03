@@ -13,7 +13,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 			///     Policy requirement that authorizes only Admins or Users that do own AuctionItem 'id' parameter of request
 			/// </summary>
 			public partial class AuctionItem {
-				public class Handler : IsAdminHandler<AuctionItem> {
+				public class Handler : IsAdminOrOwnerOfHandler<AuctionItem> {
 
 					private readonly TokenValidationHandler tokenValidationHandler;
 					private readonly IAuctionItemService auctionItemService;

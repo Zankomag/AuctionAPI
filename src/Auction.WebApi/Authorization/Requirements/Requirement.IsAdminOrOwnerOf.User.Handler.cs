@@ -10,7 +10,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 			public partial class User {
 
 				/// <inheritdoc />
-				public sealed class Handler : IsAdminHandler<User> {
+				public sealed class Handler : IsAdminOrOwnerOfHandler<User> {
 					private readonly TokenValidationHandler tokenValidationHandler;
 
 					public Handler(TokenValidationHandler tokenValidationHandler)
