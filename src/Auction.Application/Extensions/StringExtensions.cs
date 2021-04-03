@@ -6,8 +6,7 @@ using static Auction.Application.Extensions.StringExtensions.PasswordHashingCons
 namespace Auction.Application.Extensions {
 
 	internal static class StringExtensions {
-
-		///
+		
 		public static string EscapeLikeText(this string text) {
 
 			if(!text.Contains('%') && !text.Contains('_') && !text.Contains('[') && !text.Contains('^')) {
