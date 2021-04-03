@@ -42,7 +42,7 @@ namespace Auction.Application.Extensions {
 		}
 
 		/// <summary>
-		///     Creates PBKDF2 Password hash.
+		///     Creates PBKDF2 Password hash and random salt.
 		///     <see href="https://stackoverflow.com/a/10402129/11101834">More info</see>
 		/// </summary>
 		/// <param name="password"></param>
