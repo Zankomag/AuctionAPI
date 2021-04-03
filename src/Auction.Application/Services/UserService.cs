@@ -80,6 +80,16 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
+		public async Task<bool> UserExists(int userId) {
+			try {
+				return await workUnit.UserRepository.UserExists(userId);
+			} catch(Exception ex) {
+				logger.LogError(ex, ExceptionThrownInService);
+				throw;
+			}
+		}
+
+		/// <inheritdoc />
 		public async Task<UserDetailedModel> AddAsync(UserInputModel model) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;

@@ -81,6 +81,8 @@ namespace Auction.Application.Services {
 
 		/// <inheritdoc />
 		public async Task<bool> IsUserOwner(int auctionItemId, int userId) {
+			//TODO don't use UserRepository.UserExist, use service 
+			//user service can cache existing users that it already checked
 			if(!await workUnit.UserRepository.UserExists(userId))
 				return false;
 			return userId == await GetOwnerId(auctionItemId);
