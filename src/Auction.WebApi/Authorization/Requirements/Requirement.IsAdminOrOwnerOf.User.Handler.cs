@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 
 // ReSharper disable InheritdocConsiderUsage
 
@@ -12,8 +11,10 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 				/// <inheritdoc />
 				public sealed class Handler : IsAdminHandler<User> {
+					private readonly TokenValidationHandler tokenValidationHandler;
 
-					public Handler(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor) { }
+					public Handler(TokenValidationHandler tokenValidationHandler)
+						=> this.tokenValidationHandler = tokenValidationHandler;
 
 					/// <inheritdoc />
 					protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
@@ -22,8 +23,8 @@ namespace Auction.WebApi.Authorization.Requirements {
 						await base.HandleRequirementAsync(context, requirement);
 
 						if(!context.HasSucceeded && !context.HasFailed) {
-							if(RouteData.Values["id"] is string userIdString
-								&& userIdString == UserIdString) {
+							if(tokenValidationHandler.RouteData.Values["id"] is string userIdString
+								&& userIdString == tokenValidationHandler.UserIdString) {
 
 								context.Succeed(requirement);
 								return;

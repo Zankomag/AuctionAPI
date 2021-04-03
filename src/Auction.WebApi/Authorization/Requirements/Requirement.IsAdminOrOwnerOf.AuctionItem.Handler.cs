@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Auction.Application.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 
 // ReSharper disable InheritdocConsiderUsage
 
@@ -16,11 +15,15 @@ namespace Auction.WebApi.Authorization.Requirements {
 			public partial class AuctionItem {
 				public class Handler : IsAdminHandler<AuctionItem> {
 
+					private readonly TokenValidationHandler tokenValidationHandler;
 					private readonly IAuctionItemService auctionItemService;
 
-					public Handler(IHttpContextAccessor httpContextAccessor, IAuctionItemService auctionItemService) :
-						base(httpContextAccessor)
-						=> this.auctionItemService = auctionItemService;
+					public Handler(TokenValidationHandler tokenValidationHandler,
+						IAuctionItemService auctionItemService) {
+						
+						this.tokenValidationHandler = tokenValidationHandler;
+						this.auctionItemService = auctionItemService;
+					}
 
 					/// <inheritdoc />
 					protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
@@ -29,10 +32,10 @@ namespace Auction.WebApi.Authorization.Requirements {
 						await base.HandleRequirementAsync(context, requirement);
 
 						if(!context.HasSucceeded && !context.HasFailed) {
-							if(RouteData.Values["id"] is string auctionItemIdString
+							if(tokenValidationHandler.RouteData.Values["id"] is string auctionItemIdString
 								&& Int32.TryParse(auctionItemIdString, out int auctionItemId)
-								&& await auctionItemService.IsUserOwner(auctionItemId, UserId)) {
-								
+								&& await auctionItemService.IsUserOwner(auctionItemId, tokenValidationHandler.UserId)) {
+
 								context.Succeed(requirement);
 								return;
 							}
