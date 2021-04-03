@@ -15,15 +15,11 @@ namespace Auction.WebApi.Authorization.Requirements {
 			public partial class AuctionItem {
 				public class Handler : IsAdminOrOwnerOfHandler<AuctionItem> {
 
-					private readonly TokenValidationHandler tokenValidationHandler;
 					private readonly IAuctionItemService auctionItemService;
 
-					public Handler(TokenValidationHandler tokenValidationHandler,
-						IAuctionItemService auctionItemService) {
-						
-						this.tokenValidationHandler = tokenValidationHandler;
-						this.auctionItemService = auctionItemService;
-					}
+					public Handler(IAuctionItemService auctionItemService,
+						TokenValidationHandler tokenValidationHandler) : base(tokenValidationHandler)
+						=> this.auctionItemService = auctionItemService;
 
 					/// <inheritdoc />
 					protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
@@ -32,9 +28,9 @@ namespace Auction.WebApi.Authorization.Requirements {
 						await base.HandleRequirementAsync(context, requirement);
 
 						if(!context.HasSucceeded && !context.HasFailed) {
-							if(tokenValidationHandler.RouteData.Values["id"] is string auctionItemIdString
+							if(TokenValidationHandler.RouteData.Values["id"] is string auctionItemIdString
 								&& Int32.TryParse(auctionItemIdString, out int auctionItemId)
-								&& await auctionItemService.IsUserOwner(auctionItemId, tokenValidationHandler.UserId)) {
+								&& await auctionItemService.IsUserOwner(auctionItemId, TokenValidationHandler.UserId)) {
 
 								context.Succeed(requirement);
 								return;

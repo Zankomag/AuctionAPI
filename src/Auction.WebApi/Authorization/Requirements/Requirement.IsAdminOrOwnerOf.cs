@@ -13,12 +13,19 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 			private const string policy = nameof(IsAdminOrOwnerOf);
 
+
 			/// <summary>
-			/// Succeeds if user role is Admin, does not fail
+			///     Succeeds if user role is Admin, does not fail
 			/// </summary>
 			/// <typeparam name="TRequirement"></typeparam>
 			public abstract class IsAdminOrOwnerOfHandler<TRequirement> : AuthorizationHandler<TRequirement>
 				where TRequirement : IAuthorizationRequirement {
+				protected readonly TokenValidationHandler TokenValidationHandler;
+
+				protected IsAdminOrOwnerOfHandler(TokenValidationHandler tokenValidationHandler)
+					=> this.TokenValidationHandler = tokenValidationHandler;
+
+				tokenValidationHandler.RouteData.Values["id"]
 
 				protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
 					TRequirement requirement) {
