@@ -54,10 +54,6 @@ namespace Auction.WebApi {
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuctionAPI v1"));
 			}
 
-			//Using just app.ApplicationServices as IServiceProvider doesn't work
-			app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-				.CreateScope().ServiceProvider.ConfigureInfrastructure();
-			
 			app.UseHttpsRedirection();
 			app.UseHsts();
 

@@ -18,6 +18,8 @@ namespace Auction.Infrastructure {
 			string connection = config.GetConnectionString("AuctionDb");
 			services.AddDbContext<AuctionDbContext>(options => options.UseSqlServer(connection));
 
+			services.BuildServiceProvider().ApplyMigration<AuctionDbContext>();
+
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 			services.AddScoped<IAuctionItemCategoryService, AuctionItemCategoryService>();
@@ -34,10 +36,11 @@ namespace Auction.Infrastructure {
 			return services;
 		}
 
-		public static void ConfigureInfrastructure(this IServiceProvider serviceProvider) {
-			var dbContext = serviceProvider.GetService<AuctionDbContext>();
+		private static void ApplyMigration<TDbContext>(this IServiceProvider serviceProvider) where TDbContext : DbContext {
+			var dbContext = serviceProvider.GetService<TDbContext>();
 			dbContext?.Database.Migrate();
 		}
+
 	}
 
 }
