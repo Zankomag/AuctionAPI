@@ -55,9 +55,9 @@ namespace Auction.WebApi.Authorization {
 		public static void AddAuthorization(this IServiceCollection services) {
 			services.AddAuthorization(x => {
 				x.AddPolicy(Requirement.IsAdminOrOwnerOf.User.Policy,
-					policy => policy.Requirements.Add(new Requirement.IsAdminOrOwnerOf.User()));
+					policy => policy.AddRequirements(new Requirement.IsAdminOrOwnerOf.User()));
 				x.AddPolicy(Requirement.IsAdminOrOwnerOf.AuctionItem.Policy, 
-					policy => policy.Requirements.Add(new Requirement.IsAdminOrOwnerOf.AuctionItem()));
+					policy => policy.AddRequirements(new Requirement.IsAdminOrOwnerOf.AuctionItem()));
 			});
 
 			//These services are scoped because they use cached RouteData and JWT values at each request
