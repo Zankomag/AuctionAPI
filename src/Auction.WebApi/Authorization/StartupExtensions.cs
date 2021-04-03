@@ -6,6 +6,7 @@ using Auction.WebApi.Authorization.Requirements;
 using Auction.WebApi.Authorization.Types;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -65,6 +66,13 @@ namespace Auction.WebApi.Authorization {
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.AuctionItemId.Handler>();
 
 			services.AddHttpContextAccessor();
+		}
+
+		public static IApplicationBuilder UseAuthenticationAndAuthorization(this IApplicationBuilder app) {
+
+			app.UseAuthentication();
+			app.UseAuthorization();
+			return app;
 		}
 	}
 

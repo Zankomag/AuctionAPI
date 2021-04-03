@@ -1,14 +1,13 @@
 using System;
 using System.Linq;
 using Auction.Infrastructure;
-using Auction.Infrastructure.Data;
 using Auction.WebApi.Authorization;
 using Auction.WebApi.Mapping;
 using Auction.WebApi.Swagger;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,7 +27,7 @@ namespace Auction.WebApi {
 			services.AddInfrastructure(Configuration, new ApplicationModelToWebApiModelProfile());
 
 			services.AddAuthenticationAndAuthorization(Configuration);
-			
+
 			services.AddSwagger();
 
 			services.AddControllers()
@@ -63,8 +62,7 @@ namespace Auction.WebApi {
 
 			app.UseRouting();
 
-			app.UseAuthentication();
-			app.UseAuthorization();
+			app.UseAuthenticationAndAuthorization();
 
 			app.UseEndpoints(endpoints => endpoints.MapControllers());
 		}
