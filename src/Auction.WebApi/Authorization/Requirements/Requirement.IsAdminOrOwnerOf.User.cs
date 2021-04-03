@@ -9,8 +9,8 @@ namespace Auction.WebApi.Authorization.Requirements {
 			/// <summary>
 			///     Policy requirement that authorizes only Admins or Users that do own User 'id' parameter of request (self Id owners)
 			/// </summary>
-			public partial class User : IAuthorizationRequirement {
-				public const string Policy = IsAdminOrOwnerOf.policy + nameof(User);
+			public partial class UserId : IAuthorizationRequirement {
+				public const string Policy = IsAdminOrOwnerOf.policy + nameof(UserId);
 			}
 		}
 	}

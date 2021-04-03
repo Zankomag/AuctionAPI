@@ -7,16 +7,14 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 	public static partial class Requirement {
 		public abstract partial class IsAdminOrOwnerOf {
-			public partial class User {
-
-				/// <inheritdoc />
-				public sealed class Handler : IsAdminOrOwnerOfHandler<User> {
+			public partial class UserId {
+				public sealed class Handler : IsAdminOrOwnerOfHandler<UserId> {
 
 					public Handler(TokenValidationHandler tokenValidationHandler) : base(tokenValidationHandler) { }
 
 					/// <inheritdoc />
 					protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
-						User requirement) {
+						UserId requirement) {
 
 						await base.HandleRequirementAsync(context, requirement);
 

@@ -55,17 +55,17 @@ namespace Auction.WebApi.Authorization {
 
 		public static void AddAuthorization(this IServiceCollection services) {
 			services.AddAuthorization(x => {
-				x.AddPolicy(Requirement.IsAdminOrOwnerOf.User.Policy,
-					policy => policy.AddRequirements(new Requirement.IsAdminOrOwnerOf.User()));
-				x.AddPolicy(Requirement.IsAdminOrOwnerOf.AuctionItem.Policy,
-					policy => policy.AddRequirements(new Requirement.IsAdminOrOwnerOf.AuctionItem()));
+				x.AddPolicy(Requirement.IsAdminOrOwnerOf.UserId.Policy,
+					policy => policy.AddRequirements(new Requirement.IsAdminOrOwnerOf.UserId()));
+				x.AddPolicy(Requirement.IsAdminOrOwnerOf.AuctionItemId.Policy,
+					policy => policy.AddRequirements(new Requirement.IsAdminOrOwnerOf.AuctionItemId()));
 			});
 
 			//These services are scoped because they use cached RouteData and JWT values at each request
 			services.AddScoped<Requirement.TokenValidationHandler>();
 			services.AddScoped<IAuthorizationHandler>(x => x.GetRequiredService<Requirement.TokenValidationHandler>());
-			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.User.Handler>();
-			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.AuctionItem.Handler>();
+			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.UserId.Handler>();
+			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.AuctionItemId.Handler>();
 
 			services.AddHttpContextAccessor();
 		}

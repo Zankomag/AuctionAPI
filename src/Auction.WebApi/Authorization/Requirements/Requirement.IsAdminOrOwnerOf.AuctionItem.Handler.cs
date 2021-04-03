@@ -9,11 +9,8 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 	public static partial class Requirement {
 		public abstract partial class IsAdminOrOwnerOf {
-			/// <summary>
-			///     Policy requirement that authorizes only Admins or Users that do own AuctionItem 'id' parameter of request
-			/// </summary>
-			public partial class AuctionItem {
-				public class Handler : IsAdminOrOwnerOfHandler<AuctionItem> {
+			public partial class AuctionItemId {
+				public class Handler : IsAdminOrOwnerOfHandler<AuctionItemId> {
 
 					private readonly IAuctionItemService auctionItemService;
 
@@ -23,7 +20,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 					/// <inheritdoc />
 					protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
-						AuctionItem requirement) {
+						AuctionItemId requirement) {
 
 						await base.HandleRequirementAsync(context, requirement);
 
