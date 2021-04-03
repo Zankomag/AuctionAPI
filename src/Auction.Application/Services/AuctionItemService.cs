@@ -11,7 +11,7 @@ using Auction.Core.Repositories;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using static Auction.Application.Utils.LoggingMessages;
+using static Auction.Application.Utils.LoggingMessage;
 using ValidationContext = System.ComponentModel.DataAnnotations.ValidationContext;
 
 namespace Auction.Application.Services {
