@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using Auction.WebApi.Authorization.Abstractions;
 using Auction.WebApi.Authorization.Requirements;
 using Auction.WebApi.Authorization.Types;
@@ -42,8 +40,7 @@ namespace Auction.WebApi.Authorization {
 				.AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters {
 					ValidateIssuerSigningKey = true,
 					IssuerSigningKey = new SymmetricSecurityKey(
-						Encoding.UTF8.GetBytes(
-							configuration[$"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}"])),
+						Encoding.UTF8.GetBytes(configuration[$"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}"])),
 					ValidateIssuer = false,
 					ValidateAudience = false,
 					ValidateLifetime = true,
