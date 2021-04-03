@@ -50,8 +50,10 @@ namespace Auction.Application.Extensions {
 		public static string ToPasswordHash(this string password, out byte[] salt) {
 
 			salt = new byte[SaltLength];
-			new RNGCryptoServiceProvider().GetBytes(salt);
-
+			using(var rngCsp = new RNGCryptoServiceProvider()) {
+				// Fill the array with cryptographically secure random bytes.
+				rngCsp.GetBytes(salt);
+			}
 			return password.ToPasswordHashBySalt(salt);
 		}
 
