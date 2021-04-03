@@ -59,8 +59,8 @@ namespace Auction.WebApi.Authorization {
 			});
 
 			//These services are scoped because they use cached RouteData and JWT values at each request
-			services.AddScoped<Requirement.TokenValidationHandler>();
-			services.AddScoped<IAuthorizationHandler>(x => x.GetRequiredService<Requirement.TokenValidationHandler>());
+			services.AddScoped<Requirement.AuthorizationService>();
+			services.AddScoped<IAuthorizationHandler>(x => x.GetRequiredService<Requirement.AuthorizationService>());
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.UserId.Handler>();
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.AuctionItemId.Handler>();
 

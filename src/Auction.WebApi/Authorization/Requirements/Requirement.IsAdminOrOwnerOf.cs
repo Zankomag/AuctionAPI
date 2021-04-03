@@ -21,12 +21,12 @@ namespace Auction.WebApi.Authorization.Requirements {
 			/// <typeparam name="TRequirement"></typeparam>
 			public abstract class IsAdminOrOwnerOfHandler<TRequirement> : AuthorizationHandler<TRequirement>
 				where TRequirement : IAuthorizationRequirement {
-				protected readonly TokenValidationHandler TokenValidationHandler;
+				protected readonly AuthorizationService AuthorizationService;
 
-				protected IsAdminOrOwnerOfHandler(TokenValidationHandler tokenValidationHandler)
-					=> this.TokenValidationHandler = tokenValidationHandler;
+				protected IsAdminOrOwnerOfHandler(AuthorizationService authorizationService)
+					=> this.AuthorizationService = authorizationService;
 
-				protected string? RouteIdString => TokenValidationHandler.RouteData.Values["id"] as string;
+				protected string? RouteIdString => AuthorizationService.RouteData.Values["id"] as string;
 
 				protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
 					TRequirement requirement) {

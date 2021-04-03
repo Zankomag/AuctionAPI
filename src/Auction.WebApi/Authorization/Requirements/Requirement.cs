@@ -25,7 +25,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 		/// <summary>
 		///     Validates that the token contains 'sub' and that corresponding to it user exists
 		/// </summary>
-		public class TokenValidationHandler : IAuthorizationHandler {
+		public class AuthorizationService : IAuthorizationHandler {
 
 			private readonly IHttpContextAccessor httpContextAccessor;
 			private readonly IUserService userService;
@@ -40,12 +40,11 @@ namespace Auction.WebApi.Authorization.Requirements {
 			///     'sub' field of JWT
 			/// </summary>
 			public int UserId { get; private set; }
-
-			//TODO add IRouteRequestService that contains and sets this property
+			
 			public RouteData RouteData
 				=> routeData ??= httpContextAccessor.HttpContext!.GetRouteData();
 
-			public TokenValidationHandler(IHttpContextAccessor httpContextAccessor, IUserService userService) {
+			public AuthorizationService(IHttpContextAccessor httpContextAccessor, IUserService userService) {
 				this.httpContextAccessor = httpContextAccessor;
 				this.userService = userService;
 			}
@@ -53,6 +52,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 			/// <inheritdoc />
 			public async Task HandleAsync(AuthorizationHandlerContext context) {
 				UserIdString = context.User.FindFirstValue(JwtOpenIdProperty.Sub);
+				// if 'sub' is null that means either 'sub' doesn't exists or token is not authorized
 				if(UserIdString == null
 					|| !Int32.TryParse(UserIdString, out int userId)
 					//Instead of validating user, you had better save every token Id in db and then check if it exists

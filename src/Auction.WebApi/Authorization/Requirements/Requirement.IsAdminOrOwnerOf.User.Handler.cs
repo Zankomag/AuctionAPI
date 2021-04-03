@@ -10,7 +10,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 			public partial class UserId {
 				public sealed class Handler : IsAdminOrOwnerOfHandler<UserId> {
 
-					public Handler(TokenValidationHandler tokenValidationHandler) : base(tokenValidationHandler) { }
+					public Handler(AuthorizationService authorizationService) : base(authorizationService) { }
 
 					/// <inheritdoc />
 					protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
@@ -20,7 +20,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 						if(!context.HasSucceeded && !context.HasFailed) {
 							if(RouteIdString != null
-								&& RouteIdString == TokenValidationHandler.UserIdString) {
+								&& RouteIdString == AuthorizationService.UserIdString) {
 
 								context.Succeed(requirement);
 								return;

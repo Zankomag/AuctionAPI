@@ -15,7 +15,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 					private readonly IAuctionItemService auctionItemService;
 
 					public Handler(IAuctionItemService auctionItemService,
-						TokenValidationHandler tokenValidationHandler) : base(tokenValidationHandler)
+						AuthorizationService authorizationService) : base(authorizationService)
 						=> this.auctionItemService = auctionItemService;
 
 					/// <inheritdoc />
@@ -27,7 +27,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 						if(!context.HasSucceeded && !context.HasFailed) {
 							if(RouteIdString != null
 								&& Int32.TryParse(RouteIdString, out int auctionItemId)
-								&& await auctionItemService.IsUserOwner(auctionItemId, TokenValidationHandler.UserId)) {
+								&& await auctionItemService.IsUserOwner(auctionItemId, AuthorizationService.UserId)) {
 
 								context.Succeed(requirement);
 								return;
