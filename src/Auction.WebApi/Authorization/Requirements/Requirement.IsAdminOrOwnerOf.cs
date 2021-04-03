@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿#nullable enable
+using System.Threading.Tasks;
 using Auction.Application.Authorization;
 using Microsoft.AspNetCore.Authorization;
 
@@ -25,7 +26,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 				protected IsAdminOrOwnerOfHandler(TokenValidationHandler tokenValidationHandler)
 					=> this.TokenValidationHandler = tokenValidationHandler;
 
-				tokenValidationHandler.RouteData.Values["id"]
+				protected string? RouteIdString => TokenValidationHandler.RouteData.Values["id"] as string;
 
 				protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
 					TRequirement requirement) {

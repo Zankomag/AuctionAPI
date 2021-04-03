@@ -21,8 +21,8 @@ namespace Auction.WebApi.Authorization.Requirements {
 						await base.HandleRequirementAsync(context, requirement);
 
 						if(!context.HasSucceeded && !context.HasFailed) {
-							if(TokenValidationHandler.RouteData.Values["id"] is string userIdString
-								&& userIdString == TokenValidationHandler.UserIdString) {
+							if(RouteIdString != null
+								&& RouteIdString == TokenValidationHandler.UserIdString) {
 
 								context.Succeed(requirement);
 								return;

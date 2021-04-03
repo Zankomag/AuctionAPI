@@ -28,8 +28,8 @@ namespace Auction.WebApi.Authorization.Requirements {
 						await base.HandleRequirementAsync(context, requirement);
 
 						if(!context.HasSucceeded && !context.HasFailed) {
-							if(TokenValidationHandler.RouteData.Values["id"] is string auctionItemIdString
-								&& Int32.TryParse(auctionItemIdString, out int auctionItemId)
+							if(RouteIdString != null
+								&& Int32.TryParse(RouteIdString, out int auctionItemId)
 								&& await auctionItemService.IsUserOwner(auctionItemId, TokenValidationHandler.UserId)) {
 
 								context.Succeed(requirement);
