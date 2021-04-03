@@ -50,7 +50,7 @@ namespace Auction.WebApi.Authorization {
 				});
 		}
 
-		public static void AddAuthorization(this IServiceCollection services) {
+		private static void AddAuthorization(this IServiceCollection services) {
 			services.AddAuthorization(x => {
 				x.AddPolicy(Requirement.IsAdminOrOwnerOf.UserId.Policy,
 					policy => policy.AddRequirements(Requirement.IsAdminOrOwnerOf.UserId.Get));
