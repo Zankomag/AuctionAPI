@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Auction.WebApi.Authorization.Requirements {
 
 	public static partial class Requirement {
-		public abstract partial class IsAdminOrOwnerOf {
+		public abstract partial class IsAdmin {
 			public partial class AuctionItemId {
 				public class Handler : AuthorizationHandler<AuctionItemId> {
 

@@ -7,12 +7,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 	///     Policy requirement
 	/// </summary>
 	public static partial class Requirement {
-
-		//Inheritdoc does not inherit from interface
-		/// <summary>
-		///     Requirement category
-		/// </summary>
-		public abstract class Category { }
+		
 	}
 
 }

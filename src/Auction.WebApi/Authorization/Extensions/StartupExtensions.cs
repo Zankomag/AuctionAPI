@@ -60,19 +60,19 @@ namespace Auction.WebApi.Authorization.Extensions {
 				options.DefaultPolicy = new AuthorizationPolicyBuilder()
 					.AddRequirements(new Requirement.IsAuthenticated())
 					.Build();
-				options.AddPolicy(Requirement.IsAdminOrOwnerOf.UserId.Policy,
-					policy => policy.AddRequirements(Requirement.IsAdminOrOwnerOf.UserId.Get));
-				options.AddPolicy(Requirement.IsAdminOrOwnerOf.AuctionItemId.Policy,
-					policy => policy.AddRequirements(Requirement.IsAdminOrOwnerOf.AuctionItemId.Get));
+				options.AddPolicy(Requirement.IsAdmin.UserId.Policy,
+					policy => policy.AddRequirements(Requirement.IsAdmin.UserId.Get));
+				options.AddPolicy(Requirement.IsAdmin.AuctionItemId.Policy,
+					policy => policy.AddRequirements(Requirement.IsAdmin.AuctionItemId.Get));
 			});
 
 			services.AddScoped<IRequestData, RequestData>();
 			
 			//These services are scoped because they use scoped IRequestData, otherwise they'd be singletons
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAuthenticated.Handler>();
-			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.IsAdminOrOwnerOfHandler>();
-			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.UserId.Handler>();
-			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.AuctionItemId.Handler>();
+			services.AddScoped<IAuthorizationHandler, Requirement.IsAdmin.Handler>();
+			services.AddScoped<IAuthorizationHandler, Requirement.IsAdmin.UserId.Handler>();
+			services.AddScoped<IAuthorizationHandler, Requirement.IsAdmin.AuctionItemId.Handler>();
 
 			services.AddHttpContextAccessor();
 		}

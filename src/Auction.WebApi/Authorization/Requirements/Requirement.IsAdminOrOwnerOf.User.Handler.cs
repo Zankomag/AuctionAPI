@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Auction.WebApi.Authorization.Requirements {
 
 	public static partial class Requirement {
-		public abstract partial class IsAdminOrOwnerOf {
+		public abstract partial class IsAdmin {
 			public partial class UserId {
 				public sealed class Handler : AuthorizationHandler<UserId> {
 					private readonly IRequestData requestData;

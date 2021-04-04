@@ -9,20 +9,16 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 	public static partial class Requirement {
 
-		public class IsAdmin : IAuthorizationRequirement { }
-
 
 		/// <inheritdoc />
-		public abstract partial class IsAdminOrOwnerOf : Category {
+		public partial class IsAdmin : IAuthorizationRequirement {
 
-			private const string policy = nameof(IsAdminOrOwnerOf);
-
-
-
+			public const string Policy = nameof(IsAdmin);
+			
 			/// <summary>
 			///     Succeeds if user role is Admin, does not fail
 			/// </summary>
-			public class IsAdminOrOwnerOfHandler : AuthorizationHandler<IsAdmin> {
+			public class Handler : AuthorizationHandler<IsAdmin> {
 
 				protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
 					IsAdmin requirement) {

@@ -55,7 +55,7 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// PUT api/AuctionItems/5
-		[Authorize(Requirement.IsAdminOrOwnerOf.AuctionItemId.Policy)]
+		[Authorize(Requirement.IsAdmin.AuctionItemId.Policy)]
 		[HttpPut("{id}")]
 		public async Task<ActionResult<AuctionItemInputModel>> Update(int id,
 			[FromBody] AuctionItemInputModel model) {
@@ -67,7 +67,7 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// DELETE api/AuctionItems/5
-		[Authorize(Requirement.IsAdminOrOwnerOf.AuctionItemId.Policy)]
+		[Authorize(Requirement.IsAdmin.AuctionItemId.Policy)]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id) {
 			bool result = await auctionItemService.DeleteByIdAsync(id);
