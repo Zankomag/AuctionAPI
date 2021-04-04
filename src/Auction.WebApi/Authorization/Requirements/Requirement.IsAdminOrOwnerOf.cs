@@ -31,7 +31,6 @@ namespace Auction.WebApi.Authorization.Requirements {
 						&& context.User.IsInRole(Role.Admin)) {
 						
 						context.Succeed(requirement);
-						return Task.CompletedTask;
 					}
 					return Task.CompletedTask;
 				}
