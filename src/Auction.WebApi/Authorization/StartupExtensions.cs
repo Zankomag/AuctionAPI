@@ -62,6 +62,7 @@ namespace Auction.WebApi.Authorization {
 			services.AddScoped<IRequestData, RequestData>();
 			
 			//These services are scoped because they use scoped IRequestData, otherwise they'd be singletons
+			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.IsAdminOrOwnerOfHandler>();
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.UserId.Handler>();
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.AuctionItemId.Handler>();
 

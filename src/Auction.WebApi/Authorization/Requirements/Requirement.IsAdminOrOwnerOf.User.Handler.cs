@@ -9,7 +9,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 	public static partial class Requirement {
 		public abstract partial class IsAdminOrOwnerOf {
 			public partial class UserId {
-				public sealed class Handler : IsAdminOrOwnerOfHandler<UserId> {
+				public sealed class Handler : AuthorizationHandler<UserId> {
 					private readonly IRequestData requestData;
 
 					public Handler(IRequestData requestData) => this.requestData = requestData;
@@ -17,8 +17,6 @@ namespace Auction.WebApi.Authorization.Requirements {
 					/// <inheritdoc />
 					protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
 						UserId requirement) {
-
-						await base.HandleRequirementAsync(context, requirement);
 
 						if(!context.HasSucceeded && !context.HasFailed) {
 							if(requestData.RouteIdString != null
@@ -28,7 +26,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 								return;
 							}
 
-							context.Fail();
+						//	context.Fail();
 						}
 					}
 				}

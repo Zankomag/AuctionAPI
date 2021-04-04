@@ -9,7 +9,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 			/// <summary>
 			///     Policy requirement that authorizes only Admins or Users that do own AuctionItem 'id' parameter of request
 			/// </summary>
-			public partial class AuctionItemId : IAuthorizationRequirement {
+			public partial class AuctionItemId : IsAdmin {
 				public const string Policy = IsAdminOrOwnerOf.policy + nameof(AuctionItemId);
 
 				private AuctionItemId() { }
