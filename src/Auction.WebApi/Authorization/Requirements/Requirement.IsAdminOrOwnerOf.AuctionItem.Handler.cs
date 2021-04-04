@@ -25,7 +25,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 					protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
 						AuctionItemId requirement) {
 
-						if(!context.IsAlreadyDetermined() 
+						if(!context.IsAlreadyDetermined<AuctionItemId>() 
 							&& requestData.RouteIdString != null && requestData.UserId != null
 							&& Int32.TryParse(requestData.RouteIdString, out int auctionItemId)
 							&& await auctionItemService.IsUserOwner(auctionItemId, requestData.UserId.Value)) {

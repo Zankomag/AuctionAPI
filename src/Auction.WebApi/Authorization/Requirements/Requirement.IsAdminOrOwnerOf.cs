@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System.Linq;
 using System.Threading.Tasks;
 using Auction.Application.Authorization;
 using Auction.WebApi.Authorization.Extensions;
@@ -27,7 +28,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 				protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
 					IsAdmin requirement) {
 
-					if(!context.IsAlreadyDetermined()
+					if(!context.IsAlreadyDetermined<IsAdmin>()
 						&& context.User.IsInRole(Role.Admin)) {
 						
 						context.Succeed(requirement);
