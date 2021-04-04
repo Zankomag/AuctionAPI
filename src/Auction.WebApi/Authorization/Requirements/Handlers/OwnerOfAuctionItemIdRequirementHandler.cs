@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 // ReSharper disable InheritdocConsiderUsage
 
-namespace Auction.WebApi.Authorization.Requirements {
+namespace Auction.WebApi.Authorization.Requirements.Handlers {
 
 	public class OwnerOfAuctionItemIdRequirementHandler : AuthorizationHandler<OwnerOfAuctionItemIdRequirement> {
 

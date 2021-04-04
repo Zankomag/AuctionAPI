@@ -4,6 +4,7 @@ using System.Text;
 using Auction.WebApi.Authorization.Abstractions;
 using Auction.WebApi.Authorization.Constants;
 using Auction.WebApi.Authorization.Requirements;
+using Auction.WebApi.Authorization.Requirements.Handlers;
 using Auction.WebApi.Authorization.Services;
 using Auction.WebApi.Authorization.Types;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

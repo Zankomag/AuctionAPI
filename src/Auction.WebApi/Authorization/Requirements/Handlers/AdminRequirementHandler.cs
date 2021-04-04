@@ -2,9 +2,10 @@
 using Auction.Application.Authorization;
 using Auction.WebApi.Authorization.Extensions;
 using Microsoft.AspNetCore.Authorization;
+
 // ReSharper disable InheritdocConsiderUsage
 
-namespace Auction.WebApi.Authorization.Requirements {
+namespace Auction.WebApi.Authorization.Requirements.Handlers {
 
 	/// <summary>
 	///     Succeeds if user role is Admin, does not fail
