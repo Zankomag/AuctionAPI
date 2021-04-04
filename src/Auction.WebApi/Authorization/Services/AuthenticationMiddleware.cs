@@ -21,7 +21,7 @@ namespace Auction.WebApi.Authorization.Services {
 		public async Task InvokeAsync(HttpContext context, IUserService userService, IRequestData requestData) {
 			if(context.User.Identity?.IsAuthenticated != true) {
 				//TODO if allowAnon or don't need auth, when we should response with 200, not 401
-				await context.ChallengeAsync();
+				//await context.ChallengeAsync();
 			} else { //User considered as authenticated at previous stage
 
 				string userIdString = context.User.FindFirstValue(JwtOpenIdProperty.Sub);
@@ -41,6 +41,7 @@ namespace Auction.WebApi.Authorization.Services {
 					//TODO if allowAnon or don't need auth, when we should response with 200, not 401
 					//Authentication failed, set response to 401
 					await context.ChallengeAsync();
+					return;
 				}
 
 			}
