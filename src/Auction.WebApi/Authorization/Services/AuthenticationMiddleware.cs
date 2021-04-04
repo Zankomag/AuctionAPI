@@ -19,11 +19,7 @@ namespace Auction.WebApi.Authorization.Services {
 
 		//While the class is singleton, this method is called every request (like Scoped service)
 		public async Task InvokeAsync(HttpContext context, IUserService userService, IRequestData requestData) {
-			if(context.User.Identity?.IsAuthenticated != true) {
-				//TODO if allowAnon or don't need auth, when we should response with 200, not 401
-				//await context.ChallengeAsync();
-			} else { //User considered as authenticated at previous stage
-
+			if(context.User.Identity?.IsAuthenticated == true) {
 				string userIdString = context.User.FindFirstValue(JwtOpenIdProperty.Sub);
 
 				// if 'sub' is null that means either 'sub' doesn't exists or token is not authorized
@@ -38,14 +34,12 @@ namespace Auction.WebApi.Authorization.Services {
 					requestData.UserIdString = userIdString;
 
 				} else {
-					//TODO if allowAnon or don't need auth, when we should response with 200, not 401
 					//Authentication failed, set response to 401
 					await context.ChallengeAsync();
 					return;
 				}
-
 			}
-
+			
 			await next(context);
 		}
 	}
