@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Auction.Application.Services.Abstractions;
 using Auction.WebApi.Authorization.Abstractions;
+using Auction.WebApi.Authorization.Extensions;
 using Microsoft.AspNetCore.Authorization;
 
 // ReSharper disable InheritdocConsiderUsage
@@ -20,18 +21,16 @@ namespace Auction.WebApi.Authorization.Requirements {
 						this.auctionItemService = auctionItemService;
 						this.requestData = requestData;
 					}
-					
+
 					protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
 						AuctionItemId requirement) {
 
-						if(!context.HasSucceeded && !context.HasFailed) {
-							if(requestData.RouteIdString != null && requestData.UserId != null
-								&& Int32.TryParse(requestData.RouteIdString, out int auctionItemId)
-								&& await auctionItemService.IsUserOwner(auctionItemId, requestData.UserId.Value)) {
+						if(!context.IsAlreadyDetermined() 
+							&& requestData.RouteIdString != null && requestData.UserId != null
+							&& Int32.TryParse(requestData.RouteIdString, out int auctionItemId)
+							&& await auctionItemService.IsUserOwner(auctionItemId, requestData.UserId.Value)) {
 
-								context.Succeed(requirement);
-								return;
-							}
+							context.Succeed(requirement);
 
 							//context.Fail();
 						}

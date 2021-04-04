@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Auction.WebApi.Authorization.Abstractions;
+using Auction.WebApi.Authorization.Extensions;
 using Microsoft.AspNetCore.Authorization;
 
 // ReSharper disable InheritdocConsiderUsage
@@ -18,15 +19,13 @@ namespace Auction.WebApi.Authorization.Requirements {
 					protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
 						UserId requirement) {
 
-						if(!context.HasSucceeded && !context.HasFailed) {
-							if(requestData.RouteIdString != null
-								&& requestData.RouteIdString == requestData.UserIdString) {
+						if(!context.IsAlreadyDetermined() 
+							&& requestData.RouteIdString != null
+							&& requestData.RouteIdString == requestData.UserIdString) {
 
-								context.Succeed(requirement);
-								return;
-							}
+							context.Succeed(requirement);
 
-						//	context.Fail();
+							//	context.Fail();
 						}
 					}
 				}

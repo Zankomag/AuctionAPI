@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System.Threading.Tasks;
 using Auction.Application.Authorization;
+using Auction.WebApi.Authorization.Extensions;
 using Microsoft.AspNetCore.Authorization;
 
 // ReSharper disable InheritdocConsiderUsage
@@ -26,7 +27,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 				protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
 					IsAdmin requirement) {
 
-					if(!context.HasSucceeded && !context.HasFailed
+					if(!context.IsAlreadyDetermined()
 						&& context.User.IsInRole(Role.Admin)) {
 						
 						context.Succeed(requirement);
