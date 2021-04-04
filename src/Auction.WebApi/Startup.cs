@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Auction.Infrastructure;
 using Auction.WebApi.Authorization;
+using Auction.WebApi.Authorization.Extensions;
 using Auction.WebApi.Mapping;
 using Auction.WebApi.Swagger;
 using Microsoft.AspNetCore.Authentication;
