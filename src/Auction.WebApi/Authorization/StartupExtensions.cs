@@ -52,16 +52,16 @@ namespace Auction.WebApi.Authorization {
 		}
 
 		private static void AddAuthorization(this IServiceCollection services) {
-			services.AddAuthorization(x => {
-				x.AddPolicy(Requirement.IsAdminOrOwnerOf.UserId.Policy,
+			services.AddAuthorization(options => {
+				options.AddPolicy(Requirement.IsAdminOrOwnerOf.UserId.Policy,
 					policy => policy.AddRequirements(Requirement.IsAdminOrOwnerOf.UserId.Get));
-				x.AddPolicy(Requirement.IsAdminOrOwnerOf.AuctionItemId.Policy,
+				options.AddPolicy(Requirement.IsAdminOrOwnerOf.AuctionItemId.Policy,
 					policy => policy.AddRequirements(Requirement.IsAdminOrOwnerOf.AuctionItemId.Get));
 			});
 
-			//These services are scoped because they use cached RouteData and JWT values at each request
-			services.AddScoped<Requirement.AuthorizationService>();
-			services.AddScoped<IAuthorizationHandler>(x => x.GetRequiredService<Requirement.AuthorizationService>());
+			services.AddScoped<IRequestData, RequestData>();
+			
+			//These services are scoped because they use scoped IRequestData, otherwise they'd be singletons
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.UserId.Handler>();
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.AuctionItemId.Handler>();
 
@@ -71,6 +71,7 @@ namespace Auction.WebApi.Authorization {
 		public static IApplicationBuilder UseAuthenticationAndAuthorization(this IApplicationBuilder app) {
 
 			app.UseAuthentication();
+			app.UseMiddleware<AuthenticationMiddleware>();
 			app.UseAuthorization();
 			return app;
 		}

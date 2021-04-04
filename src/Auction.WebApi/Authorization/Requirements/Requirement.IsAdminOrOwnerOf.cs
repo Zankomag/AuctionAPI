@@ -21,12 +21,6 @@ namespace Auction.WebApi.Authorization.Requirements {
 			/// <typeparam name="TRequirement"></typeparam>
 			public abstract class IsAdminOrOwnerOfHandler<TRequirement> : AuthorizationHandler<TRequirement>
 				where TRequirement : IAuthorizationRequirement {
-				protected readonly AuthorizationService AuthorizationService;
-
-				protected IsAdminOrOwnerOfHandler(AuthorizationService authorizationService)
-					=> this.AuthorizationService = authorizationService;
-
-				protected string? RouteIdString => AuthorizationService.RouteData.Values["id"] as string;
 
 				protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
 					TRequirement requirement) {

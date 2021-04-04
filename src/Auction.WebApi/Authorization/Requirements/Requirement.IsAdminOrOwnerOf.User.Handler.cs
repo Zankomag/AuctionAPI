@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Auction.WebApi.Authorization.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 
 // ReSharper disable InheritdocConsiderUsage
@@ -9,8 +10,9 @@ namespace Auction.WebApi.Authorization.Requirements {
 		public abstract partial class IsAdminOrOwnerOf {
 			public partial class UserId {
 				public sealed class Handler : IsAdminOrOwnerOfHandler<UserId> {
+					private readonly IRequestData requestData;
 
-					public Handler(AuthorizationService authorizationService) : base(authorizationService) { }
+					public Handler(IRequestData requestData) => this.requestData = requestData;
 
 					/// <inheritdoc />
 					protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
@@ -19,8 +21,8 @@ namespace Auction.WebApi.Authorization.Requirements {
 						await base.HandleRequirementAsync(context, requirement);
 
 						if(!context.HasSucceeded && !context.HasFailed) {
-							if(RouteIdString != null
-								&& RouteIdString == AuthorizationService.UserIdString) {
+							if(requestData.RouteIdString != null
+								&& requestData.RouteIdString == requestData.UserIdString) {
 
 								context.Succeed(requirement);
 								return;
