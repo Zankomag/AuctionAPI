@@ -55,7 +55,8 @@ namespace Auction.WebApi.Authorization.Extensions {
 
 		private static void AddAuthorization(this IServiceCollection services) {
 			services.AddAuthorization(options => {
-				//Default policy 
+				//Override default 'DenyAnonymousAuthorizationRequirement' with similar policy
+				//that fails context if user is not authenticated
 				options.DefaultPolicy = new AuthorizationPolicyBuilder()
 					.AddRequirements(new Requirement.IsAuthenticated())
 					.Build();
