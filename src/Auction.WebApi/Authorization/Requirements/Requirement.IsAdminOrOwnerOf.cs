@@ -1,6 +1,4 @@
-﻿#nullable enable
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Auction.Application.Authorization;
 using Auction.WebApi.Authorization.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -13,13 +11,14 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 		public class IsAdmin : IAuthorizationRequirement { }
 
+
 		/// <inheritdoc />
 		public abstract partial class IsAdminOrOwnerOf : Category {
 
 			private const string policy = nameof(IsAdminOrOwnerOf);
 
-			
-			
+
+
 			/// <summary>
 			///     Succeeds if user role is Admin, does not fail
 			/// </summary>
@@ -30,7 +29,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 					if(!context.IsAlreadyDetermined<IsAdmin>()
 						&& context.User.IsInRole(Role.Admin)) {
-						
+
 						context.Succeed(requirement);
 					}
 					return Task.CompletedTask;

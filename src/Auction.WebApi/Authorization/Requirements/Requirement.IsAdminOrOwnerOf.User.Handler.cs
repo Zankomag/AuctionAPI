@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Auction.WebApi.Authorization.Abstractions;
 using Auction.WebApi.Authorization.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +16,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 					public Handler(IRequestData requestData) => this.requestData = requestData;
 
 					/// <inheritdoc />
-					protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
+					protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
 						UserId requirement) {
 
 						if(!context.IsAlreadyDetermined<UserId>()
@@ -25,9 +24,8 @@ namespace Auction.WebApi.Authorization.Requirements {
 							&& requestData.RouteIdString == requestData.UserIdString) {
 
 							context.Succeed(requirement);
-
-							//	context.Fail();
 						}
+						return Task.CompletedTask;
 					}
 				}
 			}
