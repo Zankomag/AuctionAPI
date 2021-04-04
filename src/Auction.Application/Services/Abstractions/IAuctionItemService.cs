@@ -11,10 +11,10 @@ namespace Auction.Application.Services.Abstractions {
 		/// <summary>
 		/// Get Id of User who is owner of AuctionItem
 		///
-		/// If AuctionItem doesn't exist - returns null
+		/// If AuctionItem doesn't exist - returns 0
 		/// </summary>
 		/// <param name="id">AuctionItem Id</param>
-		Task<int?> GetOwnerId(int id);
+		Task<int> GetOwnerId(int id);
 		
 		/// <returns>True if user DOES own auctionItem, otherwise false</returns>
 		Task<bool> IsUserOwner(int auctionItemId, int userId);
