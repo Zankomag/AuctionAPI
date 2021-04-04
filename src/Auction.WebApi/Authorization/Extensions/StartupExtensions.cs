@@ -58,21 +58,21 @@ namespace Auction.WebApi.Authorization.Extensions {
 				//Override default 'DenyAnonymousAuthorizationRequirement' with similar policy
 				//that fails context if user is not authenticated
 				options.DefaultPolicy = new AuthorizationPolicyBuilder()
-					.AddRequirements(new Requirement.IsAuthenticated())
+					.AddRequirements(new AuthenticationRequirement())
 					.Build();
-				options.AddPolicy(Requirement.IsAdmin.UserId.Policy,
-					policy => policy.AddRequirements(Requirement.IsAdmin.UserId.Get));
-				options.AddPolicy(Requirement.IsAdmin.AuctionItemId.Policy,
-					policy => policy.AddRequirements(Requirement.IsAdmin.AuctionItemId.Get));
+				options.AddPolicy(OwnerOfUserIdRequirement.Policy,
+					policy => policy.AddRequirements(OwnerOfUserIdRequirement.Get));
+				options.AddPolicy(OwnerOfAuctionItemIdRequirement.Policy,
+					policy => policy.AddRequirements(OwnerOfAuctionItemIdRequirement.Get));
 			});
 
 			services.AddScoped<IRequestData, RequestData>();
 			
 			//These services are scoped because they use scoped IRequestData, otherwise they'd be singletons
-			services.AddScoped<IAuthorizationHandler, Requirement.IsAuthenticated.Handler>();
-			services.AddScoped<IAuthorizationHandler, Requirement.IsAdmin.Handler>();
-			services.AddScoped<IAuthorizationHandler, Requirement.IsAdmin.UserId.Handler>();
-			services.AddScoped<IAuthorizationHandler, Requirement.IsAdmin.AuctionItemId.Handler>();
+			services.AddScoped<IAuthorizationHandler, AuthenticationRequirementHandler>();
+			services.AddScoped<IAuthorizationHandler, AdminRequirementHandler>();
+			services.AddScoped<IAuthorizationHandler, OwnerOfUserIdRequirementHandler>();
+			services.AddScoped<IAuthorizationHandler, OwnerOfAuctionItemIdRequirementHandler>();
 
 			services.AddHttpContextAccessor();
 		}
