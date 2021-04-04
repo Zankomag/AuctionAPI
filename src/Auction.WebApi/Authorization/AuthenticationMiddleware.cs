@@ -19,6 +19,7 @@ namespace Auction.WebApi.Authorization {
 		//While the class is singleton, this method is called every request (like Scoped service)
 		public async Task InvokeAsync(HttpContext context, IUserService userService, IRequestData requestData) {
 			if(context.User.Identity?.IsAuthenticated != true) {
+				//TODO if allowAnon or don't need auth, when we should response with 200, not 401
 				await context.ChallengeAsync();
 			} else { //User considered as authenticated at previous stage
 
@@ -36,6 +37,7 @@ namespace Auction.WebApi.Authorization {
 					requestData.UserIdString = userIdString;
 
 				} else {
+					//TODO if allowAnon or don't need auth, when we should response with 200, not 401
 					//Authentication failed, set response to 401
 					await context.ChallengeAsync();
 				}

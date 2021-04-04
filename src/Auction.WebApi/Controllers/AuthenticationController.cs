@@ -25,6 +25,8 @@ namespace Auction.WebApi.Controllers {
 
 			return tokenModel;
 		}
+		
+		//TODO allow getting token by other token (extend token) without login credentials, just by auth
 	}
 
 }
