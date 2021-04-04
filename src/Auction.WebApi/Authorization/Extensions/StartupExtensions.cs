@@ -55,6 +55,10 @@ namespace Auction.WebApi.Authorization.Extensions {
 
 		private static void AddAuthorization(this IServiceCollection services) {
 			services.AddAuthorization(options => {
+				//Default policy 
+				options.DefaultPolicy = new AuthorizationPolicyBuilder()
+					.AddRequirements(new Requirement.IsAuthenticated())
+					.Build();
 				options.AddPolicy(Requirement.IsAdminOrOwnerOf.UserId.Policy,
 					policy => policy.AddRequirements(Requirement.IsAdminOrOwnerOf.UserId.Get));
 				options.AddPolicy(Requirement.IsAdminOrOwnerOf.AuctionItemId.Policy,
@@ -64,6 +68,7 @@ namespace Auction.WebApi.Authorization.Extensions {
 			services.AddScoped<IRequestData, RequestData>();
 			
 			//These services are scoped because they use scoped IRequestData, otherwise they'd be singletons
+			services.AddScoped<IAuthorizationHandler, Requirement.IsAuthenticated.Handler>();
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.IsAdminOrOwnerOfHandler>();
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.UserId.Handler>();
 			services.AddScoped<IAuthorizationHandler, Requirement.IsAdminOrOwnerOf.AuctionItemId.Handler>();
