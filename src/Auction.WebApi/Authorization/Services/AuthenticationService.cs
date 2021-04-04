@@ -8,7 +8,7 @@ using AutoMapper;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Auction.WebApi.Authorization {
+namespace Auction.WebApi.Authorization.Services {
 
 	public class AuthenticationService : IAuthenticationService {
 		private readonly IUserService userService;

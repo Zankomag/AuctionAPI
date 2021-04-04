@@ -3,7 +3,7 @@ using Auction.WebApi.Authorization.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace Auction.WebApi.Authorization {
+namespace Auction.WebApi.Authorization.Services {
 
 	public class RequestData : IRequestData {
 		private readonly IHttpContextAccessor httpContextAccessor;

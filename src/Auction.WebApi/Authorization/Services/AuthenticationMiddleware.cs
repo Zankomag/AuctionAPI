@@ -3,10 +3,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Auction.Application.Services.Abstractions;
 using Auction.WebApi.Authorization.Abstractions;
+using Auction.WebApi.Authorization.Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
-namespace Auction.WebApi.Authorization {
+namespace Auction.WebApi.Authorization.Services {
 
 	public class AuthenticationMiddleware {
 		/// <summary>

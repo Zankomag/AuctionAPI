@@ -1,4 +1,4 @@
-﻿namespace Auction.WebApi.Authorization {
+﻿namespace Auction.WebApi.Authorization.Constants {
 
 	/// <summary>
 	///     <see

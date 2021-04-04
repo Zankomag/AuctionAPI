@@ -1,4 +1,4 @@
-﻿namespace Auction.WebApi.Authorization {
+﻿namespace Auction.WebApi.Authorization.Constants {
 
 	public static class JwtMessage {
 		public const string InvalidToken = "Invalid token";

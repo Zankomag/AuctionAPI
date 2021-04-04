@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using Auction.WebApi.Authorization.Constants;
 
 namespace Auction.WebApi.Authorization.Types {
 
