@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -24,28 +23,27 @@ namespace Auction.WebApi.Authorization.Services {
 			if(context.User.Identity?.IsAuthenticated == true) {
 				string userIdString = context.User.FindFirstValue(JwtOpenIdProperty.Sub);
 
-				//TODO use authenticationMessage here
-				// if 'sub' is null that means either 'sub' doesn't exists or token is not authorized
-				if(userIdString != null
-					&& Int32.TryParse(userIdString, out int userId)
+				if(userIdString == null || !Int32.TryParse(userIdString, out int userId)
 
 					//Instead of validating user, you had better save every token Id in db and then check if it exists
-					&& await userService.UserExists(userId)) {
+					|| !await userService.UserExists(userId)) {
 
-					//Authentication passed, set to allow using it in other services
-					context.User.AddIdentity(new UserIdentity {
-						Id = userId,
-						IdString = userIdString,
-						Roles = context.User.FindAll(x => x.Type == JwtOpenIdProperty.Role)
-							.Select(x => x.Value)
-							.ToList()
-					});
+					//Authentication failed
+					await context.Response.WriteAsync(AuthenticationMessage.InvalidToken);
 
-				} else {
-					//Authentication failed, set response to 401
+					//set response to 401
 					await context.ChallengeAsync();
 					return;
 				}
+
+				//Authentication passed, set user identity to allow using it in other services
+				context.User.AddIdentity(new UserIdentity {
+					Id = userId,
+					IdString = userIdString,
+					Roles = context.User.FindAll(x => x.Type == JwtOpenIdProperty.Role)
+						.Select(x => x.Value)
+						.ToList()
+				});
 			}
 
 			await next(context);
