@@ -26,7 +26,7 @@ namespace Auction.WebApi.Controllers {
 			=> await userService.GetAllAsync();
 
 		// GET api/Users/5
-		[Authorize(Requirement.AdminRequirement.OwnerOfUserIdRequirement.Policy)]
+		[Authorize(Requirement.AdminOrOwnerOfUserId)]
 		[HttpGet("{id:int}")]
 		public async Task<ActionResult<UserDetailedModel>> GetById(int id) {
 			var result = await userService.GetByIdAsync(id);
@@ -78,7 +78,7 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// DELETE api/Users/5
-		[Authorize(Requirement.AdminRequirement.OwnerOfUserIdRequirement.Policy)]
+		[Authorize(Requirement.AdminOrOwnerOfUserId)]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id) {
 			bool result = await userService.DeleteAsync(id);
