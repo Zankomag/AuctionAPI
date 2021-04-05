@@ -49,6 +49,9 @@ namespace Auction.WebApi.Controllers {
 		// POST api/AuctionItems
 		[HttpPost]
 		public async Task<ActionResult<AuctionItemInputModel>> Add([FromBody] AuctionItemInputModel model) {
+			if(!User.TryGetUserIdentity(out UserIdentity userIdentity)) 
+				return StatusCode(500);
+			model.SellerId = userIdentity.Id;
 			var result = await auctionItemService.AddAsync(model);
 			if(result == null)
 				return BadRequest();

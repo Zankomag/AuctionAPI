@@ -1,12 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Auction.Application.Models.Generic;
+using Newtonsoft.Json;
 
 namespace Auction.Application.Models {
 
 	public class AuctionItemInputModel : Model<int> {
 		public int? AuctionItemCategoryId { get; set; }
-
+		//TODO fix jsonignore doesn't work
+		[JsonIgnore]
+		public int SellerId { get; set; }
+		
 		[Required]
 		[StringLength(256)]
 		public string Name { get; set; }
