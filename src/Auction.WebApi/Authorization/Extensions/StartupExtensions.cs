@@ -61,6 +61,8 @@ namespace Auction.WebApi.Authorization.Extensions {
 				options.DefaultPolicy = new AuthorizationPolicyBuilder()
 					.AddRequirements(new AuthenticationRequirement())
 					.Build();
+				options.AddPolicy(Requirement.Admin,
+					policy => policy.AddRequirements(new AdminRequirement()));
 				options.AddPolicy(Requirement.AdminOrOwnerOfUserId,
 					policy => policy.AddRequirements(new AdminOrOwnerOfUserIdRequirement()));
 				options.AddPolicy(Requirement.AdminOrOwnerOfAuctionItemId,

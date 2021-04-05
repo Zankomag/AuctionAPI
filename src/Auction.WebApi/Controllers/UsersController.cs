@@ -20,7 +20,7 @@ namespace Auction.WebApi.Controllers {
 			=> this.userService = userService;
 
 		// GET api/Users
-		[Authorize(Roles = Role.Admin)]
+		[Authorize(Requirement.Admin)]
 		[HttpGet]
 		public async Task<IEnumerable<UserDetailedModel>> GetAll()
 			=> await userService.GetAllAsync();
@@ -36,7 +36,7 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// GET api/Users/amanda@gmail.com
-		[Authorize(Roles = Role.Admin)]
+		[Authorize(Requirement.Admin)]
 		[HttpGet("{email}")]
 		public async Task<ActionResult<UserDetailedModel>> GetByEmail(string email) {
 			if(email == null)
@@ -58,7 +58,7 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// POST api/Users/5/promote
-		[Authorize(Roles = Role.Admin)]
+		[Authorize(Requirement.Admin)]
 		[HttpPost("{id}/promote")]
 		public async Task<IActionResult> UpdateRoleToAdmin(int id) {
 			var result = await userService.UpdateRoleToAdminAsync(id);
@@ -68,7 +68,7 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// POST api/Users/5/demote
-		[Authorize(Roles = Role.Admin)]
+		[Authorize(Requirement.Admin)]
 		[HttpPost("{id}/demote")]
 		public async Task<IActionResult> UpdateRoleToUser(int id) {
 			var result = await userService.UpdateRoleToUserAsync(id);
