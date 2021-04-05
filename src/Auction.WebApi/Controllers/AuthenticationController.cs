@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Auction.Application.Models;
 using Auction.WebApi.Authorization.Abstractions;
+using Auction.WebApi.Authorization.Constants;
 using Auction.WebApi.Authorization.Types;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,7 @@ namespace Auction.WebApi.Controllers {
 			var tokenModel = await authenticationService.GetToken(model.Email, model.Password);
 
 			if(tokenModel == null)
-				return BadRequest("Wrong username or password");
+				return BadRequest(AuthenticationMessage.WrongUsernameOrPassword);
 
 			return tokenModel;
 		}
