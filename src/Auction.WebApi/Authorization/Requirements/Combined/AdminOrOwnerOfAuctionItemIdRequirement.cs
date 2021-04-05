@@ -1,5 +1,6 @@
 ﻿
 // ReSharper disable InheritdocConsiderUsage
+// ReSharper disable CheckNamespace
 
 namespace Auction.WebApi.Authorization.Requirements {
 
