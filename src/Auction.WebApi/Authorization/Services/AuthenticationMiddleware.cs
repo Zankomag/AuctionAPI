@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Auction.Application.Services.Abstractions;
-using Auction.WebApi.Authorization.Abstractions;
 using Auction.WebApi.Authorization.Constants;
+using Auction.WebApi.Authorization.Types;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
@@ -18,10 +20,11 @@ namespace Auction.WebApi.Authorization.Services {
 		public AuthenticationMiddleware(RequestDelegate next) => this.next = next;
 
 		//While the class is singleton, this method is called every request (like Scoped service)
-		public async Task InvokeAsync(HttpContext context, IUserService userService, IRequestData requestData) {
+		public async Task InvokeAsync(HttpContext context, IUserService userService) {
 			if(context.User.Identity?.IsAuthenticated == true) {
 				string userIdString = context.User.FindFirstValue(JwtOpenIdProperty.Sub);
 
+				//TODO use authenticationMessage here
 				// if 'sub' is null that means either 'sub' doesn't exists or token is not authorized
 				if(userIdString != null
 					&& Int32.TryParse(userIdString, out int userId)
@@ -29,9 +32,14 @@ namespace Auction.WebApi.Authorization.Services {
 					//Instead of validating user, you had better save every token Id in db and then check if it exists
 					&& await userService.UserExists(userId)) {
 
-					//Authentication passed, set request data to allow using it in other pipeline services
-					requestData.UserId = userId;
-					requestData.UserIdString = userIdString;
+					//Authentication passed, set to allow using it in other services
+					context.User.AddIdentity(new UserIdentity {
+						Id = userId,
+						IdString = userIdString,
+						Roles = context.User.FindAll(x => x.Type == JwtOpenIdProperty.Role)
+							.Select(x => x.Value)
+							.ToList()
+					});
 
 				} else {
 					//Authentication failed, set response to 401
@@ -39,7 +47,7 @@ namespace Auction.WebApi.Authorization.Services {
 					return;
 				}
 			}
-			
+
 			await next(context);
 		}
 	}

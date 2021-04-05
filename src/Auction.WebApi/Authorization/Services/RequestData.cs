@@ -13,17 +13,11 @@ namespace Auction.WebApi.Authorization.Services {
 			=> this.httpContextAccessor = httpContextAccessor;
 
 		/// <inheritdoc />
-		public string? UserIdString { get; set; }
-
-		/// <inheritdoc />
-		public int? UserId { get; set; }
-
-		/// <inheritdoc />
 		public RouteData RouteData
 			=> routeData ??= httpContextAccessor.HttpContext!.GetRouteData();
 
 		/// <inheritdoc />
-		public string? RouteIdString => RouteData.Values["id"] as string;
+		public string? RouteIdValue => RouteData.Values["id"] as string;
 	}
 
 }
