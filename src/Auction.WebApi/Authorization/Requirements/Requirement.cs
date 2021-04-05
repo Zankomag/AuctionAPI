@@ -13,7 +13,8 @@ namespace Auction.WebApi.Authorization.Requirements {
 		public const string AdminOrOwnerOfUserId = nameof(AdminOrOwnerOfUserIdRequirement);
 		public const string AdminOrOwnerOfAuctionItemId = nameof(AdminOrOwnerOfAuctionItemIdRequirement);
 
-		//TODO add factory that accepts name of requirement and returns type
+		//TODO add requirement factory that accepts name of requirement and returns type
+		//TODO add base class for ownerOf handlers
 	}
 
 }
