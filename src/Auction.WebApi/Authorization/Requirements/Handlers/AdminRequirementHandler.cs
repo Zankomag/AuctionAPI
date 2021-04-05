@@ -10,12 +10,12 @@ namespace Auction.WebApi.Authorization.Requirements.Handlers {
 	/// <summary>
 	///     Succeeds if user role is Admin, does not fail
 	/// </summary>
-	public class AdminRequirementHandler : AuthorizationHandler<AdminRequirement> {
+	public class AdminRequirementHandler : AuthorizationHandler<IAdminRequirement> {
 
 		protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-			AdminRequirement requirement) {
+			IAdminRequirement requirement) {
 
-			if(!context.IsAlreadyDetermined<AdminRequirement>()
+			if(!context.IsAlreadyDetermined<IAdminRequirement>()
 				&& context.User.IsInRole(Role.Admin)) {
 
 				context.Succeed(requirement);

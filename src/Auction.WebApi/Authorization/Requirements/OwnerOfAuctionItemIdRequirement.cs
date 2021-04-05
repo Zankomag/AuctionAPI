@@ -5,8 +5,11 @@
 namespace Auction.WebApi.Authorization.Requirements {
 
 	/// <summary>
-	///     Policy requirement that authorizes only Admins or Users that do own AuctionItem 'id' parameter of request
+	///     Policy requirement that authorizes only Users that do own AuctionItem 'id' parameter of request
 	/// </summary>
-	public class OwnerOfAuctionItemIdRequirement : AdminRequirement { }
+	public interface IOwnerOfAuctionItemIdRequirement : IAuthorizationRequirement { }
+	
+	/// <inheritdoc cref="IOwnerOfAuctionItemIdRequirement"/>
+	public class OwnerOfAuctionItemIdRequirement : IOwnerOfAuctionItemIdRequirement { }
 
 }

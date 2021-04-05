@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Auction.WebApi.Authorization.Requirements.Handlers {
 
-	public class OwnerOfAuctionItemIdRequirementHandler : AuthorizationHandler<OwnerOfAuctionItemIdRequirement> {
+	public class OwnerOfAuctionItemIdRequirementHandler : AuthorizationHandler<IOwnerOfAuctionItemIdRequirement> {
 
 		private readonly IAuctionItemService auctionItemService;
 		private readonly IRequestData requestData;
@@ -21,9 +21,9 @@ namespace Auction.WebApi.Authorization.Requirements.Handlers {
 		}
 
 		protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
-			OwnerOfAuctionItemIdRequirement requirement) {
+			IOwnerOfAuctionItemIdRequirement requirement) {
 
-			if(!context.IsAlreadyDetermined<OwnerOfAuctionItemIdRequirement>()
+			if(!context.IsAlreadyDetermined<IOwnerOfAuctionItemIdRequirement>()
 				&& requestData.RouteIdString != null && requestData.UserId != null
 				&& Int32.TryParse(requestData.RouteIdString, out int auctionItemId)
 				&& await auctionItemService.IsUserOwner(auctionItemId, requestData.UserId.Value)) {

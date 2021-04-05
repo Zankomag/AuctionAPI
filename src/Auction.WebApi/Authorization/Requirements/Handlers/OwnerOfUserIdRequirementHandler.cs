@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Auction.WebApi.Authorization.Requirements.Handlers {
 
-	public sealed class OwnerOfUserIdRequirementHandler : AuthorizationHandler<OwnerOfUserIdRequirement> {
+	public sealed class OwnerOfUserIdRequirementHandler : AuthorizationHandler<IOwnerOfUserIdRequirement> {
 		private readonly IRequestData requestData;
 
 		public OwnerOfUserIdRequirementHandler(IRequestData requestData) => this.requestData = requestData;
 
 		/// <inheritdoc />
 		protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-			OwnerOfUserIdRequirement requirement) {
+			IOwnerOfUserIdRequirement requirement) {
 
-			if(!context.IsAlreadyDetermined<OwnerOfUserIdRequirement>()
+			if(!context.IsAlreadyDetermined<IOwnerOfUserIdRequirement>()
 				&& requestData.RouteIdString != null
 				&& requestData.RouteIdString == requestData.UserIdString) {
 
