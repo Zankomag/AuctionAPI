@@ -62,9 +62,9 @@ namespace Auction.WebApi.Authorization.Extensions {
 					.AddRequirements(new AuthenticationRequirement())
 					.Build();
 				options.AddPolicy(Requirement.AdminOrOwnerOfUserId,
-					policy => policy.AddRequirements(OwnerOfUserIdRequirement.Get));
+					policy => policy.AddRequirements(new OwnerOfUserIdRequirement()));
 				options.AddPolicy(Requirement.AdminOrOwnerOfAuctionItemId,
-					policy => policy.AddRequirements(OwnerOfAuctionItemIdRequirement.Get));
+					policy => policy.AddRequirements(new OwnerOfAuctionItemIdRequirement()));
 			});
 
 			services.AddScoped<IRequestData, RequestData>();

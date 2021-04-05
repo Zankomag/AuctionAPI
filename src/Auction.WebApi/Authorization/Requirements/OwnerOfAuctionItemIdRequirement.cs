@@ -7,11 +7,6 @@ namespace Auction.WebApi.Authorization.Requirements {
 	/// <summary>
 	///     Policy requirement that authorizes only Admins or Users that do own AuctionItem 'id' parameter of request
 	/// </summary>
-	public class OwnerOfAuctionItemIdRequirement : AdminRequirement {
-
-		public static IAuthorizationRequirement Get => new OwnerOfAuctionItemIdRequirement();
-
-		private OwnerOfAuctionItemIdRequirement() { }
-	}
+	public class OwnerOfAuctionItemIdRequirement : AdminRequirement { }
 
 }
