@@ -71,6 +71,7 @@ namespace Auction.WebApi.Authorization.Extensions {
 
 			services.AddScoped<IRequestData, RequestData>();
 			
+			//Order of handlers is important - it determines their execution order in request pipeline
 			//These services are scoped because they use scoped IRequestData, otherwise they'd be singletons
 			services.AddScoped<IAuthorizationHandler, AuthenticationRequirementHandler>();
 			services.AddScoped<IAuthorizationHandler, AdminRequirementHandler>();
