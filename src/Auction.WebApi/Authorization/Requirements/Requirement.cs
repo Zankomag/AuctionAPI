@@ -7,13 +7,13 @@ namespace Auction.WebApi.Authorization.Requirements {
 	///     Policy requirements accessor
 	/// </summary>
 	public static class Requirement {
-		private const string ownerOf = "OwnerOf";
-		private const string or = "Or";
-		public const string Admin = "Admin";
-		public const string OwnerOfUserId = ownerOf + "UserId";
-		public const string OwnerOfAuctionItemId = ownerOf + "AuctionItemId";
-		public const string AdminOrOwnerOfUserId = Admin + or + OwnerOfUserId;
-		public const string AdminOrOwnerOfAuctionItemId = Admin + or + OwnerOfAuctionItemId;
+		public const string Admin = nameof(AdminRequirement);
+		public const string OwnerOfUserId = nameof(OwnerOfUserIdRequirement);
+		public const string OwnerOfAuctionItemId = nameof(OwnerOfAuctionItemIdRequirement);
+		public const string AdminOrOwnerOfUserId = nameof(AdminOrOwnerOfUserIdRequirement);
+		public const string AdminOrOwnerOfAuctionItemId = nameof(AdminOrOwnerOfAuctionItemIdRequirement);
+
+		//TODO add factory that accepts name of requirement and returns type
 	}
 
 }
