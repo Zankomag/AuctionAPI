@@ -2,11 +2,12 @@
 using System.Threading.Tasks;
 using Auction.Application.Models;
 using Auction.Application.Services.Abstractions;
+using Auction.WebApi.Authorization;
+using Auction.WebApi.Authorization.Extensions;
 using Auction.WebApi.Authorization.Requirements;
+using Auction.WebApi.Authorization.Types;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-#pragma warning disable S125 // Sections of code should not be commented out
 
 namespace Auction.WebApi.Controllers {
 
@@ -34,8 +35,8 @@ namespace Auction.WebApi.Controllers {
 			return result;
 		}
 		
-		// GET api/AuctionItems/war%20and%20peace   or api/AuctionItems + body: { name: {"war and peace"} }
-		[HttpPost("{name}")]
+		// GET api/AuctionItems/war%20and%20peace
+		[HttpGet("{name}")]
 		public async Task<ActionResult<IEnumerable<AuctionItemModel>>> GetByName(string name) {
 			if(name == null)
 				return BadRequest();
@@ -55,7 +56,7 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// PUT api/AuctionItems/5
-		[Authorize(Requirement.AdminOrOwnerOfAuctionItemId)]
+		[AuthorizeAny(Requirement.Admin, Requirement.OwnerOfAuctionItemId)]
 		[HttpPut("{id}")]
 		public async Task<ActionResult<AuctionItemInputModel>> Update(int id,
 			[FromBody] AuctionItemInputModel model) {
@@ -67,7 +68,7 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// DELETE api/AuctionItems/5
-		[Authorize(Requirement.AdminOrOwnerOfAuctionItemId)]
+		[AuthorizeAny(Requirement.Admin, Requirement.OwnerOfAuctionItemId)]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id) {
 			bool result = await auctionItemService.DeleteByIdAsync(id);
