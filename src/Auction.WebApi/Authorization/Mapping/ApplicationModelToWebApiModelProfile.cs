@@ -2,7 +2,7 @@
 using Auction.WebApi.Authorization.Types;
 using AutoMapper;
 
-namespace Auction.WebApi.Mapping {
+namespace Auction.WebApi.Authorization.Mapping {
 
 	public class ApplicationModelToWebApiModelProfile : Profile {
 		public ApplicationModelToWebApiModelProfile() => CreateMap<UserDetailedModel, UserIdentity>();
