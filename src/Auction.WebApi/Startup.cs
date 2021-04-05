@@ -23,7 +23,7 @@ namespace Auction.WebApi {
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services) {
 			//Configure all infrastructure services
-			services.AddInfrastructure(Configuration, new ApplicationModelToWebApiModelProfile());
+			services.AddInfrastructure(Configuration, new ApplicationModelToAuthenticationModelProfile());
 
 			services.AddAuthenticationAndAuthorization(Configuration);
 
