@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Serilog;
 
 namespace Auction.WebApi {
@@ -33,6 +34,7 @@ namespace Auction.WebApi {
 				.AddNewtonsoftJson(options => {
 					options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 					options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+					options.SerializerSettings.Converters.Add(new StringEnumConverter());
 				})
 				.ConfigureApiBehaviorOptions(options => options.InvalidModelStateResponseFactory = context => {
 					if(context.ModelState.ErrorCount > 0) {
