@@ -24,11 +24,9 @@ namespace Auction.Core.Entities {
 		[Required]
 		public byte[] PasswordSalt { get; set; }
 
-		[StringLength(20)]
-		[Required]
-		public string Role { get; set; }
 
 
+		public ICollection<UserRole> Roles { get; set; }
 		public ICollection<Bid> Bids { get; set; }
 		public ICollection<AuctionItem> AuctionItems { get; set; }
 	}

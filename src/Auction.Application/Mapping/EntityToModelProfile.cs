@@ -1,4 +1,5 @@
-﻿using Auction.Application.Models;
+﻿using System.Linq;
+using Auction.Application.Models;
 using Auction.Core.Entities;
 using AutoMapper;
 
@@ -11,7 +12,8 @@ namespace Auction.Application.Mapping {
 
 			CreateMap<UserInputModel, User>();
 			CreateMap<User, UserModel>();
-			CreateMap<User, UserDetailedModel>();
+			CreateMap<User, UserDetailedModel>()
+				.ForMember(x => x.Roles, c => c.MapFrom(x => x.Roles.Select(x => x.Name)));
 
 			CreateMap<BidInputModel, Bid>();
 			CreateMap<Bid, BidModel>()

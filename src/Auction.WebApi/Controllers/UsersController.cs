@@ -61,7 +61,7 @@ namespace Auction.WebApi.Controllers {
 		[Authorize(Requirement.Admin)]
 		[HttpPost("{id}/promote")]
 		public async Task<IActionResult> UpdateRoleToAdmin(int id) {
-			var result = await userService.UpdateRoleToAdminAsync(id);
+			var result = await userService.AddAdminRoleAsync(id);
 			if(!result)
 				return BadRequest();
 			return Ok();
@@ -71,7 +71,7 @@ namespace Auction.WebApi.Controllers {
 		[Authorize(Requirement.Admin)]
 		[HttpPost("{id}/demote")]
 		public async Task<IActionResult> UpdateRoleToUser(int id) {
-			var result = await userService.UpdateRoleToUserAsync(id);
+			var result = await userService.RemoveAdminRoleAsync(id);
 			if(!result)
 				return BadRequest();
 			return Ok();

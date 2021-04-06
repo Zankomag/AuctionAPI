@@ -16,7 +16,9 @@ namespace Auction.Core.Repositories {
 
 		Task AddAsync(User user);
 
-		void UpdateRoleAsync(int userId, string role);
+		Task<bool> AddRoleAsync(int userId, int roleId);
+		
+		Task<bool> RemoveRoleAsync(int userId, int roleId);
 
 		/// <returns>True on success</returns>
 		Task<bool> DeleteAsync(int userId);

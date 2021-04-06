@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Auction.Application.Authorization;
 using Auction.Core.Entities;
 using Auction.Core.Repositories;
 using Auction.Infrastructure.Repositories.Generic;
@@ -27,21 +28,41 @@ namespace Auction.Infrastructure.Repositories {
 		public async Task<User> GetAuthorizationInfoByEmailAsync(string email)
 			=> await DbSet.Where(x => x.Email == email).Select(x => new User {
 				Id = x.Id,
-				Role = x.Role,
+				Roles = x.Roles,
 				PasswordHash = x.PasswordHash,
 				PasswordSalt = x.PasswordSalt
 			}).FirstOrDefaultAsync();
 
 		/// <inheritdoc />
 		public async Task AddAsync(User user) => await DbSet.AddAsync(user);
+		//TODO add @removeRole method
+		/// <inheritdoc />
+		public async Task<bool> AddRoleAsync(int userId, int roleId) {
+			var user = await DbSet.Where(x => x.Id == userId)
+				.Select(x => new User {
+					Id = x.Id,
+					Roles = x.Roles
+				}).FirstOrDefaultAsync();
+			if(user?.Roles.Any(x => x.Id == roleId) != false) {
+				return false;
+			}
+			user.Roles.Add(new UserRole(){Id = roleId});
+			return true;
+		}
 
 		/// <inheritdoc />
-		public void UpdateRoleAsync(int userId, string role) {
-			var user = new User {
-				Id = userId,
-				Role = role
-			};
-			DbSet.Attach(user).Property(x => x.Role).IsModified = true;
+		public async Task<bool> RemoveRoleAsync(int userId, int roleId) {
+			var user = await DbSet.Where(x => x.Id == userId)
+				.Select(x => new User {
+					Id = x.Id,
+					Roles = x.Roles
+				}).FirstOrDefaultAsync();
+			UserRole role = user?.Roles.FirstOrDefault(x => x.Id == roleId);
+			if(role == null) {
+				return false;
+			}
+			user.Roles.Remove(role);
+			return true;
 		}
 
 		/// <inheritdoc />
@@ -59,7 +80,7 @@ namespace Auction.Infrastructure.Repositories {
 		private IQueryable<User> GetAllExceptPasswordHash()
 			=> DbSet.Select(x => new User {
 				Id = x.Id,
-				Role = x.Role,
+				Roles = x.Roles,
 				Email = x.Email,
 				FirstName = x.FirstName,
 				LastName = x.LastName

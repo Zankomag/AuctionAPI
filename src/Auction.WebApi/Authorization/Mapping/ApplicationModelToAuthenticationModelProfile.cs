@@ -6,10 +6,8 @@ using AutoMapper;
 namespace Auction.WebApi.Authorization.Mapping {
 
 	public class ApplicationModelToAuthenticationModelProfile : Profile {
-		public ApplicationModelToAuthenticationModelProfile() 
-			=> CreateMap<UserDetailedModel, UserIdentity>()
-				//Temporary solution
-				.ForMember(x => x.Roles, c => c.MapFrom(x => new List<string>{x.Role}));
+		public ApplicationModelToAuthenticationModelProfile()
+			=> CreateMap<UserDetailedModel, UserIdentity>();
 	}
 
 }

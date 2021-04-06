@@ -52,7 +52,7 @@ namespace Auction.Infrastructure.Data {
 
 		private void ConfigureRoles(ModelBuilder modelBuilder) {
 			modelBuilder.Entity<UserRole>()
-				.HasData(Role.GetAll());
+				.HasData(Role.AllRoles);
 		}
 		
 		private void ConfigureBids(ModelBuilder modelBuilder) {

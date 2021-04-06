@@ -4,16 +4,35 @@ using System.Linq;
 using System.Reflection;
 
 namespace Auction.Application.Authorization {
-
-	//TODO roles need to be saved in db and one user can have many roles
-	//and all roles have to be retrieved from db on authentication
+	
 	public static class Role {
 		//This workaround is used because role strings must be constant due to attribute limitations
 		[RoleId(1)] public const string Admin = "Admin";
 		[RoleId(2)] public const string User = "User";
 
-		public static List<Core.Entities.UserRole> GetAll() {
-			
+		public static List<Core.Entities.UserRole> AllRoles { get; private set; }
+
+		static Role() => InitializeRoles();
+
+		public static bool TryGetRoleId(string roleName, out int roleId) {
+			roleId = default;
+			var role = AllRoles.FirstOrDefault(x => x.Name == roleName);
+			if(role == null)
+				return false;
+			roleId = role.Id;
+			return true;
+		}
+
+		public static List<Core.Entities.UserRole> GetDefaultRoles() {
+			var defaultRoles = new List<Core.Entities.UserRole>();
+			var userRole = AllRoles.FirstOrDefault(x => x.Name == User);
+			if(userRole != null) {
+				defaultRoles.Add(userRole);
+			}
+			return defaultRoles;
+		}
+		
+		private static void InitializeRoles() {
 			var roles = typeof(Role).GetFields(BindingFlags.Public | BindingFlags.Static)
 				.Where(fi => fi.IsLiteral && !fi.IsInitOnly)
 				.Select(x => new {
@@ -26,7 +45,7 @@ namespace Auction.Application.Authorization {
 					Name = x.Value
 				}).ToList();
 			ValidateRoles(roles);
-			return roles;
+			AllRoles = roles;
 		}
 
 		/// <summary>
@@ -39,11 +58,15 @@ namespace Auction.Application.Authorization {
 				if(!distinctRoleNames.Add(role.Name)) {
 					throw new ValidationException($"Role \"{role.Name}\" is duplicated");
 				}
+				if(role.Id <= 0) {
+					throw new ValidationException($"\"{role.Name}\" role Id must be greater then 0");
+				}
 				if(!distinctRoleIds.Add(role.Id)) {
 					throw new ValidationException($"Role \"{role.Name}\" has Id that is already used");
 				}
 			}
 		}
+		
 	}
 
 }

@@ -14,10 +14,10 @@ namespace Auction.Application.Services.Abstractions {
 		Task<UserDetailedModel> AddAsync(UserInputModel model);
 		
 		/// <returns>True on success</returns>
-		Task<bool> UpdateRoleToAdminAsync(int userId);
+		Task<bool> AddAdminRoleAsync(int userId);
 
 		/// <returns>True on success</returns>
-		Task<bool> UpdateRoleToUserAsync(int userId);
+		Task<bool> RemoveAdminRoleAsync(int userId);
 
 		/// <returns>True on success</returns>
 		Task<bool> DeleteAsync(int userId);

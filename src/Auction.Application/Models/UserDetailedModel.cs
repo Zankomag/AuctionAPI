@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Auction.Application.Models {
 
@@ -11,7 +12,7 @@ namespace Auction.Application.Models {
 
 		[StringLength(20)]
 		[Required]
-		public string Role { get; set; }
+		public List<string> Roles { get; set; }
 	}
 
 }

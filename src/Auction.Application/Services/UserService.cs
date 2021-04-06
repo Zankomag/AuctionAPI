@@ -63,7 +63,8 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<UserDetailedModel> GetAuthorizationInfoByEmailAndPasswordAsync(string email, string password) {
+		public async Task<UserDetailedModel>
+			GetAuthorizationInfoByEmailAndPasswordAsync(string email, string password) {
 			try {
 				User user = await workUnit.UserRepository.GetAuthorizationInfoByEmailAsync(email);
 				if(user == null)
@@ -95,7 +96,7 @@ namespace Auction.Application.Services {
 				return null;
 			try {
 				User user = mapper.Map<User>(model);
-				user.Role = Role.User;
+				user.Roles = Role.GetDefaultRoles();
 				user.PasswordHash = model.Password.ToPasswordHash(out byte[] salt);
 				user.PasswordSalt = salt;
 				await workUnit.UserRepository.AddAsync(user);
@@ -110,26 +111,11 @@ namespace Auction.Application.Services {
 			}
 		}
 
-		private async Task<bool> UpdateRoleAsync(int userId, string role) {
-			if(String.IsNullOrEmpty(role))
-				return false;
-			try {
-				workUnit.UserRepository.UpdateRoleAsync(userId, role);
-				await workUnit.SaveAsync();
-				return true;
-			} catch(DbUpdateException) {
-				return false;
-			} catch(Exception ex) {
-				logger.LogError(ex, ExceptionThrownInService);
-				throw;
-			}
-		}
-		
 		/// <inheritdoc />
-		public async Task<bool> UpdateRoleToAdminAsync(int userId) => await UpdateRoleAsync(userId, Role.Admin);
+		public async Task<bool> AddAdminRoleAsync(int userId) => await UpdateRoleAsync(userId, Role.Admin);
 
 		/// <inheritdoc />
-		public async Task<bool> UpdateRoleToUserAsync(int userId) => await UpdateRoleAsync(userId, Role.User);
+		public async Task<bool> RemoveAdminRoleAsync(int userId) => await UpdateRoleAsync(userId, Role.User);
 
 		/// <inheritdoc />
 		public async Task<bool> DeleteAsync(int userId) {
@@ -144,7 +130,25 @@ namespace Auction.Application.Services {
 			}
 		}
 
-
+		private async Task<bool> UpdateRoleAsync(int userId, string role) {
+			if(String.IsNullOrEmpty(role))
+				return false;
+			if(!Role.TryGetRoleId(role, out int roleId)) {
+				return false;
+			}
+			try {
+				if(await workUnit.UserRepository.AddRoleAsync(userId, roleId)) {
+					await workUnit.SaveAsync();
+					return true;
+				}
+				return false;
+			} catch(DbUpdateException) {
+				return false;
+			} catch(Exception ex) {
+				logger.LogError(ex, ExceptionThrownInService);
+				throw;
+			}
+		}
 	}
 
 }
