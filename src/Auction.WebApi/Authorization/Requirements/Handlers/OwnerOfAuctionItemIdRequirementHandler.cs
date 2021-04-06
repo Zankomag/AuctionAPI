@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Auction.Application.Services.Abstractions;
 using Auction.WebApi.Authorization.Abstractions;
 using Auction.WebApi.Authorization.Types;
@@ -20,8 +19,7 @@ namespace Auction.WebApi.Authorization.Requirements.Handlers {
 		protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
 			IOwnerOfAuctionItemIdRequirement requirement) {
 
-			if(IsContextValid(context, out UserIdentity userIdentity)
-				&& Int32.TryParse(RequestData.RouteIdValue, out int auctionItemId)
+			if(IsContextValid(context, out UserIdentity userIdentity, out int auctionItemId)
 				&& await auctionItemService.IsUserOwner(auctionItemId, userIdentity.Id)) {
 
 				context.Succeed(requirement);
