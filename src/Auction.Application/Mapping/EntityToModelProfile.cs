@@ -8,7 +8,8 @@ namespace Auction.Application.Mapping {
 
 	public class EntityToModelProfile : Profile {
 		public EntityToModelProfile() {
-			CreateMap<AuctionItemCategoryInputModel, AuctionItemCategory>();
+			CreateMap<AuctionItemCategoryInputModel, AuctionItemCategory>()
+				.ReverseMap();
 			CreateMap<AuctionItemCategory, AuctionItemCategoryDetailedModel>();
 
 			CreateMap<UserInputModel, User>();
@@ -22,8 +23,12 @@ namespace Auction.Application.Mapping {
 			CreateMap<Bid, BidModel>()
 				.PreserveReferences();
 
-			CreateMap<AuctionItemInputModel, AuctionItem>();
+			CreateMap<AuctionItemInputModel, AuctionItem>()
+				.ForMember(x => x.AuctionItemCategoryId, c => c.MapFrom(a => a.CategoryId))
+				.ReverseMap();
 			CreateMap<AuctionItem, AuctionItemModel>()
+				.ForMember(x => x.CategoryId, c => c.MapFrom(a => a.AuctionItemCategoryId))
+				.ForMember(x => x.CategoryName, c => c.MapFrom(a => a.AuctionItemCategory.Name))
 				.PreserveReferences();
 
 			CreateMap<RoleModel, UserRole>();
