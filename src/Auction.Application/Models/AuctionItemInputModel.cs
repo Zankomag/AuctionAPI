@@ -7,7 +7,7 @@ namespace Auction.Application.Models {
 	//TODO FIX AUCTION STARTDATE AND PLANNED CLOSE DATE VALIDATION
 	public class AuctionItemInputModel : Model<int> {
 		public int? CategoryId { get; set; }
-		//TODO fix jsonignore doesn't work
+		
 		[JsonIgnore]
 		public int SellerId { get; set; }
 		

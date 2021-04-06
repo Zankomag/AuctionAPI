@@ -33,6 +33,7 @@ namespace Auction.WebApi.Swagger {
 				});
 				c.SchemaFilter<ExcludeIdFieldFromInputModelSwaggerFilter>();
 			});
+			services.AddSwaggerGenNewtonsoftSupport();
 			return services;
 		}
 	}
