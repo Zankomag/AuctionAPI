@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Auction.Application\Auction.Application.csproj" />
-    <ProjectReference Include="..\Auction.Core\Auction.Core.csproj" />
     <ProjectReference Include="..\Auction.Infrastructure\Auction.Infrastructure.csproj" />
   </ItemGroup>
 
