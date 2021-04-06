@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Auction.Core.Repositories;
 using Auction.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Auction.Infrastructure.Repositories {
 
@@ -22,6 +23,10 @@ namespace Auction.Infrastructure.Repositories {
 		/// <inheritdoc />
 		public IAuctionItemCategoryRepository AuctionItemCategoryRepository
 			=> auctionItemCategoryRepository ??= new AuctionItemCategoryRepository(Context);
+
+		public async Task<IDbContextTransaction> BeginTransactionAsync() 
+			=> await Context.Database.BeginTransactionAsync();
+
 
 		/// <inheritdoc />
 		public async Task<int> SaveAsync() => await Context.SaveChangesAsync();
