@@ -19,7 +19,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 		public static string GetOrCombinedPolicy(params string[] policies) => String.Join("Or", policies);
 		
 		//TODO add requirement factory that accepts name of requirement and returns type
-		//TODO add base class for ownerOf handlers
+		//TODO add dynamic OR-combined requirement creation (based on AuthorizeAny attribute usage)
 		
 	}
 
