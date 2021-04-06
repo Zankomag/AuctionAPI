@@ -25,7 +25,7 @@ namespace Auction.Core.Repositories {
 		/// <returns>True on success</returns>
 		Task<bool> DeleteAsync(int userId);
 
-		Task<bool> UserExists(int userId);
+		Task<bool> UserExistsAsync(int userId);
 	}
 
 }

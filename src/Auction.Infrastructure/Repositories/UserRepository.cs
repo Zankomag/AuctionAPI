@@ -87,7 +87,7 @@ namespace Auction.Infrastructure.Repositories {
 		}
 
 		/// <inheritdoc />
-		public async Task<bool> UserExists(int userId) => await DbSet.AnyAsync(x => x.Id == userId);
+		public async Task<bool> UserExistsAsync(int userId) => await DbSet.AnyAsync(x => x.Id == userId);
 
 		private IQueryable<User> GetAllExceptPasswordHash()
 			=> DbSet.Include(x => x.UserUserRoles)

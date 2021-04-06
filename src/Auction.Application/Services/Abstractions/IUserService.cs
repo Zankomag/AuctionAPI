@@ -25,7 +25,7 @@ namespace Auction.Application.Services.Abstractions {
 		/// <returns>User with Id and Role on success or null</returns>
 		Task<UserDetailedModel> GetAuthorizationInfoByEmailAndPasswordAsync(string email, string password);
 
-		Task<bool> UserExists(int userId);
+		Task<bool> UserExistsAsync(int userId);
 	}
 
 }

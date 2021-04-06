@@ -82,9 +82,9 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<bool> UserExists(int userId) {
+		public async Task<bool> UserExistsAsync(int userId) {
 			try {
-				return await workUnit.UserRepository.UserExists(userId);
+				return await workUnit.UserRepository.UserExistsAsync(userId);
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
 				throw;

@@ -26,7 +26,7 @@ namespace Auction.WebApi.Authorization.Services {
 				if(userIdString == null || !Int32.TryParse(userIdString, out int userId)
 
 					//Instead of validating user, you had better save every token Id in db and then check if it exists
-					|| !await userService.UserExists(userId)) {
+					|| !await userService.UserExistsAsync(userId)) {
 
 					//Authentication failed
 					await context.Response.WriteAsync(AuthenticationMessage.InvalidToken);
