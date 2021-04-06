@@ -52,6 +52,9 @@ namespace Auction.Infrastructure.Data {
 
 		private void ConfigureRoles(ModelBuilder modelBuilder) {
 			modelBuilder.Entity<UserRole>()
+				.HasIndex(x => x.Name).IsUnique();
+			
+			modelBuilder.Entity<UserRole>()
 				.HasData(Role.AllRoles);
 		}
 		
