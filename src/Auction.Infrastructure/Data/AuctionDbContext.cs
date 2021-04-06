@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Auction.Application.Authorization;
 using Auction.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ namespace Auction.Infrastructure.Data {
 		public DbSet<AuctionItemStatusCode> AuctionItemStatusCodes { get; set; }
 		public DbSet<AuctionItemImage> AuctionItemImages { get; set; }
 		public DbSet<User> Users { get; set; }
+		public DbSet<UserRole> Roles { get; set; }
 		public DbSet<Bid> Bids { get; set; }
 
 		public AuctionDbContext(DbContextOptions<AuctionDbContext> options) : base(options) { }
@@ -27,6 +29,7 @@ namespace Auction.Infrastructure.Data {
 			ConfigureAuctionItem(modelBuilder);
 			ConfigureBids(modelBuilder);
 			ConfigureAuctionItemStatusCode(modelBuilder);
+			ConfigureRoles(modelBuilder);
 		}
 
 		private void ConfigureAuctionItemStatusCode(ModelBuilder modelBuilder) {
@@ -47,6 +50,11 @@ namespace Auction.Infrastructure.Data {
 					}));
 		}
 
+		private void ConfigureRoles(ModelBuilder modelBuilder) {
+			modelBuilder.Entity<UserRole>()
+				.HasData(Role.GetAll());
+		}
+		
 		private void ConfigureBids(ModelBuilder modelBuilder) {
 			//SQL Server doesn't allow to use Cascade here because of cycles in relationships
 			modelBuilder.Entity<Bid>()
