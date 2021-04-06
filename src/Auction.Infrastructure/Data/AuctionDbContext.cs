@@ -18,6 +18,7 @@ namespace Auction.Infrastructure.Data {
 		public DbSet<User> Users { get; set; }
 		public DbSet<UserRole> Roles { get; set; }
 		public DbSet<Bid> Bids { get; set; }
+		public DbSet<UserUserRole> UserUserRoles { get; set; }
 
 		public AuctionDbContext(DbContextOptions<AuctionDbContext> options) : base(options) { }
 
@@ -30,6 +31,7 @@ namespace Auction.Infrastructure.Data {
 			ConfigureBids(modelBuilder);
 			ConfigureAuctionItemStatusCode(modelBuilder);
 			ConfigureRoles(modelBuilder);
+			ConfigureUserUserRole(modelBuilder);
 		}
 
 		private void ConfigureAuctionItemStatusCode(ModelBuilder modelBuilder) {
@@ -82,6 +84,21 @@ namespace Auction.Infrastructure.Data {
 		private void ConfigureUser(ModelBuilder modelBuilder) {
 			modelBuilder.Entity<User>()
 				.HasIndex(x => x.Email).IsUnique();
+		}
+
+		private void ConfigureUserUserRole(ModelBuilder modelBuilder) {
+			modelBuilder.Entity<UserUserRole>()
+				.HasKey(x => new {x.UserId, x.UserRoleId});
+			
+			modelBuilder.Entity<UserUserRole>()
+				.HasOne(x => x.User)
+				.WithMany(x => x.UserUserRoles)
+				.HasForeignKey(x => x.UserId);
+
+			modelBuilder.Entity<UserUserRole>()
+				.HasOne(x => x.UserRole)
+				.WithMany(x => x.UserUserRoles)
+				.HasForeignKey(x => x.UserRoleId);
 		}
 	}
 

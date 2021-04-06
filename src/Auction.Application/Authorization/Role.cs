@@ -11,9 +11,13 @@ namespace Auction.Application.Authorization {
 		[RoleId(2)] public const string User = "User";
 
 		public static List<RoleModel> AllRoles { get; private set; }
-		public static List<RoleModel> DefaultRoles { get; private set; }
 
 		static Role() => InitializeRoles();
+
+		public static string GetRoleName(int roleId)
+			=> AllRoles.Where(x => x.Id == roleId)
+				.Select(x => x.Name)
+				.FirstOrDefault();
 
 		public static bool TryGetRoleId(string roleName, out int roleId) {
 			roleId = default;
@@ -25,13 +29,6 @@ namespace Auction.Application.Authorization {
 			return true;
 		}
 
-		private static void SetDefaultRoles() {
-			var defaultRoles = new List<RoleModel>();
-			var role = AllRoles.First(x => x.Name == User);
-			defaultRoles.Add(role);
-			DefaultRoles = defaultRoles;
-		}
-		
 		private static void InitializeRoles() {
 			var roles = typeof(Role).GetFields(BindingFlags.Public | BindingFlags.Static)
 				.Where(fi => fi.IsLiteral && !fi.IsInitOnly)
@@ -43,7 +40,6 @@ namespace Auction.Application.Authorization {
 				.Select(x => new RoleModel(x.RoleId.Value, x.Value)).ToList();
 			ValidateRoles(roles);
 			AllRoles = roles;
-			SetDefaultRoles();
 		}
 
 		/// <summary>

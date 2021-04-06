@@ -26,7 +26,7 @@ namespace Auction.Core.Entities {
 
 
 
-		public ICollection<UserRole> Roles { get; set; }
+		public ICollection<UserUserRole> UserUserRoles { get; set; }
 		public ICollection<Bid> Bids { get; set; }
 		public ICollection<AuctionItem> AuctionItems { get; set; }
 	}

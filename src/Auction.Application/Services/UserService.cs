@@ -63,8 +63,9 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<UserDetailedModel>
-			GetAuthorizationInfoByEmailAndPasswordAsync(string email, string password) {
+		public async Task<UserDetailedModel> GetAuthorizationInfoByEmailAndPasswordAsync(
+			string email, string password) {
+			
 			try {
 				User user = await workUnit.UserRepository.GetAuthorizationInfoByEmailAsync(email);
 				if(user == null)
@@ -94,16 +95,21 @@ namespace Auction.Application.Services {
 		public async Task<UserDetailedModel> AddAsync(UserInputModel model) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;
+			if(!Role.TryGetRoleId(Role.User, out int defaultRoleId))
+				return null;
+			await using var transaction = await workUnit.BeginTransactionAsync();
 			try {
 				User user = mapper.Map<User>(model);
-				user.Roles = mapper.Map<ICollection<UserRole>>(Role.DefaultRoles);
 				user.PasswordHash = model.Password.ToPasswordHash(out byte[] salt);
 				user.PasswordSalt = salt;
 				await workUnit.UserRepository.AddAsync(user);
 				await workUnit.SaveAsync();
+				workUnit.UserRepository.AddRole(user, defaultRoleId);
+				await workUnit.SaveAsync();
+				await transaction.CommitAsync();
 				var result = mapper.Map<UserDetailedModel>(user);
 				return result;
-			} catch(DbUpdateException ex) {
+			} catch(DbUpdateException) {
 				return null;
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
@@ -112,10 +118,10 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<bool> AddAdminRoleAsync(int userId) => await UpdateRoleAsync(userId, Role.Admin);
+		public async Task<bool> AddAdminRoleAsync(int userId) => await AddRoleAsync(userId, Role.Admin);
 
 		/// <inheritdoc />
-		public async Task<bool> RemoveAdminRoleAsync(int userId) => await UpdateRoleAsync(userId, Role.User);
+		public async Task<bool> RemoveAdminRoleAsync(int userId) => await RemoveRoleAsync(userId, Role.Admin);
 
 		/// <inheritdoc />
 		public async Task<bool> DeleteAsync(int userId) {
@@ -130,7 +136,27 @@ namespace Auction.Application.Services {
 			}
 		}
 
-		private async Task<bool> UpdateRoleAsync(int userId, string role) {
+		private async Task<bool> RemoveRoleAsync(int userId, string role) {
+			if(String.IsNullOrEmpty(role))
+				return false;
+			if(!Role.TryGetRoleId(role, out int roleId)) {
+				return false;
+			}
+			try {
+				if(await workUnit.UserRepository.RemoveRoleAsync(userId, roleId)) {
+					await workUnit.SaveAsync();
+					return true;
+				}
+				return false;
+			} catch(DbUpdateException) {
+				return false;
+			} catch(Exception ex) {
+				logger.LogError(ex, ExceptionThrownInService);
+				throw;
+			}
+		}
+		
+		private async Task<bool> AddRoleAsync(int userId, string role) {
 			if(String.IsNullOrEmpty(role))
 				return false;
 			if(!Role.TryGetRoleId(role, out int roleId)) {

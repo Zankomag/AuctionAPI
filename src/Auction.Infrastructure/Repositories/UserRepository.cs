@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Auction.Application.Authorization;
 using Auction.Core.Entities;
 using Auction.Core.Repositories;
 using Auction.Infrastructure.Repositories.Generic;
@@ -28,41 +27,54 @@ namespace Auction.Infrastructure.Repositories {
 		public async Task<User> GetAuthorizationInfoByEmailAsync(string email)
 			=> await DbSet.Where(x => x.Email == email).Select(x => new User {
 				Id = x.Id,
-				Roles = x.Roles,
+				UserUserRoles = x.UserUserRoles,
 				PasswordHash = x.PasswordHash,
 				PasswordSalt = x.PasswordSalt
 			}).FirstOrDefaultAsync();
 
 		/// <inheritdoc />
 		public async Task AddAsync(User user) => await DbSet.AddAsync(user);
-		
+
 		/// <inheritdoc />
 		public async Task<bool> AddRoleAsync(int userId, int roleId) {
 			var user = await DbSet.Where(x => x.Id == userId)
 				.Select(x => new User {
 					Id = x.Id,
-					Roles = x.Roles
+					UserUserRoles = x.UserUserRoles
 				}).FirstOrDefaultAsync();
-			if(user?.Roles.Any(x => x.Id == roleId) != false) {
+			return AddRole(user, roleId);
+		}
+
+		/// <inheritdoc />
+		public bool AddRole(User user, int roleId) {
+			if(user == null)
+				return false;
+			user.UserUserRoles ??= new List<UserUserRole>();
+			if(user.UserUserRoles.Any(x => x.UserRoleId == roleId)) {
 				return false;
 			}
-			user.Roles.Add(new UserRole(){Id = roleId});
+
+			//Modifying user.UserUserRoles just doesn't work
+			Context.Set<UserUserRole>().Add(new UserUserRole {
+				UserId = user.Id,
+				UserRoleId = roleId
+			});
 			return true;
 		}
 
 		/// <inheritdoc />
 		public async Task<bool> RemoveRoleAsync(int userId, int roleId) {
-			var user = await DbSet.Where(x => x.Id == userId)
-				.Select(x => new User {
-					Id = x.Id,
-					Roles = x.Roles
-				}).FirstOrDefaultAsync();
-			UserRole role = user?.Roles.FirstOrDefault(x => x.Id == roleId);
-			if(role == null) {
-				return false;
+			if(await Context.Set<UserUserRole>()
+				.AnyAsync(x => x.UserId == userId && x.UserRoleId == roleId)) {
+
+				//Modifying user.UserUserRoles just doesn't work
+				Context.Set<UserUserRole>().Remove(new UserUserRole {
+					UserId = userId,
+					UserRoleId = roleId
+				});
+				return true;
 			}
-			user.Roles.Remove(role);
-			return true;
+			return false;
 		}
 
 		/// <inheritdoc />
@@ -78,13 +90,15 @@ namespace Auction.Infrastructure.Repositories {
 		public async Task<bool> UserExists(int userId) => await DbSet.AnyAsync(x => x.Id == userId);
 
 		private IQueryable<User> GetAllExceptPasswordHash()
-			=> DbSet.Select(x => new User {
-				Id = x.Id,
-				Roles = x.Roles,
-				Email = x.Email,
-				FirstName = x.FirstName,
-				LastName = x.LastName
-			});
+			=> DbSet.Include(x => x.UserUserRoles)
+				.ThenInclude(x => x.UserRole)
+				.Select(x => new User {
+					Id = x.Id,
+					UserUserRoles = x.UserUserRoles,
+					Email = x.Email,
+					FirstName = x.FirstName,
+					LastName = x.LastName
+				});
 	}
 
 }

@@ -14,7 +14,9 @@ namespace Auction.Application.Mapping {
 			CreateMap<UserInputModel, User>();
 			CreateMap<User, UserModel>();
 			CreateMap<User, UserDetailedModel>()
-				.ForMember(x => x.Roles, c => c.MapFrom(x => x.Roles.Select(x => x.Name)));
+				.ForMember(x => x.Roles, c => c.MapFrom(x => 
+					x.UserUserRoles.Select(u => Role.GetRoleName(u.UserRoleId))
+						.Where(roleName => roleName != null)));
 
 			CreateMap<BidInputModel, Bid>();
 			CreateMap<Bid, BidModel>()

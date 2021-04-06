@@ -7,7 +7,7 @@ namespace Auction.Core.Entities {
 		[Required]
 		[StringLength(20)]
 		public string Name { get; set; }
-		public ICollection<User> Users { get; set; }
+		public ICollection<UserUserRole> UserUserRoles { get; set; }
 	}
 
 }
