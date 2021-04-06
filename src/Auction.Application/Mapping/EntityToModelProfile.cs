@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Auction.Application.Authorization;
 using Auction.Application.Models;
 using Auction.Core.Entities;
 using AutoMapper;
@@ -22,6 +23,8 @@ namespace Auction.Application.Mapping {
 			CreateMap<AuctionItemInputModel, AuctionItem>();
 			CreateMap<AuctionItem, AuctionItemModel>()
 				.PreserveReferences();
+
+			CreateMap<RoleModel, UserRole>();
 		}
 	}
 

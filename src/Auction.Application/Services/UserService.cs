@@ -96,14 +96,14 @@ namespace Auction.Application.Services {
 				return null;
 			try {
 				User user = mapper.Map<User>(model);
-				user.Roles = Role.GetDefaultRoles();
+				user.Roles = mapper.Map<ICollection<UserRole>>(Role.DefaultRoles);
 				user.PasswordHash = model.Password.ToPasswordHash(out byte[] salt);
 				user.PasswordSalt = salt;
 				await workUnit.UserRepository.AddAsync(user);
 				await workUnit.SaveAsync();
 				var result = mapper.Map<UserDetailedModel>(user);
 				return result;
-			} catch(DbUpdateException) {
+			} catch(DbUpdateException ex) {
 				return null;
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);

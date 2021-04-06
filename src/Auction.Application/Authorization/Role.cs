@@ -10,26 +10,26 @@ namespace Auction.Application.Authorization {
 		[RoleId(1)] public const string Admin = "Admin";
 		[RoleId(2)] public const string User = "User";
 
-		public static List<Core.Entities.UserRole> AllRoles { get; private set; }
+		public static List<RoleModel> AllRoles { get; private set; }
+		public static List<RoleModel> DefaultRoles { get; private set; }
 
 		static Role() => InitializeRoles();
 
 		public static bool TryGetRoleId(string roleName, out int roleId) {
 			roleId = default;
 			var role = AllRoles.FirstOrDefault(x => x.Name == roleName);
-			if(role == null)
+			if(role == null) {
 				return false;
+			}
 			roleId = role.Id;
 			return true;
 		}
 
-		public static List<Core.Entities.UserRole> GetDefaultRoles() {
-			var defaultRoles = new List<Core.Entities.UserRole>();
-			var userRole = AllRoles.FirstOrDefault(x => x.Name == User);
-			if(userRole != null) {
-				defaultRoles.Add(userRole);
-			}
-			return defaultRoles;
+		private static void SetDefaultRoles() {
+			var defaultRoles = new List<RoleModel>();
+			var role = AllRoles.First(x => x.Name == User);
+			defaultRoles.Add(role);
+			DefaultRoles = defaultRoles;
 		}
 		
 		private static void InitializeRoles() {
@@ -40,18 +40,16 @@ namespace Auction.Application.Authorization {
 					Value = x.GetRawConstantValue() as string
 				})
 				.Where(x => x.Value != null && x.RoleId != null)
-				.Select(x => new Core.Entities.UserRole() {
-					Id = x.RoleId.Value,
-					Name = x.Value
-				}).ToList();
+				.Select(x => new RoleModel(x.RoleId.Value, x.Value)).ToList();
 			ValidateRoles(roles);
 			AllRoles = roles;
+			SetDefaultRoles();
 		}
 
 		/// <summary>
 		/// Throws exception if roles aren't distinct
 		/// </summary>
-		private static void ValidateRoles(IEnumerable<Core.Entities.UserRole> roles) {
+		private static void ValidateRoles(IEnumerable<RoleModel> roles) {
 			HashSet<string> distinctRoleNames = new HashSet<string>();
 			HashSet<int> distinctRoleIds = new HashSet<int>();
 			foreach(var role in roles) {
@@ -67,6 +65,17 @@ namespace Auction.Application.Authorization {
 			}
 		}
 		
+	}
+
+
+	public class RoleModel {
+		public int Id { get; }
+		public string Name { get; }
+
+		public RoleModel(int id, string name) {
+			Id = id;
+			Name = name;
+		}
 	}
 
 }
