@@ -10,8 +10,9 @@ namespace Auction.WebApi.Authorization {
 	/// </remarks>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
 	public class AuthorizeAnyAttribute : AuthorizeAttribute {
-		//TODO use "or" constant and use it also in requirement.constants
+		
 		public AuthorizeAnyAttribute(params string[] policies) : base(Requirement.GetOrCombinedPolicy(policies)) { }
+		
 	}
 
 }

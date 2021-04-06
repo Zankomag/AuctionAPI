@@ -35,7 +35,7 @@ namespace Auction.Infrastructure.Repositories {
 
 		/// <inheritdoc />
 		public async Task AddAsync(User user) => await DbSet.AddAsync(user);
-		//TODO add @removeRole method
+		
 		/// <inheritdoc />
 		public async Task<bool> AddRoleAsync(int userId, int roleId) {
 			var user = await DbSet.Where(x => x.Id == userId)

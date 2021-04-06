@@ -3,10 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Auction.Core.Entities {
 
-	//TODO do with class with string constants:
-	//one class represents AuctionItemStatusCodeId with
-	//ToString override (private field created in constructor)
-	//and Id init; field
+	//TODO do with class with string constants like Roles
 	public enum AuctionItemStatusCodeId {
 		Scheduled = 0,
 		Started = 1,
