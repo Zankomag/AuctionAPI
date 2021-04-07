@@ -5,7 +5,7 @@
 namespace Auction.Application.Authorization {
 
 	/// <summary>
-	///     Defines Id or Role in database
+	///     Defines Id of Role in database
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Field)]
 	internal sealed class RoleIdAttribute : Attribute {
