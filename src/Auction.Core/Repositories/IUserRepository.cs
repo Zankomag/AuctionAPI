@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Auction.Core.Entities;
+using Auction.Core.Repositories.Generic;
 
 namespace Auction.Core.Repositories {
 
-	public interface IUserRepository {
+	public interface IUserRepository : IRepository<User, int> {
 		Task<IEnumerable<User>> GetAllAsync();
 
 		Task<User> GetByIdAsync(int id);
