@@ -15,6 +15,7 @@ using static Auction.Application.Utils.LoggingMessage;
 using ValidationContext = System.ComponentModel.DataAnnotations.ValidationContext;
 
 namespace Auction.Application.Services {
+
 	public class BidService : IBidService {
 		private const int minIntervalToClosingAuctionItemMinutes = 2;
 
@@ -28,7 +29,7 @@ namespace Auction.Application.Services {
 			this.mapper = mapper;
 			this.logger = logger;
 		}
-		
+
 		/// <inheritdoc />
 		public async Task<BidModel> GetByIdWithDetailsAsync(int id) {
 			try {
@@ -69,12 +70,14 @@ namespace Auction.Application.Services {
 				if(auctionItem == null
 					|| dateTimeUtcNow <= auctionItem.StartDate
 					|| dateTimeUtcNow >= auctionItem.ActualCloseDate) {
-					
+
 					return null;
 				}
 				if(auctionItem.StartingPrice >= model.Price
-					|| (auctionItem.WinningBid != null && auctionItem.WinningBid.Price >= model.Price)) {
-					
+					|| (auctionItem.WinningBid != null
+						&& (auctionItem.WinningBid.Price >= model.Price
+							|| auctionItem.WinningBid.BidderId == bidderId))) {
+
 					return null;
 				}
 				var newClosingDate = dateTimeUtcNow.AddMinutes(minIntervalToClosingAuctionItemMinutes);
@@ -102,4 +105,5 @@ namespace Auction.Application.Services {
 			}
 		}
 	}
+
 }
