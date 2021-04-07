@@ -9,6 +9,7 @@ namespace Auction.WebApi.Extensions {
 	public static class FormFileExtensions {
 		public const int ImageMinimumBytes = 512;
 
+		// https://stackoverflow.com/a/51879881/11101834
 		public static bool IsImage(this IFormFile postedFile) {
 			//-------------------------------------------
 			//  Check the image mime types
