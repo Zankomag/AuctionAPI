@@ -9,7 +9,7 @@ namespace Auction.Application.Services.Abstractions {
 
 		Task<IEnumerable<BidModel>> GetByAuctionItemIdWithDetailsAsync(int auctionItemId);
 
-		Task<BidModel> AddAsync(BidInputModel model, int bidderId);
+		Task<BidModel> AddAsync(BidInputModel model, int bidderId, int auctionItemId);
 	}
 
 }

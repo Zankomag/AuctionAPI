@@ -1,15 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Auction.Application.Models;
 using Auction.Application.Services.Abstractions;
-using Auction.WebApi.Authorization.Attributes;
-using Auction.WebApi.Authorization.Extensions;
-using Auction.WebApi.Authorization.Requirements;
-using Auction.WebApi.Authorization.Types;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auction.WebApi.Controllers {
-
+	//TODO move method to auction items controller
 	[Authorize]
 	[ApiController]
 	[Route("api/[controller]")]
@@ -26,18 +22,6 @@ namespace Auction.WebApi.Controllers {
 			var result = await bidService.GetByIdWithDetailsAsync(id);
 			if(result == null)
 				return NotFound();
-			return result;
-		}
-
-		// POST /api/Bids
-		[AuthorizeExcept(Requirement.OwnerOfAuctionItemId)]
-		[HttpPost]
-		public async Task<ActionResult<BidModel>> Add(BidInputModel model) {
-			if(!User.TryGetUserIdentity(out UserIdentity userIdentity))
-				return StatusCode(500);
-			var result = await bidService.AddAsync(model, userIdentity.Id);
-			if(result == null)
-				return BadRequest();
 			return result;
 		}
 	}

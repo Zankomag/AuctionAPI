@@ -95,6 +95,18 @@ namespace Auction.WebApi.Controllers {
 			return Ok(result);
 		}
 
+		// POST api/AuctionItems/5/bids
+		[AuthorizeExcept(Requirement.OwnerOfAuctionItemId)]
+		[HttpPost("{id:int}/bids")]
+		public async Task<ActionResult<BidModel>> Add(BidInputModel model, int id) {
+			if(!User.TryGetUserIdentity(out UserIdentity userIdentity))
+				return StatusCode(500);
+			var result = await bidService.AddAsync(model, userIdentity.Id, id);
+			if(result == null)
+				return BadRequest();
+			return result;
+		}
+
 	}
 
 }

@@ -52,12 +52,12 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<BidModel> AddAsync(BidInputModel model, int bidderId) {
+		public async Task<BidModel> AddAsync(BidInputModel model, int bidderId, int auctionItemId) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;
 			try {
 				AuctionItem auctionItem = await workUnit.AuctionItemRepository.GetAll()
-					.Where(x => x.Id == model.AuctionItemId)
+					.Where(x => x.Id == auctionItemId)
 					.Select(x => new AuctionItem {
 						Id = x.Id,
 						ActualCloseDate = x.ActualCloseDate,
@@ -84,6 +84,7 @@ namespace Auction.Application.Services {
 				}
 				Bid bid = mapper.Map<Bid>(model);
 				bid.BidderId = bidderId;
+				bid.AuctionItemId = auctionItemId;
 				await using var transaction = await workUnit.BeginTransactionAsync(IsolationLevel.Serializable);
 				await workUnit.BidRepository.AddAsync(bid);
 				await workUnit.SaveAsync();
