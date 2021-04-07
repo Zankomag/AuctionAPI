@@ -62,7 +62,8 @@ namespace Auction.Application.Services {
 						Id = x.Id,
 						ActualCloseDate = x.ActualCloseDate,
 						StartDate = x.StartDate,
-						WinningBid = x.WinningBid
+						WinningBid = x.WinningBid,
+						StartingPrice = x.StartingPrice
 					}).FirstOrDefaultAsync();
 				var dateTimeUtcNow = DateTime.UtcNow;
 				if(auctionItem == null
