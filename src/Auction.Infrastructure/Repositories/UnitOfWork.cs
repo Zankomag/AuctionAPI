@@ -32,8 +32,8 @@ namespace Auction.Infrastructure.Repositories {
 		public IBidRepository BidRepository
 			=> bidRepository ??= new BidRepository(Context);
 
-		public async Task<IDbContextTransaction> BeginTransactionAsync()
-			=> await Context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+		public async Task<IDbContextTransaction> BeginTransactionAsync(IsolationLevel isolationLevel)
+			=> await Context.Database.BeginTransactionAsync(isolationLevel);
 
 
 		/// <inheritdoc />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Threading.Tasks;
 using Auction.Application.Authorization;
 using Auction.Application.Extensions;
@@ -97,7 +98,7 @@ namespace Auction.Application.Services {
 				return null;
 			if(!Role.TryGetRoleId(Role.User, out int defaultRoleId))
 				return null;
-			await using var transaction = await workUnit.BeginTransactionAsync();
+			await using var transaction = await workUnit.BeginTransactionAsync(IsolationLevel.Serializable);
 			try {
 				User user = mapper.Map<User>(model);
 				user.PasswordHash = model.Password.ToPasswordHash(out byte[] salt);
