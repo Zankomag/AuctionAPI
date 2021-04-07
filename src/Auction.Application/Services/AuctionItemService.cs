@@ -17,6 +17,7 @@ using ValidationContext = System.ComponentModel.DataAnnotations.ValidationContex
 namespace Auction.Application.Services {
 
 	public class AuctionItemService : IAuctionItemService {
+		private const int minAuctionStartToClosingIntervalMinutes = 10;
 
 		private readonly IUnitOfWork workUnit;
 		private readonly IMapper mapper;
@@ -89,8 +90,11 @@ namespace Auction.Application.Services {
 		public async Task<AuctionItemInputModel> AddAsync(AuctionItemInputModel model) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;
+			if(!AreAuctionItemDatesValid(model))
+				return null;
 			try {
 				AuctionItem auctionItem = mapper.Map<AuctionItem>(model);
+				auctionItem.ActualCloseDate = auctionItem.PlannedCloseDate;
 				await workUnit.AuctionItemRepository.AddAsync(auctionItem);
 				await workUnit.SaveAsync();
 				model.Id = auctionItem.Id;
@@ -107,10 +111,17 @@ namespace Auction.Application.Services {
 		public async Task<AuctionItemModel> UpdateAsync(int id, AuctionItemInputModel model) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;
+			if(!AreAuctionItemDatesValid(model))
+				return null;
 			try {
+				var auctionItem = await workUnit.AuctionItemRepository.GetAll(false)
+					.FirstOrDefaultAsync(x => x.Id == id);
+				if(auctionItem == null || DateTime.UtcNow >= auctionItem.StartDate) {
+					return null;
+				}
 				model.Id = id;
-				AuctionItem auctionItem = mapper.Map<AuctionItem>(model);
-				workUnit.AuctionItemRepository.Update(auctionItem);
+				mapper.Map(model, auctionItem);
+				auctionItem.ActualCloseDate = auctionItem.PlannedCloseDate;
 				await workUnit.SaveAsync();
 				AuctionItem result = await workUnit.AuctionItemRepository.GetByIdWithDetailsAsync(id);
 				return mapper.Map<AuctionItemModel>(result);
@@ -127,8 +138,8 @@ namespace Auction.Application.Services {
 			try {
 				//We can delete only not started auctions
 				if(!await workUnit.AuctionItemRepository.GetAll().AnyAsync(x => x.Id == id
-					&& x.AuctionItemStatusCodeId == AuctionItemStatusCodeId.Scheduled)) {
-					
+					&& DateTime.UtcNow < x.StartDate)) {
+
 					return false;
 				}
 				await workUnit.AuctionItemRepository.DeleteByIdAsync(id);
@@ -139,6 +150,10 @@ namespace Auction.Application.Services {
 				throw;
 			}
 		}
+
+		private bool AreAuctionItemDatesValid(AuctionItemInputModel model)
+			=> DateTime.UtcNow < model.StartDate
+				&& model.PlannedCloseDate >= model.StartDate.AddMinutes(minAuctionStartToClosingIntervalMinutes);
 	}
 
 }

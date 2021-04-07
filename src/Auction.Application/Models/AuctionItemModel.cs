@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Auction.Core.Entities;
 
 namespace Auction.Application.Models {
 
+	public enum AuctionItemStatusCode {
+		Scheduled = 0,
+		Started = 1,
+		Finished = 2
+	}
+	
 	public class AuctionItemModel : AuctionItemInputModel {
-		public AuctionItemStatusCodeId AuctionItemStatusCode { get; set; }
+		public AuctionItemStatusCode Status { get; set; }
 
 		public DateTime? ActualCloseDate { get; set; }
 		public int? WinningBidId { get; set; }

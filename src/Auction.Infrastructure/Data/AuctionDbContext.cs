@@ -13,7 +13,6 @@ namespace Auction.Infrastructure.Data {
 
 		public DbSet<AuctionItem> AuctionItems { get; set; }
 		public DbSet<AuctionItemCategory> AuctionItemCategories { get; set; }
-		public DbSet<AuctionItemStatusCode> AuctionItemStatusCodes { get; set; }
 		public DbSet<AuctionItemImage> AuctionItemImages { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<UserRole> Roles { get; set; }
@@ -29,27 +28,8 @@ namespace Auction.Infrastructure.Data {
 			ConfigureAuctionItemCategory(modelBuilder);
 			ConfigureAuctionItem(modelBuilder);
 			ConfigureBids(modelBuilder);
-			ConfigureAuctionItemStatusCode(modelBuilder);
 			ConfigureRoles(modelBuilder);
 			ConfigureUserUserRole(modelBuilder);
-		}
-
-		private void ConfigureAuctionItemStatusCode(ModelBuilder modelBuilder) {
-			modelBuilder.Entity<AuctionItem>()
-				.Property(x => x.AuctionItemStatusCodeId)
-				.HasConversion<int>();
-
-			modelBuilder.Entity<AuctionItemStatusCode>()
-				.Property(x => x.Id)
-				.HasConversion<int>();
-
-			modelBuilder.Entity<AuctionItemStatusCode>()
-				.HasData(Enum.GetValues(typeof(AuctionItemStatusCodeId))
-					.Cast<AuctionItemStatusCodeId>()
-					.Select(x => new AuctionItemStatusCode {
-						Id = x,
-						Name = x.ToString()
-					}));
 		}
 
 		private void ConfigureRoles(ModelBuilder modelBuilder) {

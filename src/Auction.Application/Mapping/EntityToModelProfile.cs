@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Auction.Application.Authorization;
 using Auction.Application.Models;
 using Auction.Core.Entities;
@@ -15,7 +16,7 @@ namespace Auction.Application.Mapping {
 			CreateMap<UserInputModel, User>();
 			CreateMap<User, UserModel>();
 			CreateMap<User, UserDetailedModel>()
-				.ForMember(x => x.Roles, c => c.MapFrom(x => 
+				.ForMember(x => x.Roles, c => c.MapFrom(x =>
 					x.UserUserRoles.Select(u => Role.GetRoleName(u.UserRoleId))
 						.Where(roleName => roleName != null)));
 
@@ -29,9 +30,20 @@ namespace Auction.Application.Mapping {
 			CreateMap<AuctionItem, AuctionItemModel>()
 				.ForMember(x => x.CategoryId, c => c.MapFrom(a => a.AuctionItemCategoryId))
 				.ForMember(x => x.CategoryName, c => c.MapFrom(a => a.AuctionItemCategory.Name))
+				.ForMember(x => x.Status, c => c.MapFrom(a => GetAuctionItemStatusCode(a)))
 				.PreserveReferences();
 
 			CreateMap<RoleModel, UserRole>();
+		}
+
+		private static AuctionItemStatusCode GetAuctionItemStatusCode(AuctionItem auctionItem) {
+			if(DateTime.UtcNow <= auctionItem.ActualCloseDate) {
+				if(DateTime.UtcNow < auctionItem.StartDate) {
+					return AuctionItemStatusCode.Scheduled;
+				}
+				return AuctionItemStatusCode.Started;
+			}
+			return AuctionItemStatusCode.Finished;
 		}
 	}
 

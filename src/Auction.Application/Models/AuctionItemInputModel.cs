@@ -4,7 +4,7 @@ using Auction.Application.Models.Generic;
 using Newtonsoft.Json;
 
 namespace Auction.Application.Models {
-	//TODO FIX AUCTION STARTDATE AND PLANNED CLOSE DATE VALIDATION
+	
 	public class AuctionItemInputModel : Model<int> {
 		public int? CategoryId { get; set; }
 		
