@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Auction.Core.Repositories;
 using Auction.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using IsolationLevel = System.Data.IsolationLevel;
 
 namespace Auction.Infrastructure.Repositories {
 
@@ -30,8 +32,8 @@ namespace Auction.Infrastructure.Repositories {
 		public IBidRepository BidRepository
 			=> bidRepository ??= new BidRepository(Context);
 
-		public async Task<IDbContextTransaction> BeginTransactionAsync() 
-			=> await Context.Database.BeginTransactionAsync();
+		public async Task<IDbContextTransaction> BeginTransactionAsync()
+			=> await Context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
 
 
 		/// <inheritdoc />

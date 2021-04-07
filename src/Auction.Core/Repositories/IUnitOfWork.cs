@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
+using IsolationLevel = System.Data.IsolationLevel;
 
 namespace Auction.Core.Repositories {
 
@@ -10,7 +11,7 @@ namespace Auction.Core.Repositories {
 		IAuctionItemCategoryRepository AuctionItemCategoryRepository { get; }
 		IBidRepository BidRepository { get; }
 
-		Task<IDbContextTransaction> BeginTransactionAsync();
+		Task<IDbContextTransaction> BeginTransactionAsync(IsolationLevel isolationLevel);
 		
 		Task<int> SaveAsync();
 	}
