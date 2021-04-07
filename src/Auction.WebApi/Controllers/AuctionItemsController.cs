@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Auction.Application.Models;
 using Auction.Application.Services.Abstractions;
@@ -7,6 +8,7 @@ using Auction.WebApi.Authorization.Extensions;
 using Auction.WebApi.Authorization.Requirements;
 using Auction.WebApi.Authorization.Types;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auction.WebApi.Controllers {
@@ -61,6 +63,23 @@ namespace Auction.WebApi.Controllers {
 			return result;
 		}
 
+		// POST api/AuctionItems/5/images
+		[Authorize(Requirement.OwnerOfAuctionItemId)]
+		[HttpPost("{id}/images")]
+		public async Task<ActionResult> AddImages(int id, IFormFile image) {
+			if(image.Length > 0) {
+				await using(var stream = new MemoryStream()) {
+					await image.CopyToAsync(stream);
+					byte[] imageBytes = stream.ToArray();
+					var result = await auctionItemService.AddImageAsync(id, imageBytes);
+					if(!result)
+						return BadRequest();
+					return Ok();
+				}
+			}
+			return BadRequest();
+		}
+
 		// PUT api/AuctionItems/5
 		[Authorize(Requirement.OwnerOfAuctionItemId)]
 		[HttpPut("{id}")]
@@ -106,6 +125,8 @@ namespace Auction.WebApi.Controllers {
 				return BadRequest();
 			return result;
 		}
+		
+		
 
 	}
 

@@ -28,6 +28,15 @@ namespace Auction.Infrastructure.Repositories {
 		public void UpdateWinningBidId(AuctionItem auctionItem)
 			=> Context.Entry(auctionItem).Property(x => x.WinningBidId).IsModified = true;
 
+		/// <inheritdoc />
+		public async Task AddImageAsync(int auctionItemId, byte[] image) {
+			AuctionItemImage auctionItemImage = new AuctionItemImage() {
+				AuctionItemId = auctionItemId,
+				Image = image
+			};
+			await Context.Set<AuctionItemImage>().AddAsync(auctionItemImage);
+		}
+
 		public IQueryable<AuctionItem> GetAllWithDetails()
 			=> GetAll()
 				.Include(x => x.Images)

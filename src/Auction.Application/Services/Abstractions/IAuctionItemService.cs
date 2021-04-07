@@ -18,6 +18,8 @@ namespace Auction.Application.Services.Abstractions {
 		
 		/// <returns>True if user DOES own auctionItem, otherwise false</returns>
 		Task<bool> IsUserOwner(int auctionItemId, int userId);
+
+		Task<bool> AddImageAsync(int auctionItemId, byte[] image);
 	}
 
 }
