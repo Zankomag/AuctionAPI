@@ -95,15 +95,6 @@ namespace Auction.WebApi.Controllers {
 			return Ok(result);
 		}
 
-		// GET api/AuctionItems/bids/6
-		[HttpGet("/bids/{id:int}")]
-		public async Task<ActionResult<BidModel>> GetBidById(int id) {
-			var result = await bidService.GetByIdWithDetailsAsync(id);
-			if(result == null)
-				return NotFound();
-			return result;
-		}
-		
 		// POST api/AuctionItems/5/bids
 		[AuthorizeExcept(Requirement.OwnerOfAuctionItemId)]
 		[HttpPost("{id:int}/bids")]
