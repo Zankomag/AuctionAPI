@@ -63,22 +63,25 @@ namespace Auction.WebApi.Authorization.Extensions {
 					.Build();
 				options.AddPolicy(Requirement.Admin,
 					policy => policy.AddRequirements(new AdminRequirement()));
-				options.AddPolicy(
-					Requirement.GetOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfUserId),
+				options.AddPolicy(Requirement.GetOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfUserId),
 					policy => policy.AddRequirements(new AdminOrOwnerOfUserIdRequirement()));
-				options.AddPolicy(
-					Requirement.GetOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfAuctionItemId),
+				options.AddPolicy(Requirement.GetOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfAuctionItemId),
 					policy => policy.AddRequirements(new AdminOrOwnerOfAuctionItemIdRequirement()));
+				options.AddPolicy(Requirement.GetExceptPolicy(Requirement.OwnerOfAuctionItemId),
+					policy => policy.AddRequirements(new ExceptOwnerOfAuctionItemIdRequirement()));
 			});
 
 			services.AddScoped<IRequestData, RequestData>();
-			
+
 			//Order of handlers is important - it determines their execution order in request pipeline
 			//These services are scoped because they use scoped IRequestData, otherwise they'd be singletons
 			services.AddScoped<IAuthorizationHandler, AuthenticationRequirementHandler>();
 			services.AddScoped<IAuthorizationHandler, AdminRequirementHandler>();
 			services.AddScoped<IAuthorizationHandler, OwnerOfUserIdRequirementHandler>();
 			services.AddScoped<IAuthorizationHandler, OwnerOfAuctionItemIdRequirementHandler>();
+
+			//NotRequirement handler must be registered last
+			services.AddScoped<IAuthorizationHandler, ExceptRequirementHandler>();
 
 			services.AddHttpContextAccessor();
 		}
