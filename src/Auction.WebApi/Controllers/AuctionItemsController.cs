@@ -7,6 +7,7 @@ using Auction.WebApi.Authorization.Attributes;
 using Auction.WebApi.Authorization.Extensions;
 using Auction.WebApi.Authorization.Requirements;
 using Auction.WebApi.Authorization.Types;
+using Auction.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -67,7 +68,7 @@ namespace Auction.WebApi.Controllers {
 		[Authorize(Requirement.OwnerOfAuctionItemId)]
 		[HttpPost("{id}/images")]
 		public async Task<ActionResult> AddImages(int id, IFormFile image) {
-			if(image.Length > 0) {
+			if(image?.IsImage() == true) {
 				await using(var stream = new MemoryStream()) {
 					await image.CopyToAsync(stream);
 					byte[] imageBytes = stream.ToArray();

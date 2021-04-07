@@ -45,7 +45,20 @@ namespace Auction.Application.Services {
 		public async Task<AuctionItemModel> GetByIdAsync(int id) {
 			try {
 				AuctionItem auctionItem = await workUnit.AuctionItemRepository.GetByIdWithDetailsAsync(id);
-				return mapper.Map<AuctionItemModel>(auctionItem);
+				var result =  mapper.Map<AuctionItemModel>(auctionItem);
+				if(result != null) {
+					var images = await workUnit.AuctionItemRepository.GetAllImages()
+						.Where(x => x.AuctionItemId == result.Id)
+						.Select(x => new {
+							x.Id, FileSize = x.Image.Length
+						}).ToListAsync();
+					if(images.Count > 0) {
+						result.ImageFiles = images.Select(x => new FileModel() {
+							Id = x.Id, FileSize = x.FileSize
+						});
+					}
+				}
+				return result;
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
 				throw;

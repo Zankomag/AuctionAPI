@@ -37,6 +37,10 @@ namespace Auction.Infrastructure.Repositories {
 			await Context.Set<AuctionItemImage>().AddAsync(auctionItemImage);
 		}
 
+		/// <inheritdoc />
+		public IQueryable<AuctionItemImage> GetAllImages() 
+			=> Context.Set<AuctionItemImage>().AsNoTracking();
+
 		public IQueryable<AuctionItem> GetAllWithDetails()
 			=> GetAll()
 				.Include(x => x.Images)

@@ -13,6 +13,7 @@ namespace Auction.Core.Repositories {
 		void UpdateActualClosingDate(AuctionItem auctionItem);
 		void UpdateWinningBidId(AuctionItem auctionItem);
 		Task AddImageAsync(int auctionItemId, byte[] image);
+		IQueryable<AuctionItemImage> GetAllImages();
 
 	}
 
