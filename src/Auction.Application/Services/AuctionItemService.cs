@@ -119,6 +119,19 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
+		public async Task<ImageFileModel> GetImageByIdAsync(int id) {
+			try {
+				var image = await workUnit.AuctionItemRepository.GetImageByIdAsync(id);
+				if(image == null)
+					return null;
+				return mapper.Map<ImageFileModel>(image);
+			} catch(Exception ex) {
+				logger.LogError(ex, ExceptionThrownInService);
+				throw;
+			}
+		}
+
+		/// <inheritdoc />
 		public async Task<AuctionItemInputModel> AddAsync(AuctionItemInputModel model) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;

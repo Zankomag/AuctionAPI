@@ -17,11 +17,11 @@ namespace Auction.Infrastructure.Repositories {
 			=> await GetAllWithDetails().ToListAsync();
 
 		/// <inheritdoc />
-		public async Task<AuctionItem> GetByIdWithDetailsAsync(int id) 
+		public async Task<AuctionItem> GetByIdWithDetailsAsync(int id)
 			=> await GetAllWithDetails().FirstOrDefaultAsync(x => x.Id == id);
 
 		/// <inheritdoc />
-		public void UpdateActualClosingDate(AuctionItem auctionItem) 
+		public void UpdateActualClosingDate(AuctionItem auctionItem)
 			=> Context.Entry(auctionItem).Property(x => x.ActualCloseDate).IsModified = true;
 
 		/// <inheritdoc />
@@ -30,7 +30,7 @@ namespace Auction.Infrastructure.Repositories {
 
 		/// <inheritdoc />
 		public async Task AddImageAsync(int auctionItemId, byte[] image, string fileExtension) {
-			AuctionItemImage auctionItemImage = new AuctionItemImage() {
+			AuctionItemImage auctionItemImage = new AuctionItemImage {
 				AuctionItemId = auctionItemId,
 				Image = image,
 				FileExtension = fileExtension
@@ -39,7 +39,18 @@ namespace Auction.Infrastructure.Repositories {
 		}
 
 		/// <inheritdoc />
-		public IQueryable<AuctionItemImage> GetAllImages() 
+		public async Task<AuctionItemImage> GetImageByIdAsync(int id)
+			=> await Context.Set<AuctionItemImage>()
+				.AsNoTracking()
+				.Where(x => x.Id == id)
+				.Select(x => new AuctionItemImage {
+					Id = x.Id,
+					FileExtension = x.FileExtension,
+					Image = x.Image
+				}).FirstOrDefaultAsync();
+
+		/// <inheritdoc />
+		public IQueryable<AuctionItemImage> GetAllImages()
 			=> Context.Set<AuctionItemImage>().AsNoTracking();
 
 		public IQueryable<AuctionItem> GetAllWithDetails()
@@ -52,7 +63,7 @@ namespace Auction.Infrastructure.Repositories {
 
 		/// <inheritdoc />
 		public override Task<bool> DeleteByIdAsync(int id) {
-			DbSet.Remove(new AuctionItem() {Id = id});
+			DbSet.Remove(new AuctionItem {Id = id});
 			return Task.FromResult(true);
 		}
 	}

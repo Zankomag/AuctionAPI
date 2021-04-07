@@ -20,6 +20,7 @@ namespace Auction.Application.Services.Abstractions {
 		Task<bool> IsUserOwner(int auctionItemId, int userId);
 
 		Task<bool> AddImageAsync(int auctionItemId, byte[] image, string fileExtension);
+		Task<ImageFileModel> GetImageByIdAsync(int id);
 	}
 
 }

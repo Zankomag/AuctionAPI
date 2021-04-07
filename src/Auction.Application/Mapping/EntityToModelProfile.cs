@@ -34,6 +34,9 @@ namespace Auction.Application.Mapping {
 				.PreserveReferences();
 
 			CreateMap<RoleModel, UserRole>();
+
+			CreateMap<AuctionItemImage, ImageFileModel>()
+				.ForMember(x => x.File, c => c.MapFrom(a => a.Image));
 		}
 
 		private static AuctionItemStatusCode GetAuctionItemStatusCode(AuctionItem auctionItem) {

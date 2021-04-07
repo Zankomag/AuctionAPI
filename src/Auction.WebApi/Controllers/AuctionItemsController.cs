@@ -11,14 +11,16 @@ using Auction.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace Auction.WebApi.Controllers {
 
 	[Authorize]
 	[ApiController]
-	[Route("api/[controller]")]
+	[Route(controllerRoute)]
 	[Produces("application/json")]
 	public class AuctionItemsController : ControllerBase {
+		private const string controllerRoute = "api/[controller]";
 		private readonly IAuctionItemService auctionItemService;
 		private readonly IBidService bidService;
 
@@ -40,14 +42,14 @@ namespace Auction.WebApi.Controllers {
 				return NotFound();
 			return result;
 		}
-		
+
 		// GET api/AuctionItems/war%20and%20peace
-		[HttpGet("{name}")]
+		[HttpGet("search/{name}")]
 		public async Task<ActionResult<IEnumerable<AuctionItemModel>>> GetByName(string name) {
-			if(name == null)
+			if (name == null)
 				return BadRequest();
 			var result = await auctionItemService.GetByNameAsync(name);
-			if(result == null)
+			if (result == null)
 				return NotFound();
 			return Ok(result);
 		}
@@ -66,7 +68,7 @@ namespace Auction.WebApi.Controllers {
 
 		// POST api/AuctionItems/5/images
 		[Authorize(Requirement.OwnerOfAuctionItemId)]
-		[HttpPost("{id}/images")]
+		[HttpPost("{id:int}/images")]
 		public async Task<ActionResult> AddImages(int id, IFormFile image) {
 			if(image?.IsImage() == true) {
 				await using(var stream = new MemoryStream()) {
@@ -82,9 +84,22 @@ namespace Auction.WebApi.Controllers {
 			return BadRequest();
 		}
 
+		// GET api/AuctionItems/images
+		[HttpGet("images/{id:int}")]
+		public async Task<IActionResult> GetImage(int id) {
+			var result = await auctionItemService.GetImageByIdAsync(id);
+			if(result == null)
+				return NotFound();
+			new FileExtensionContentTypeProvider().TryGetContentType(result.FileExtension, out string contentType);
+			contentType ??= "application/octet-stream";
+			return new FileContentResult(result.File, contentType) {
+				FileDownloadName = $"picture{result.FileExtension}"
+			};
+		}
+
 		// PUT api/AuctionItems/5
 		[Authorize(Requirement.OwnerOfAuctionItemId)]
-		[HttpPut("{id}")]
+		[HttpPut("{id:int}")]
 		public async Task<ActionResult<AuctionItemInputModel>> Update(int id,
 			[FromBody] AuctionItemInputModel model) {
 			
@@ -99,7 +114,7 @@ namespace Auction.WebApi.Controllers {
 
 		// DELETE api/AuctionItems/5
 		[AuthorizeAny(Requirement.Admin, Requirement.OwnerOfAuctionItemId)]
-		[HttpDelete("{id}")]
+		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> Delete(int id) {
 			bool result = await auctionItemService.DeleteByIdAsync(id);
 			if (!result)
