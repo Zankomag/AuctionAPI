@@ -2,7 +2,7 @@
 using Auction.WebApi.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Auction.WebApi.Authorization {
+namespace Auction.WebApi.Authorization.Attributes {
 
 	/// <inheritdoc />
 	/// <remarks>

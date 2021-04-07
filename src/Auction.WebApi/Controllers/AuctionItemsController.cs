@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Auction.Application.Models;
 using Auction.Application.Services.Abstractions;
-using Auction.WebApi.Authorization;
+using Auction.WebApi.Authorization.Attributes;
 using Auction.WebApi.Authorization.Extensions;
 using Auction.WebApi.Authorization.Requirements;
 using Auction.WebApi.Authorization.Types;
