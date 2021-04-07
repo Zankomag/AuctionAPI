@@ -24,7 +24,7 @@ namespace Auction.Infrastructure.Repositories {
 			=> GetAll()
 				.Include(x => x.Images)
 				.Include(x => x.WinningBid)
-				.Include(x => x.Bids)
+				.Include(x => x.Bids).ThenInclude(x => x.Bidder)
 				.Include(x => x.Seller)
 				.Include(x => x.AuctionItemCategory);
 
