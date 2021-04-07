@@ -25,6 +25,7 @@ namespace Auction.Infrastructure {
 			services.AddScoped<IAuctionItemCategoryService, AuctionItemCategoryService>();
 			services.AddScoped<IAuctionItemService, AuctionItemService>();
 			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<IBidService, BidService>();
 
 			MapperConfiguration mapperConfig = new MapperConfiguration(x => {
 				x.AddProfile<EntityToModelProfile>();
