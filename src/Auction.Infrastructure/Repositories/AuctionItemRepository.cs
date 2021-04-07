@@ -20,6 +20,14 @@ namespace Auction.Infrastructure.Repositories {
 		public async Task<AuctionItem> GetByIdWithDetailsAsync(int id) 
 			=> await GetAllWithDetails().FirstOrDefaultAsync(x => x.Id == id);
 
+		/// <inheritdoc />
+		public void UpdateActualClosingDate(AuctionItem auctionItem) 
+			=> Context.Entry(auctionItem).Property(x => x.ActualCloseDate).IsModified = true;
+
+		/// <inheritdoc />
+		public void UpdateWinningBidId(AuctionItem auctionItem)
+			=> Context.Entry(auctionItem).Property(x => x.WinningBidId).IsModified = true;
+
 		public IQueryable<AuctionItem> GetAllWithDetails()
 			=> GetAll()
 				.Include(x => x.Images)
