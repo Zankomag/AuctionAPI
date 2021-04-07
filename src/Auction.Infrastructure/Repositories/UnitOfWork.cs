@@ -18,12 +18,17 @@ namespace Auction.Infrastructure.Repositories {
 		public IUserRepository UserRepository
 			=> userRepository ??= new UserRepository(Context);
 
+		/// <inheritdoc />
 		public IAuctionItemRepository AuctionItemRepository
 			=> auctionItemRepository ??= new AuctionItemRepository(Context);
 		
 		/// <inheritdoc />
 		public IAuctionItemCategoryRepository AuctionItemCategoryRepository
 			=> auctionItemCategoryRepository ??= new AuctionItemCategoryRepository(Context);
+
+		/// <inheritdoc />
+		public IBidRepository BidRepository
+			=> bidRepository ??= new BidRepository(Context);
 
 		public async Task<IDbContextTransaction> BeginTransactionAsync() 
 			=> await Context.Database.BeginTransactionAsync();
