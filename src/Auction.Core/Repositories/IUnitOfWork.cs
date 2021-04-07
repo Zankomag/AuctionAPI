@@ -8,6 +8,7 @@ namespace Auction.Core.Repositories {
 		IUserRepository UserRepository { get; }
 		IAuctionItemRepository AuctionItemRepository { get; }
 		IAuctionItemCategoryRepository AuctionItemCategoryRepository { get; }
+		IBidRepository BidRepository { get; }
 
 		Task<IDbContextTransaction> BeginTransactionAsync();
 		

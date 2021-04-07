@@ -10,6 +10,7 @@ namespace Auction.Infrastructure.Repositories {
 		private IAuctionItemCategoryRepository auctionItemCategoryRepository;
 		private IUserRepository userRepository;
 		private IAuctionItemRepository auctionItemRepository;
+		private IBidRepository bidRepository;
 
 		public UnitOfWork(AuctionDbContext context) => Context = context;
 
