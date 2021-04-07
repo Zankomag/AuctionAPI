@@ -62,7 +62,7 @@ namespace Auction.WebApi.Controllers {
 		}
 
 		// PUT api/AuctionItems/5
-		[AuthorizeAny(Requirement.Admin, Requirement.OwnerOfAuctionItemId)]
+		[Authorize(Requirement.OwnerOfAuctionItemId)]
 		[HttpPut("{id}")]
 		public async Task<ActionResult<AuctionItemInputModel>> Update(int id,
 			[FromBody] AuctionItemInputModel model) {
