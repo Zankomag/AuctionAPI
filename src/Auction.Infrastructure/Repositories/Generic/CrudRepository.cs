@@ -13,7 +13,8 @@ namespace Auction.Infrastructure.Repositories.Generic {
 		protected CrudRepository(DbContext context) : base(context) { }
 
 		/// <inheritdoc />
-		public IQueryable<TEntity> GetAll() => DbSet.AsNoTracking();
+		public IQueryable<TEntity> GetAll(bool withoutTracking = true) 
+			=> withoutTracking ? DbSet.AsNoTracking() : DbSet;
 
 		/// <inheritdoc />
 		public virtual async Task<IEnumerable<TEntity>> GetAllAsync() => await GetAll().ToListAsync();

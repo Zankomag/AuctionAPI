@@ -7,7 +7,7 @@ namespace Auction.Core.Repositories.Generic {
 
 	public interface ICrudRepository<TEntity, in TKey> : IRepository<TEntity, TKey> where TEntity : Entity<TKey> {
 		/// <returns>All records without Entity Framework tracking</returns>
-		IQueryable<TEntity> GetAll();
+		IQueryable<TEntity> GetAll(bool withoutTracking = true);
 
 		Task<IEnumerable<TEntity>> GetAllAsync();
 
