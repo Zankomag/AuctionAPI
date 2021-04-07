@@ -2,7 +2,9 @@
 using Auction.Application.Models;
 using Auction.Application.Services.Abstractions;
 using Auction.WebApi.Authorization.Attributes;
+using Auction.WebApi.Authorization.Extensions;
 using Auction.WebApi.Authorization.Requirements;
+using Auction.WebApi.Authorization.Types;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +33,9 @@ namespace Auction.WebApi.Controllers {
 		[AuthorizeExcept(Requirement.OwnerOfAuctionItemId)]
 		[HttpPost]
 		public async Task<ActionResult<BidModel>> Add(BidInputModel model) {
-			var result = await bidService.AddAsync(model);
+			if(!User.TryGetUserIdentity(out UserIdentity userIdentity))
+				return StatusCode(500);
+			var result = await bidService.AddAsync(model, userIdentity.Id);
 			if(result == null)
 				return BadRequest();
 			return result;

@@ -52,7 +52,7 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<BidModel> AddAsync(BidInputModel model) {
+		public async Task<BidModel> AddAsync(BidInputModel model, int bidderId) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;
 			try {
@@ -83,6 +83,7 @@ namespace Auction.Application.Services {
 					workUnit.AuctionItemRepository.UpdateActualClosingDate(auctionItem);
 				}
 				Bid bid = mapper.Map<Bid>(model);
+				bid.BidderId = bidderId;
 				await using var transaction = await workUnit.BeginTransactionAsync(IsolationLevel.Serializable);
 				await workUnit.BidRepository.AddAsync(bid);
 				await workUnit.SaveAsync();
