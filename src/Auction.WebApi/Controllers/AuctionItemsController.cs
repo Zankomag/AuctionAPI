@@ -63,7 +63,10 @@ namespace Auction.WebApi.Controllers {
 		[HttpPut("{id}")]
 		public async Task<ActionResult<AuctionItemInputModel>> Update(int id,
 			[FromBody] AuctionItemInputModel model) {
-
+			
+			if(!User.TryGetUserIdentity(out UserIdentity userIdentity))
+				return StatusCode(500);
+			model.SellerId = userIdentity.Id;
 			var result = await auctionItemService.UpdateAsync(id, model);
 			if (result == null)
 				return BadRequest();
