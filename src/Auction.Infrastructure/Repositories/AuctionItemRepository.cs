@@ -29,10 +29,11 @@ namespace Auction.Infrastructure.Repositories {
 			=> Context.Entry(auctionItem).Property(x => x.WinningBidId).IsModified = true;
 
 		/// <inheritdoc />
-		public async Task AddImageAsync(int auctionItemId, byte[] image) {
+		public async Task AddImageAsync(int auctionItemId, byte[] image, string fileExtension) {
 			AuctionItemImage auctionItemImage = new AuctionItemImage() {
 				AuctionItemId = auctionItemId,
-				Image = image
+				Image = image,
+				FileExtension = fileExtension
 			};
 			await Context.Set<AuctionItemImage>().AddAsync(auctionItemImage);
 		}

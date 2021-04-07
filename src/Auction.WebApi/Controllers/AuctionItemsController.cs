@@ -70,10 +70,10 @@ namespace Auction.WebApi.Controllers {
 		public async Task<ActionResult> AddImages(int id, IFormFile image) {
 			if(image?.IsImage() == true) {
 				await using(var stream = new MemoryStream()) {
-					var extension = Path.GetExtension(image.FileName);
 					await image.CopyToAsync(stream);
 					byte[] imageBytes = stream.ToArray();
-					var result = await auctionItemService.AddImageAsync(id, imageBytes);
+					var result = await auctionItemService
+						.AddImageAsync(id, imageBytes, Path.GetExtension(image.FileName));
 					if(!result)
 						return BadRequest();
 					return Ok();

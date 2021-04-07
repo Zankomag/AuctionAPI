@@ -100,14 +100,14 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
-		public async Task<bool> AddImageAsync(int auctionItemId, byte[] image) {
+		public async Task<bool> AddImageAsync(int auctionItemId, byte[] image, string fileExtension) {
 			var auctionItem = await workUnit.AuctionItemRepository.GetAll()
 				.FirstOrDefaultAsync(x => x.Id == auctionItemId);
 			if(auctionItem == null || DateTime.UtcNow >= auctionItem.StartDate) {
 				return false;
 			}
 			try {
-				await workUnit.AuctionItemRepository.AddImageAsync(auctionItemId, image);
+				await workUnit.AuctionItemRepository.AddImageAsync(auctionItemId, image, fileExtension);
 				await workUnit.SaveAsync();
 				return true;
 			} catch(DbUpdateException) {
