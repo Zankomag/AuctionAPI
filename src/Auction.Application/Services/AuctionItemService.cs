@@ -56,7 +56,7 @@ namespace Auction.Application.Services {
 		public async Task<IEnumerable<AuctionItemModel>> GetByNameAsync(string name) {
 			try {
 				List<AuctionItem> auctionItems = await workUnit.AuctionItemRepository
-					.GetAll()
+					.GetAllWithDetails()
 					.Where(x => EF.Functions.Like(x.Name, name.ToLikeString(), "~"))
 					.ToListAsync();
 				return mapper.Map<IEnumerable<AuctionItemModel>>(auctionItems);

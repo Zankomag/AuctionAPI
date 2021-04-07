@@ -31,7 +31,7 @@ namespace Auction.Infrastructure.Repositories {
 		public IQueryable<AuctionItem> GetAllWithDetails()
 			=> GetAll()
 				.Include(x => x.Images)
-				.Include(x => x.WinningBid)
+				.Include(x => x.WinningBid).ThenInclude(x => x.Bidder)
 				.Include(x => x.Bids).ThenInclude(x => x.Bidder)
 				.Include(x => x.Seller)
 				.Include(x => x.AuctionItemCategory);

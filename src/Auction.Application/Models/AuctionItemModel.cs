@@ -18,7 +18,7 @@ namespace Auction.Application.Models {
 
 		public IEnumerable<FileModel> Images { get; set; }
 		public BidModel WinningBid { get; set; }
-		public IEnumerable<BidModel> Bids { get; set; }
+		public IEnumerable<BidModel> Bids { get; set; } //TODO do not show empty when adding 
 		public UserModel Seller { get; set; }
 		public string CategoryName { get; set; }
 	}

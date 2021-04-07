@@ -7,6 +7,7 @@ using Auction.Core.Repositories.Generic;
 namespace Auction.Core.Repositories {
 
 	public interface IAuctionItemRepository : ICrudRepository<AuctionItem, int> {
+		IQueryable<AuctionItem> GetAllWithDetails();
 		Task<IEnumerable<AuctionItem>> GetAllWithDetailsAsync();
 		Task<AuctionItem> GetByIdWithDetailsAsync(int id);
 		void UpdateActualClosingDate(AuctionItem auctionItem);
