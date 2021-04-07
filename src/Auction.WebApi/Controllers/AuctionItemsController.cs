@@ -17,9 +17,12 @@ namespace Auction.WebApi.Controllers {
 	[Produces("application/json")]
 	public class AuctionItemsController : ControllerBase {
 		private readonly IAuctionItemService auctionItemService;
+		private readonly IBidService bidService;
 
-		public AuctionItemsController(IAuctionItemService auctionItemService)
-			=> this.auctionItemService = auctionItemService;
+		public AuctionItemsController(IAuctionItemService auctionItemService, IBidService bidService) {
+			this.auctionItemService = auctionItemService;
+			this.bidService = bidService;
+		}
 
 		// GET api/AuctionItems
 		[HttpGet]
@@ -81,6 +84,15 @@ namespace Auction.WebApi.Controllers {
 			if (!result)
 				return BadRequest();
 			return Ok();
+		}
+
+		// GET api/AuctionItems/5/bids
+		[HttpGet("{id:int}/bids")]
+		public async Task<ActionResult<IEnumerable<BidModel>>> GetBidsByAuctionItemId(int id) {
+			var result = await bidService.GetByAuctionItemIdWithDetailsAsync(id);
+			if(result == null)
+				return NotFound();
+			return Ok(result);
 		}
 
 	}
