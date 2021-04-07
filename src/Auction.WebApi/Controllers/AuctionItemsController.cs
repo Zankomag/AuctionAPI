@@ -142,6 +142,15 @@ namespace Auction.WebApi.Controllers {
 				return BadRequest();
 			return result;
 		}
+
+		// GET /apiAuctionItems/bids/5
+		[HttpGet("bids/{id:int}")]
+		public async Task<ActionResult<BidModel>> GetBidById(int id) {
+			var result = await bidService.GetByIdWithDetailsAsync(id);
+			if(result == null)
+				return NotFound();
+			return result;
+		}
 		
 		
 
