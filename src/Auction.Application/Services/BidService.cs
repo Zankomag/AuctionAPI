@@ -71,7 +71,9 @@ namespace Auction.Application.Services {
 					
 					return null;
 				}
-				if(auctionItem.WinningBid != null && auctionItem.WinningBid.Price >= model.Price) {
+				if(auctionItem.StartingPrice >= model.Price
+					|| (auctionItem.WinningBid != null && auctionItem.WinningBid.Price >= model.Price)) {
+					
 					return null;
 				}
 				var newClosingDate = dateTimeUtcNow.AddMinutes(minIntervalToClosingAuctionItemMinutes);
