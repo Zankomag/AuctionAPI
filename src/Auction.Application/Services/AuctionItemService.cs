@@ -18,6 +18,7 @@ namespace Auction.Application.Services {
 
 	public class AuctionItemService : IAuctionItemService {
 		private const int minAuctionStartToClosingIntervalMinutes = 10;
+		private const int maxImagesPerAuctionItem = 5;
 
 		private readonly IUnitOfWork workUnit;
 		private readonly IMapper mapper;
@@ -104,6 +105,12 @@ namespace Auction.Application.Services {
 			var auctionItem = await workUnit.AuctionItemRepository.GetAll()
 				.FirstOrDefaultAsync(x => x.Id == auctionItemId);
 			if(auctionItem == null || DateTime.UtcNow >= auctionItem.StartDate) {
+				return false;
+			}
+			var imageCount = await workUnit.AuctionItemRepository.GetAllImages()
+				.Where(x => x.AuctionItemId == auctionItemId)
+				.CountAsync();
+			if(imageCount >= maxImagesPerAuctionItem) {
 				return false;
 			}
 			try {
