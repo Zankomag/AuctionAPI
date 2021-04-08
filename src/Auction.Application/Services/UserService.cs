@@ -96,6 +96,8 @@ namespace Auction.Application.Services {
 		public async Task<bool> UpdatePasswordAsync(PasswordChangeModel model) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return false;
+			if(model.NewPassword == model.Password)
+				return false;
 			try {
 				User user = await workUnit.UserRepository.GetAuthorizationInfoByEmailAsync(model.Email);
 				if(user == null)
