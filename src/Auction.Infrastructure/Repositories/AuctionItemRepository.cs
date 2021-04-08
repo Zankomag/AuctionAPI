@@ -50,6 +50,16 @@ namespace Auction.Infrastructure.Repositories {
 				}).FirstOrDefaultAsync();
 
 		/// <inheritdoc />
+		public async Task<bool> DeleteImageByIdAsync(int id) {
+			var imageDbSet = Context.Set<AuctionItemImage>();
+			if(await imageDbSet.AnyAsync(x => x.Id.Equals(id))) {
+				imageDbSet.Remove(new AuctionItemImage {Id = id});
+				return true;
+			}
+			return false;
+		}
+
+		/// <inheritdoc />
 		public IQueryable<AuctionItemImage> GetAllImages()
 			=> Context.Set<AuctionItemImage>().AsNoTracking();
 
@@ -63,6 +73,7 @@ namespace Auction.Infrastructure.Repositories {
 
 		/// <inheritdoc />
 		public override Task<bool> DeleteByIdAsync(int id) {
+			// contains-check is removed to decrease requests count
 			DbSet.Remove(new AuctionItem {Id = id});
 			return Task.FromResult(true);
 		}

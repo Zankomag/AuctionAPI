@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Auction.Application.Extensions;
@@ -81,6 +82,20 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
+		public async Task<int> GetAuctionItemIdByImage(int imageId) {
+			try {
+				int auctionItemId = await workUnit.AuctionItemRepository.GetAllImages()
+					.Where(x => x.Id == imageId)
+					.Select(x => x.AuctionItemId)
+					.FirstOrDefaultAsync();
+				return auctionItemId;
+			} catch(Exception ex) {
+				logger.LogError(ex, ExceptionThrownInService);
+				throw;
+			}
+		}
+		
+		/// <inheritdoc />
 		public async Task<int> GetOwnerId(int id) {
 			try {
 				int ownerId = await workUnit.AuctionItemRepository.GetAll()
@@ -98,6 +113,13 @@ namespace Auction.Application.Services {
 		public async Task<bool> IsUserOwner(int auctionItemId, int userId) {
 			if(userId == default) return false;
 			return userId == await GetOwnerId(auctionItemId);
+		}
+
+		/// <inheritdoc />
+		public async Task<bool> IsUserImageOwner(int auctionItemImageId, int userId) {
+			if(userId == default) return false;
+			int auctionItemId = await GetAuctionItemIdByImage(auctionItemImageId);
+			return await IsUserOwner(auctionItemId, userId);
 		}
 
 		/// <inheritdoc />
@@ -132,6 +154,23 @@ namespace Auction.Application.Services {
 				if(image == null)
 					return null;
 				return mapper.Map<ImageFileModel>(image);
+			} catch(Exception ex) {
+				logger.LogError(ex, ExceptionThrownInService);
+				throw;
+			}
+		}
+
+		/// <inheritdoc />
+		public async Task<bool> DeleteImageByIdAsync(int id) {
+			try {
+				if(!await workUnit.AuctionItemRepository.DeleteImageByIdAsync(id)) {
+					return false;
+				}
+				await workUnit.SaveAsync();
+				return true;
+			} catch(DataException) {
+				return false;
+
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
 				throw;
@@ -197,6 +236,8 @@ namespace Auction.Application.Services {
 				await workUnit.AuctionItemRepository.DeleteByIdAsync(id);
 				await workUnit.SaveAsync();
 				return true;
+			} catch(DataException) {
+				return false;
 			} catch(Exception ex) {
 				logger.LogError(ex, ExceptionThrownInService);
 				throw;

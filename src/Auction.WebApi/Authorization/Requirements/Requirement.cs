@@ -12,6 +12,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 		public const string Admin = nameof(AdminRequirement);
 		public const string OwnerOfUserId = nameof(OwnerOfUserIdRequirement);
 		public const string OwnerOfAuctionItemId = nameof(OwnerOfAuctionItemIdRequirement);
+		public const string OwnerOfAuctionItemImageId = nameof(OwnerOfAuctionItemImageIdRequirement);
 
 		/// <summary>
 		/// Joins policies with "Or"

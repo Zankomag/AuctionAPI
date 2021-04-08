@@ -11,7 +11,5 @@ namespace Auction.WebApi.Authorization.Requirements {
 	
 	/// <inheritdoc cref="IOwnerOfAuctionItemIdRequirement"/>
 	public class OwnerOfAuctionItemIdRequirement : IOwnerOfAuctionItemIdRequirement { }
-	
-	public class ExceptOwnerOfAuctionItemIdRequirement : IOwnerOfAuctionItemIdRequirement, IExceptRequirement { }
 
 }

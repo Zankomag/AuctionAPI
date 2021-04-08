@@ -71,6 +71,8 @@ namespace Auction.WebApi.Authorization.Extensions {
 					policy => policy.AddRequirements(new AdminOrOwnerOfAuctionItemIdRequirement()));
 				options.AddPolicy(Requirement.GetExceptPolicy(Requirement.OwnerOfAuctionItemId),
 					policy => policy.AddRequirements(new ExceptOwnerOfAuctionItemIdRequirement()));
+				options.AddPolicy(Requirement.GetOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfAuctionItemImageId),
+					policy => policy.AddRequirements(new AdminOrOwnerOfAuctionItemImageIdRequirement()));
 			});
 
 			services.AddScoped<IRequestData, RequestData>();

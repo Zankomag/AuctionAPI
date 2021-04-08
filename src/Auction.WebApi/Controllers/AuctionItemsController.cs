@@ -152,7 +152,15 @@ namespace Auction.WebApi.Controllers {
 			return result;
 		}
 		
-		
+		// DELETE api/images/5
+		[AuthorizeAny(Requirement.Admin, Requirement.OwnerOfAuctionItemImageId)]
+		[HttpDelete("images/{id:int}")]
+		public async Task<IActionResult> DeleteImage(int id) {
+			bool result = await auctionItemService.DeleteImageByIdAsync(id);
+			if(!result)
+				return BadRequest();
+			return Ok();
+		}
 
 	}
 
