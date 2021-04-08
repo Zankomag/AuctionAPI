@@ -33,6 +33,12 @@ namespace Auction.Infrastructure.Repositories {
 			}).FirstOrDefaultAsync();
 
 		/// <inheritdoc />
+		public void UpdatePasswordHashAndSalt(User user) {
+			Context.Entry(user).Property(x => x.PasswordHash).IsModified = true;
+			Context.Entry(user).Property(x => x.PasswordSalt).IsModified = true;
+		}
+
+		/// <inheritdoc />
 		public async Task AddAsync(User user) => await DbSet.AddAsync(user);
 
 		/// <inheritdoc />

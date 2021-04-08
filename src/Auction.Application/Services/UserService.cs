@@ -93,6 +93,33 @@ namespace Auction.Application.Services {
 		}
 
 		/// <inheritdoc />
+		public async Task<bool> UpdatePasswordAsync(PasswordChangeModel model) {
+			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
+				return false;
+			try {
+				User user = await workUnit.UserRepository.GetAuthorizationInfoByEmailAsync(email);
+				if(user == null)
+					return false;
+				var passwordHash = model.Password.ToPasswordHashBySalt(user.PasswordSalt);
+				if(passwordHash != user.PasswordHash)
+					return false;
+				user = new User() {
+					Id = user.Id,
+					PasswordHash = model.NewPassword.ToPasswordHash(out byte[] salt),
+					PasswordSalt = salt
+				};
+				workUnit.UserRepository.UpdatePasswordHashAndSalt(user);
+				await workUnit.SaveAsync();
+				return true;
+			} catch(DbUpdateException) {
+				return false;
+			} catch(Exception ex) {
+				logger.LogError(ex, ExceptionThrownInService);
+				throw;
+			}
+		}
+
+		/// <inheritdoc />
 		public async Task<UserDetailedModel> AddAsync(UserInputModel model) {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return null;

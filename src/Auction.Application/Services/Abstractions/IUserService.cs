@@ -26,6 +26,8 @@ namespace Auction.Application.Services.Abstractions {
 		Task<UserDetailedModel> GetAuthorizationInfoByEmailAndPasswordAsync(string email, string password);
 
 		Task<bool> UserExistsAsync(int userId);
+
+		Task<bool> UpdatePasswordAsync(PasswordChangeModel model);
 	}
 
 }

@@ -15,6 +15,8 @@ namespace Auction.Core.Repositories {
 		/// <returns>User with Id, Role, PasswordHash and PasswordSalt</returns>
 		Task<User> GetAuthorizationInfoByEmailAsync(string email);
 
+		void UpdatePasswordHashAndSalt(User user);
+
 		Task AddAsync(User user);
 
 		Task<bool> AddRoleAsync(int userId, int roleId);
