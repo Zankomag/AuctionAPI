@@ -97,7 +97,7 @@ namespace Auction.Application.Services {
 			if(!Validator.TryValidateObject(model, new ValidationContext(model), null, true))
 				return false;
 			try {
-				User user = await workUnit.UserRepository.GetAuthorizationInfoByEmailAsync(email);
+				User user = await workUnit.UserRepository.GetAuthorizationInfoByEmailAsync(model.Email);
 				if(user == null)
 					return false;
 				var passwordHash = model.Password.ToPasswordHashBySalt(user.PasswordSalt);
