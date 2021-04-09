@@ -18,12 +18,7 @@ namespace Auction.WebApi.Authorization.Requirements.Handlers {
 
 			if(!context.IsAlreadyDetermined<IAdminRequirement>()
 				&& context.User.IsInRole(Role.Admin)) {
-
-				var rType = requirement.GetType();
-				Console.WriteLine(rType);
-				foreach(Type type in rType.GetInterfaces()) {
-					Console.WriteLine(type);
-				}
+				
 				context.Succeed(requirement);
 			}
 			return Task.CompletedTask;
