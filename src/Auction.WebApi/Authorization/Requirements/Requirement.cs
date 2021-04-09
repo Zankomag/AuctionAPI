@@ -13,6 +13,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 	///     Policy requirements accessor
 	/// </summary>
 	public static class Requirement {
+		private const string except = "Except";
 		public const string Admin = nameof(AdminRequirement);
 		public const string OwnerOfUserId = nameof(OwnerOfUserIdRequirement);
 		public const string OwnerOfAuctionItemId = nameof(OwnerOfAuctionItemIdRequirement);
@@ -62,7 +63,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 		/// <summary>
 		/// Adds "Except" before policy
 		/// </summary>
-		public static string GetExceptPolicy(params string[] policies) => String.Concat("Except", GetOrCombinedPolicy(policies));
+		public static string GetExceptPolicy(params string[] policies) => String.Concat(except, GetOrCombinedPolicy(policies));
 
 		private static void ValidatePolicies(string[] policies) {
 			if(policies is null) throw new ArgumentNullException(nameof(policies));
@@ -93,10 +94,12 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 			if(requirements.TryGetValue(combinedPolicy, out IAuthorizationRequirement requirement))
 				return requirement;
-			return CreateCombinedRequirement(policies, combinedPolicy);
+			var newRequirement =  CreateCombinedRequirement(policies);
+			requirements.Add(combinedPolicy, newRequirement);
+			return newRequirement;
 		}
 
-		private static IAuthorizationRequirement CreateCombinedRequirement(string[] policies, string combinedPolicy) {
+		private static IAuthorizationRequirement CreateCombinedRequirement(string[] policies) {
 			Type[] requirementTypes = new Type[policies.Length];
 			for(int i = 0; i < policies.Length; i++) {
 				if(!baseRequirementTypes.TryGetValue(policies[i], out Type requirementType))
@@ -104,7 +107,6 @@ namespace Auction.WebApi.Authorization.Requirements {
 				requirementTypes[i] = requirementType;
 			}
 			IAuthorizationRequirement newRequirement = new { }.ActLike(requirementTypes);
-			requirements.Add(combinedPolicy, newRequirement);
 			return newRequirement;
 		}
 
