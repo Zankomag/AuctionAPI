@@ -79,7 +79,7 @@ namespace Auction.WebApi.Authorization.Extensions {
 			services.AddScoped<IAuthorizationHandler, OwnerOfAuctionItemIdRequirementHandler>();
 			services.AddScoped<IAuthorizationHandler, OwnerOfAuctionItemImageIdRequirementHandler>();
 
-			//NotRequirement handler must be registered last
+			//ExceptRequirement handler must be registered last
 			services.AddScoped<IAuthorizationHandler, ExceptRequirementHandler>();
 
 			services.AddHttpContextAccessor();
