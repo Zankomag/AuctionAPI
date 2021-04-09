@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Auction.WebApi.Authorization.Abstractions;
 using Auction.WebApi.Authorization.Extensions;
+using Auction.WebApi.Authorization.Requirements;
 using Auction.WebApi.Authorization.Requirements.Handlers;
 using Auction.WebApi.Authorization.Services;
 using ImpromptuInterface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Auction.WebApi.Authorization.Requirements {
+namespace Auction.WebApi.Authorization {
 
 	/// <summary>
 	///     Policy requirements accessor and registrar

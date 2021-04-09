@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Auction.Application.Models;
 using Auction.Application.Services.Abstractions;
+using Auction.WebApi.Authorization;
 using Auction.WebApi.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
