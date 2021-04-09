@@ -65,6 +65,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 		public static string GetExceptPolicy(string policy) => String.Concat("Except", policy);
 
 		private static void ValidatePolicies(string[] policies) {
+			if(policies is null) throw new ArgumentNullException(nameof(policies));
 			if(policies.Length != policies.Distinct().Count()) {
 				throw new ArgumentException("Policies have duplicates", nameof(policies));
 			}
