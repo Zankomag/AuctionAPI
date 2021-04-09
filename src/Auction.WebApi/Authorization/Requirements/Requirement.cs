@@ -26,11 +26,12 @@ namespace Auction.WebApi.Authorization.Requirements {
 			new Dictionary<string, IAuthorizationRequirement>();
 
 		static Requirement() {
-			InitializeRequirements();
-			InitializeRequirementTypes();
+			InitializeBaseRequirements();
+			InitializeBaseRequirementTypes();
 		}
 
-		private static void InitializeRequirementTypes() {
+		private static void InitializeBaseRequirementTypes() {
+			AddRequirementType(except, typeof(IExceptRequirement));
 			AddRequirementType(Admin, typeof(IAdminRequirement));
 			AddRequirementType(OwnerOfUserId, typeof(IOwnerOfUserIdRequirement));
 			AddRequirementType(OwnerOfAuctionItemId, typeof(IOwnerOfAuctionItemIdRequirement));
@@ -48,7 +49,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 			baseRequirementTypes.TryAdd(key, type);
 		}
 		
-		private static void InitializeRequirements() {
+		private static void InitializeBaseRequirements() {
 			requirements.Add(Admin, new AdminRequirement());
 			requirements.Add(OwnerOfUserId, new OwnerOfUserIdRequirement());
 			requirements.Add(OwnerOfAuctionItemId, new OwnerOfAuctionItemIdRequirement());
@@ -82,6 +83,13 @@ namespace Auction.WebApi.Authorization.Requirements {
 			AddPolicy(options, policy, requirement);
 		}
 
+		public static void AddExceptPolicy(AuthorizationOptions options, params string[] policies) {
+			ValidatePolicies(policies);
+			string exceptPolicy = GetExceptPolicy(policies);
+			var requirement = GetCombinedRequirement(exceptPolicy, policies.Append(except).ToArray());
+			AddPolicy(options, exceptPolicy, requirement);
+		}
+		
 		public static void AddOrCombinedPolicy(AuthorizationOptions options, params string[] policies) {
 			ValidatePolicies(policies);
 			string orCombinedPolicy = GetOrCombinedPolicy(policies);
@@ -109,10 +117,8 @@ namespace Auction.WebApi.Authorization.Requirements {
 			IAuthorizationRequirement newRequirement = new { }.ActLike(requirementTypes);
 			return newRequirement;
 		}
-
-		//TODO register IExceptRequirement is base requirements
+		
 		//TODO registed or requirement handlers here
-		//TODO add GetExceptPolicy
 		//TODO try to get all policies from attributes and register them
 
 

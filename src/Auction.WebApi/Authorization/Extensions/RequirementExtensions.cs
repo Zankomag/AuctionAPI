@@ -9,5 +9,8 @@ namespace Auction.WebApi.Authorization.Extensions {
 		
 		public static void AddOrCombinedPolicy(this AuthorizationOptions options, params string[] policies)
 			=> Requirement.AddOrCombinedPolicy(options, policies);
+
+		public static void AddExceptPolicy(this AuthorizationOptions options, params string[] policies)
+			=> Requirement.AddExceptPolicy(options, policies);
 	}
 }
