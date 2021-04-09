@@ -4,11 +4,9 @@ using System.Text;
 using Auction.WebApi.Authorization.Abstractions;
 using Auction.WebApi.Authorization.Constants;
 using Auction.WebApi.Authorization.Requirements;
-using Auction.WebApi.Authorization.Requirements.Handlers;
 using Auction.WebApi.Authorization.Services;
 using Auction.WebApi.Authorization.Types;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +20,7 @@ namespace Auction.WebApi.Authorization.Extensions {
 			IConfiguration configuration) {
 
 			services.AddAuthentication(configuration);
-			services.AddAuthorization();
+			Requirement.AddAuthorization(services);
 			return services;
 		}
 
@@ -52,37 +50,6 @@ namespace Auction.WebApi.Authorization.Extensions {
 					NameClaimType = JwtOpenIdProperty.Username,
 					RoleClaimType = JwtOpenIdProperty.Role
 				});
-		}
-
-		private static void AddAuthorization(this IServiceCollection services) {
-			services.AddAuthorization(options => {
-				//Override default 'DenyAnonymousAuthorizationRequirement' with similar policy
-				//that fails context if user is not authenticated
-				options.DefaultPolicy = new AuthorizationPolicyBuilder()
-					.AddRequirements(new AuthenticationRequirement())
-					.Build();
-				options.AddExceptPolicy(Requirement.OwnerOfAuctionItemId);
-				options.AddBasePolicy(Requirement.Admin);
-				options.AddBasePolicy(Requirement.OwnerOfAuctionItemId);
-				options.AddOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfUserId);
-				options.AddOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfAuctionItemId);
-				options.AddOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfAuctionItemImageId);
-			});
-
-			services.AddScoped<IRequestData, RequestData>();
-
-			//Order of handlers is important - it determines their execution order in request pipeline
-			//These services are scoped because they use scoped IRequestData, otherwise they'd be singletons
-			services.AddScoped<IAuthorizationHandler, AuthenticationRequirementHandler>();
-			services.AddScoped<IAuthorizationHandler, AdminRequirementHandler>();
-			services.AddScoped<IAuthorizationHandler, OwnerOfUserIdRequirementHandler>();
-			services.AddScoped<IAuthorizationHandler, OwnerOfAuctionItemIdRequirementHandler>();
-			services.AddScoped<IAuthorizationHandler, OwnerOfAuctionItemImageIdRequirementHandler>();
-
-			//ExceptRequirement handler must be registered last
-			services.AddScoped<IAuthorizationHandler, ExceptRequirementHandler>();
-
-			services.AddHttpContextAccessor();
 		}
 
 		public static IApplicationBuilder UseAuthenticationAndAuthorization(this IApplicationBuilder app) {

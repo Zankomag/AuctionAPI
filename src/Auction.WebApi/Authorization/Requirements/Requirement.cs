@@ -1,16 +1,20 @@
-﻿
-// ReSharper disable InheritdocConsiderUsage
+﻿// ReSharper disable InheritdocConsiderUsage
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Auction.WebApi.Authorization.Abstractions;
+using Auction.WebApi.Authorization.Extensions;
+using Auction.WebApi.Authorization.Requirements.Handlers;
+using Auction.WebApi.Authorization.Services;
 using ImpromptuInterface;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Auction.WebApi.Authorization.Requirements {
 
 	/// <summary>
-	///     Policy requirements accessor
+	///     Policy requirements accessor and registrar
 	/// </summary>
 	public static class Requirement {
 		private const string except = "Except";
@@ -18,12 +22,10 @@ namespace Auction.WebApi.Authorization.Requirements {
 		public const string OwnerOfUserId = nameof(OwnerOfUserIdRequirement);
 		public const string OwnerOfAuctionItemId = nameof(OwnerOfAuctionItemIdRequirement);
 		public const string OwnerOfAuctionItemImageId = nameof(OwnerOfAuctionItemImageIdRequirement);
-		
-		private static readonly Dictionary<string, Type> baseRequirementTypes = 
-			new Dictionary<string, Type>();
-		
-		private static readonly Dictionary<string, IAuthorizationRequirement> requirements =
-			new Dictionary<string, IAuthorizationRequirement>();
+
+		private static readonly Dictionary<string, Type> baseRequirementTypes = new();
+
+		private static readonly Dictionary<string, IAuthorizationRequirement> requirements = new();
 
 		static Requirement() {
 			InitializeBaseRequirements();
@@ -48,31 +50,33 @@ namespace Auction.WebApi.Authorization.Requirements {
 			}
 			baseRequirementTypes.TryAdd(key, type);
 		}
-		
+
 		private static void InitializeBaseRequirements() {
 			requirements.Add(Admin, new AdminRequirement());
 			requirements.Add(OwnerOfUserId, new OwnerOfUserIdRequirement());
 			requirements.Add(OwnerOfAuctionItemId, new OwnerOfAuctionItemIdRequirement());
 			requirements.Add(OwnerOfAuctionItemImageId, new OwnerOfAuctionItemImageIdRequirement());
 		}
-		
+
 		/// <summary>
-		/// Joins policies with "Or"
+		///     Joins policies with "Or"
 		/// </summary>
 		public static string GetOrCombinedPolicy(params string[] policies) => String.Join("Or", policies);
 
 		/// <summary>
-		/// Adds "Except" before policy
+		///     Adds "Except" before policy
 		/// </summary>
-		public static string GetExceptPolicy(params string[] policies) => String.Concat(except, GetOrCombinedPolicy(policies));
+		public static string GetExceptPolicy(params string[] policies)
+			=> String.Concat(except, GetOrCombinedPolicy(policies));
 
+		// ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
 		private static void ValidatePolicies(string[] policies) {
 			if(policies is null) throw new ArgumentNullException(nameof(policies));
 			if(policies.Length != policies.Distinct().Count()) {
 				throw new ArgumentException("Policies have duplicates", nameof(policies));
 			}
 		}
-		
+
 		private static void AddPolicy(AuthorizationOptions options, string policy,
 			IAuthorizationRequirement requirement)
 			=> options.AddPolicy(policy, policyBuilder => policyBuilder.AddRequirements(requirement));
@@ -89,7 +93,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 			var requirement = GetCombinedRequirement(exceptPolicy, policies.Append(except).ToArray());
 			AddPolicy(options, exceptPolicy, requirement);
 		}
-		
+
 		public static void AddOrCombinedPolicy(AuthorizationOptions options, params string[] policies) {
 			ValidatePolicies(policies);
 			string orCombinedPolicy = GetOrCombinedPolicy(policies);
@@ -102,7 +106,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 			if(requirements.TryGetValue(combinedPolicy, out IAuthorizationRequirement requirement))
 				return requirement;
-			var newRequirement =  CreateCombinedRequirement(policies);
+			var newRequirement = CreateCombinedRequirement(policies);
 			requirements.Add(combinedPolicy, newRequirement);
 			return newRequirement;
 		}
@@ -111,17 +115,55 @@ namespace Auction.WebApi.Authorization.Requirements {
 			Type[] requirementTypes = new Type[policies.Length];
 			for(int i = 0; i < policies.Length; i++) {
 				if(!baseRequirementTypes.TryGetValue(policies[i], out Type requirementType))
-					throw new ArgumentException($"Requirement for {policies[i]} policy doesn't exist", nameof(policies));
+					throw new ArgumentException($"Requirement for {policies[i]} policy doesn't exist",
+						nameof(policies));
 				requirementTypes[i] = requirementType;
 			}
 			IAuthorizationRequirement newRequirement = new { }.ActLike(requirementTypes);
 			return newRequirement;
 		}
-		
-		//TODO registed or requirement handlers here
+
+		public static void RegisterAuthorizationHandlers(IServiceCollection services) {
+			//This handler must be registered as the very first among all handlers
+			services.AddSingleton<IAuthorizationHandler, AuthenticationRequirementHandler>();
+
+			//Authorization handlers use request data
+			services.AddScoped<IRequestData, RequestData>();
+			services.AddHttpContextAccessor();
+
+			//Order of handlers is important - it determines their execution order in request pipeline
+			//
+			//These services are scoped because they use scoped IRequestData and other scoped services,
+			//otherwise they'd be singletons
+			services.AddScoped<IAuthorizationHandler, AdminRequirementHandler>();
+			services.AddScoped<IAuthorizationHandler, OwnerOfUserIdRequirementHandler>();
+			services.AddScoped<IAuthorizationHandler, OwnerOfAuctionItemIdRequirementHandler>();
+			services.AddScoped<IAuthorizationHandler, OwnerOfAuctionItemImageIdRequirementHandler>();
+
+			//ExceptRequirement handler must be registered last
+			//because requirement that he except-handles must be handled before
+			services.AddSingleton<IAuthorizationHandler, ExceptRequirementHandler>();
+		}
+
+		public static void AddAuthorization(IServiceCollection services) {
+			services.AddAuthorization(options => {
+				//Override default 'DenyAnonymousAuthorizationRequirement' with similar policy
+				//that fails context if user is not authenticated
+				options.DefaultPolicy = new AuthorizationPolicyBuilder()
+					.AddRequirements(new AuthenticationRequirement())
+					.Build();
+				options.AddExceptPolicy(OwnerOfAuctionItemId);
+				options.AddBasePolicy(Admin);
+				options.AddBasePolicy(OwnerOfAuctionItemId);
+				options.AddOrCombinedPolicy(Admin, OwnerOfUserId);
+				options.AddOrCombinedPolicy(Admin, OwnerOfAuctionItemId);
+				options.AddOrCombinedPolicy(Admin, OwnerOfAuctionItemImageId);
+			});
+
+			RegisterAuthorizationHandlers(services);
+		}
+
 		//TODO try to get all policies from attributes and register them
-
-
 	}
 
 }
