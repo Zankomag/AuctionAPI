@@ -37,6 +37,9 @@ namespace Auction.WebApi.Authorization.Requirements {
 		}
 
 		private static void AddRequirementType(string key, Type type) {
+			if(!type.IsInterface) {
+				throw new ArgumentException($"Type must be interface", nameof(type));
+			}
 			if(!type.IsAssignableTo(typeof(IAuthorizationRequirement))) {
 				throw new ArgumentException($"Type must be assignable to {nameof(IAuthorizationRequirement)}",
 					nameof(type));
