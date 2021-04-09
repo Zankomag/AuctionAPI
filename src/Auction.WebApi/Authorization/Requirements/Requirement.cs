@@ -2,6 +2,10 @@
 // ReSharper disable InheritdocConsiderUsage
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using ImpromptuInterface;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Auction.WebApi.Authorization.Requirements {
 
@@ -13,7 +17,40 @@ namespace Auction.WebApi.Authorization.Requirements {
 		public const string OwnerOfUserId = nameof(OwnerOfUserIdRequirement);
 		public const string OwnerOfAuctionItemId = nameof(OwnerOfAuctionItemIdRequirement);
 		public const string OwnerOfAuctionItemImageId = nameof(OwnerOfAuctionItemImageIdRequirement);
+		
+		private static readonly Dictionary<string, Type> baseRequirementTypes = 
+			new Dictionary<string, Type>();
+		
+		private static readonly Dictionary<string, IAuthorizationRequirement> requirements =
+			new Dictionary<string, IAuthorizationRequirement>();
 
+		static Requirement() {
+			InitializeRequirements();
+			InitializeRequirementTypes();
+		}
+
+		private static void InitializeRequirementTypes() {
+			AddRequirementType(Admin, typeof(IAdminRequirement));
+			AddRequirementType(OwnerOfUserId, typeof(IOwnerOfUserIdRequirement));
+			AddRequirementType(OwnerOfAuctionItemId, typeof(IOwnerOfAuctionItemIdRequirement));
+			AddRequirementType(OwnerOfAuctionItemImageId, typeof(IOwnerOfAuctionItemImageIdRequirement));
+		}
+
+		private static void AddRequirementType(string key, Type type) {
+			if(!type.IsAssignableTo(typeof(IAuthorizationRequirement))) {
+				throw new ArgumentException($"Type must be assignable to {nameof(IAuthorizationRequirement)}",
+					nameof(type));
+			}
+			baseRequirementTypes.TryAdd(key, type);
+		}
+		
+		private static void InitializeRequirements() {
+			requirements.Add(Admin, new AdminRequirement());
+			requirements.Add(OwnerOfUserId, new OwnerOfUserIdRequirement());
+			requirements.Add(OwnerOfAuctionItemId, new OwnerOfAuctionItemIdRequirement());
+			requirements.Add(OwnerOfAuctionItemImageId, new OwnerOfAuctionItemImageIdRequirement());
+		}
+		
 		/// <summary>
 		/// Joins policies with "Or"
 		/// </summary>
@@ -24,8 +61,50 @@ namespace Auction.WebApi.Authorization.Requirements {
 		/// </summary>
 		public static string GetExceptPolicy(string policy) => String.Concat("Except", policy);
 
-		//TODO add requirement factory that accepts name of requirement and returns type
-		//TODO add dynamic OR-combined requirement creation (based on AuthorizeAny attribute usage)
+		private static void AddPolicy(AuthorizationOptions options, string policy,
+			IAuthorizationRequirement requirement)
+			=> options.AddPolicy(policy, policyBuilder => policyBuilder.AddRequirements(requirement));
+
+		public static void AddBasePolicy(AuthorizationOptions options, string policy) {
+			if(!requirements.TryGetValue(policy, out IAuthorizationRequirement requirement))
+				throw new ArgumentException($"Requirement for {policy} policy doesn't exist", nameof(policy));
+			AddPolicy(options, policy, requirement);
+		}
+		
+		public static void AddOrCombinedPolicy(AuthorizationOptions options, params string[] policies) {
+			if(policies.Length != policies.Distinct().Count()) {
+				throw new ArgumentException("Policies have duplicates", nameof(policies));
+			}
+			string orCombinedPolicy = GetOrCombinedPolicy(policies);
+			var requirement = GetOrCombinedRequirement(orCombinedPolicy, policies);
+			AddPolicy(options, orCombinedPolicy, requirement);
+		}
+
+		private static IAuthorizationRequirement GetOrCombinedRequirement(string orCombinedPolicy,
+			params string[] policies) {
+
+			if(requirements.TryGetValue(orCombinedPolicy, out IAuthorizationRequirement requirement))
+				return requirement;
+			return CreateOrCombinedRequirement(policies, orCombinedPolicy);
+		}
+
+		private static IAuthorizationRequirement CreateOrCombinedRequirement(string[] policies, string orCombinedPolicy) {
+			Type[] orRequirementTypes = new Type[policies.Length];
+			for(int i = 0; i < policies.Length; i++) {
+				if(!baseRequirementTypes.TryGetValue(policies[i], out Type requirementType))
+					throw new ArgumentException($"Requirement for {policies[i]} policy doesn't exist", nameof(policies));
+				orRequirementTypes[i] = requirementType;
+			}
+			IAuthorizationRequirement newRequirement = new { }.ActLike(orRequirementTypes);
+			requirements.Add(orCombinedPolicy, newRequirement);
+			return newRequirement;
+		}
+
+		//TODO register IExceptRequirement is base requirements
+		//TODO registed or requirement handlers here
+		//TODO add GetExceptPolicy
+		//TODO try to get all policies from attributes and register them
+
 
 	}
 

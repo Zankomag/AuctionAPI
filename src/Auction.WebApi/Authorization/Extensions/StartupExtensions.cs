@@ -61,18 +61,13 @@ namespace Auction.WebApi.Authorization.Extensions {
 				options.DefaultPolicy = new AuthorizationPolicyBuilder()
 					.AddRequirements(new AuthenticationRequirement())
 					.Build();
-				options.AddPolicy(Requirement.Admin,
-					policy => policy.AddRequirements(new AdminRequirement()));
-				options.AddPolicy(Requirement.OwnerOfAuctionItemId,
-					policy => policy.AddRequirements(new OwnerOfAuctionItemIdRequirement()));
-				options.AddPolicy(Requirement.GetOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfUserId),
-					policy => policy.AddRequirements(new AdminOrOwnerOfUserIdRequirement()));
-				options.AddPolicy(Requirement.GetOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfAuctionItemId),
-					policy => policy.AddRequirements(new AdminOrOwnerOfAuctionItemIdRequirement()));
 				options.AddPolicy(Requirement.GetExceptPolicy(Requirement.OwnerOfAuctionItemId),
 					policy => policy.AddRequirements(new ExceptOwnerOfAuctionItemIdRequirement()));
-				options.AddPolicy(Requirement.GetOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfAuctionItemImageId),
-					policy => policy.AddRequirements(new AdminOrOwnerOfAuctionItemImageIdRequirement()));
+				options.AddBasePolicy(Requirement.Admin);
+				options.AddBasePolicy(Requirement.OwnerOfAuctionItemId);
+				options.AddOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfUserId);
+				options.AddOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfAuctionItemId);
+				options.AddOrCombinedPolicy(Requirement.Admin, Requirement.OwnerOfAuctionItemImageId);
 			});
 
 			services.AddScoped<IRequestData, RequestData>();
