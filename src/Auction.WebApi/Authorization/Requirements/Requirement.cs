@@ -62,7 +62,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 		/// <summary>
 		/// Adds "Except" before policy
 		/// </summary>
-		public static string GetExceptPolicy(string policy) => String.Concat("Except", policy);
+		public static string GetExceptPolicy(params string[] policies) => String.Concat("Except", GetOrCombinedPolicy(policies));
 
 		private static void ValidatePolicies(string[] policies) {
 			if(policies is null) throw new ArgumentNullException(nameof(policies));
