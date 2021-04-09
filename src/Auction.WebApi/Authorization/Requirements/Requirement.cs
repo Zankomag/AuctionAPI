@@ -79,27 +79,27 @@ namespace Auction.WebApi.Authorization.Requirements {
 				throw new ArgumentException("Policies have duplicates", nameof(policies));
 			}
 			string orCombinedPolicy = GetOrCombinedPolicy(policies);
-			var requirement = GetOrCombinedRequirement(orCombinedPolicy, policies);
+			var requirement = GetCombinedRequirement(orCombinedPolicy, policies);
 			AddPolicy(options, orCombinedPolicy, requirement);
 		}
 
-		private static IAuthorizationRequirement GetOrCombinedRequirement(string orCombinedPolicy,
+		private static IAuthorizationRequirement GetCombinedRequirement(string combinedPolicy,
 			params string[] policies) {
 
-			if(requirements.TryGetValue(orCombinedPolicy, out IAuthorizationRequirement requirement))
+			if(requirements.TryGetValue(combinedPolicy, out IAuthorizationRequirement requirement))
 				return requirement;
-			return CreateOrCombinedRequirement(policies, orCombinedPolicy);
+			return CreateCombinedRequirement(policies, combinedPolicy);
 		}
 
-		private static IAuthorizationRequirement CreateOrCombinedRequirement(string[] policies, string orCombinedPolicy) {
-			Type[] orRequirementTypes = new Type[policies.Length];
+		private static IAuthorizationRequirement CreateCombinedRequirement(string[] policies, string combinedPolicy) {
+			Type[] requirementTypes = new Type[policies.Length];
 			for(int i = 0; i < policies.Length; i++) {
 				if(!baseRequirementTypes.TryGetValue(policies[i], out Type requirementType))
 					throw new ArgumentException($"Requirement for {policies[i]} policy doesn't exist", nameof(policies));
-				orRequirementTypes[i] = requirementType;
+				requirementTypes[i] = requirementType;
 			}
-			IAuthorizationRequirement newRequirement = new { }.ActLike(orRequirementTypes);
-			requirements.Add(orCombinedPolicy, newRequirement);
+			IAuthorizationRequirement newRequirement = new { }.ActLike(requirementTypes);
+			requirements.Add(combinedPolicy, newRequirement);
 			return newRequirement;
 		}
 
