@@ -38,7 +38,7 @@ namespace Auction.WebApi.Authorization.Requirements {
 
 		private static void AddRequirementType(string key, Type type) {
 			if(!type.IsInterface) {
-				throw new ArgumentException($"Type must be interface", nameof(type));
+				throw new ArgumentException("Type must be interface", nameof(type));
 			}
 			if(!type.IsAssignableTo(typeof(IAuthorizationRequirement))) {
 				throw new ArgumentException($"Type must be assignable to {nameof(IAuthorizationRequirement)}",
@@ -64,6 +64,12 @@ namespace Auction.WebApi.Authorization.Requirements {
 		/// </summary>
 		public static string GetExceptPolicy(string policy) => String.Concat("Except", policy);
 
+		private static void ValidatePolicies(string[] policies) {
+			if(policies.Length != policies.Distinct().Count()) {
+				throw new ArgumentException("Policies have duplicates", nameof(policies));
+			}
+		}
+		
 		private static void AddPolicy(AuthorizationOptions options, string policy,
 			IAuthorizationRequirement requirement)
 			=> options.AddPolicy(policy, policyBuilder => policyBuilder.AddRequirements(requirement));
@@ -73,11 +79,9 @@ namespace Auction.WebApi.Authorization.Requirements {
 				throw new ArgumentException($"Requirement for {policy} policy doesn't exist", nameof(policy));
 			AddPolicy(options, policy, requirement);
 		}
-		
+
 		public static void AddOrCombinedPolicy(AuthorizationOptions options, params string[] policies) {
-			if(policies.Length != policies.Distinct().Count()) {
-				throw new ArgumentException("Policies have duplicates", nameof(policies));
-			}
+			ValidatePolicies(policies);
 			string orCombinedPolicy = GetOrCombinedPolicy(policies);
 			var requirement = GetCombinedRequirement(orCombinedPolicy, policies);
 			AddPolicy(options, orCombinedPolicy, requirement);
