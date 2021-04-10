@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Auction.WebApi.Authorization.Requirements.Handlers {
 
+	/// <summary>
+	///     Policy requirement that authorizes only Users that do own User 'id' parameter of request (self Id owners)
+	/// </summary>
+	public interface IOwnerOfUserIdRequirement : IAuthorizationRequirement { }
+
 	public sealed class OwnerOfUserIdRequirementHandler : OwnerOfHandler<IOwnerOfUserIdRequirement> {
 
 		public OwnerOfUserIdRequirementHandler(IRequestData requestData) : base(requestData) { }

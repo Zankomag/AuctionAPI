@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 namespace Auction.WebApi.Authorization.Requirements.Handlers {
 
 	/// <summary>
+	///     This requirement fails if requirement other handlers succeed requirement inherited from this
+	/// </summary>
+	public interface IExceptRequirement : IAuthorizationRequirement { }
+	
+	/// <summary>
 	///     This handler must be registered after or Handlers of combined with Not policies
 	/// </summary>
 	public class ExceptRequirementHandler : AuthorizationHandler<IExceptRequirement> {

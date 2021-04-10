@@ -4,6 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 // ReSharper disable InheritdocConsiderUsage
 
 namespace Auction.WebApi.Authorization.Requirements.Handlers {
+
+	/// <summary>
+	///     Fails if user is not authenticated
+	/// </summary>
+	public class AuthenticationRequirement : IAuthorizationRequirement { }
 	
 	//If IAuthorizationRequirement is combined with AuthorizationHandler
 	//then somehow HandleRequirementAsync is called twice, so we need to separate them

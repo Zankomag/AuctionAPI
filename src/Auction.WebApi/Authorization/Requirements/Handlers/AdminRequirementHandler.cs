@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Auction.WebApi.Authorization.Requirements.Handlers {
 
+	public interface IAdminRequirement : IAuthorizationRequirement { }
+
 	/// <summary>
 	///     Succeeds if user role is Admin, does not fail
 	/// </summary>

@@ -8,6 +8,11 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Auction.WebApi.Authorization.Requirements.Handlers {
 
+	/// <summary>
+	///     Policy requirement that authorizes only Users that do own AuctionItemImage 'id' parameter of request
+	/// </summary>
+	public interface IOwnerOfAuctionItemImageIdRequirement : IAuthorizationRequirement { }
+	
 	public class OwnerOfAuctionItemImageIdRequirementHandler : OwnerOfHandler<IOwnerOfAuctionItemImageIdRequirement> {
 
 		private readonly IAuctionItemService auctionItemService;
