@@ -31,6 +31,28 @@ namespace Auction.WebApi.Authorization {
 
 		static Requirement() => InitializeBaseRequirementTypes();
 
+		private static void RegisterAuthorizationHandlers(IServiceCollection services) {
+			//This handler must be registered as the very first among all handlers
+			services.AddSingleton<IAuthorizationHandler, AuthenticationRequirementHandler>();
+
+			//Authorization handlers use request data
+			services.AddScoped<IRequestData, RequestData>();
+			services.AddHttpContextAccessor();
+
+			//Order of handlers is important - it determines their execution order in request pipeline
+			//
+			//These services are scoped because they use scoped IRequestData and other scoped services,
+			//otherwise they'd be singletons
+			services.AddScoped<IAuthorizationHandler, AdminRequirementHandler>();
+			services.AddScoped<IAuthorizationHandler, OwnerOfUserIdRequirementHandler>();
+			services.AddScoped<IAuthorizationHandler, OwnerOfAuctionItemIdRequirementHandler>();
+			services.AddScoped<IAuthorizationHandler, OwnerOfAuctionItemImageIdRequirementHandler>();
+
+			//ExceptRequirement handler must be registered last
+			//because requirement that he except-handles must be handled before
+			services.AddSingleton<IAuthorizationHandler, ExceptRequirementHandler>();
+		}
+
 		private static void InitializeBaseRequirementTypes() {
 			AddRequirementType(except, typeof(IExceptRequirement));
 			AddRequirementType(Admin, typeof(IAdminRequirement));
@@ -108,28 +130,6 @@ namespace Auction.WebApi.Authorization {
 			}
 			IAuthorizationRequirement newRequirement = new { }.ActLike(requirementTypes);
 			return newRequirement;
-		}
-
-		private static void RegisterAuthorizationHandlers(IServiceCollection services) {
-			//This handler must be registered as the very first among all handlers
-			services.AddSingleton<IAuthorizationHandler, AuthenticationRequirementHandler>();
-
-			//Authorization handlers use request data
-			services.AddScoped<IRequestData, RequestData>();
-			services.AddHttpContextAccessor();
-
-			//Order of handlers is important - it determines their execution order in request pipeline
-			//
-			//These services are scoped because they use scoped IRequestData and other scoped services,
-			//otherwise they'd be singletons
-			services.AddScoped<IAuthorizationHandler, AdminRequirementHandler>();
-			services.AddScoped<IAuthorizationHandler, OwnerOfUserIdRequirementHandler>();
-			services.AddScoped<IAuthorizationHandler, OwnerOfAuctionItemIdRequirementHandler>();
-			services.AddScoped<IAuthorizationHandler, OwnerOfAuctionItemImageIdRequirementHandler>();
-
-			//ExceptRequirement handler must be registered last
-			//because requirement that he except-handles must be handled before
-			services.AddSingleton<IAuthorizationHandler, ExceptRequirementHandler>();
 		}
 
 		public static void AddAuthorization(IServiceCollection services) {
