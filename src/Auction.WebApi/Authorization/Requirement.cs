@@ -3,13 +3,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Auction.WebApi.Authorization.Abstractions;
+using Auction.WebApi.Authorization.Attributes;
 using Auction.WebApi.Authorization.Extensions;
 using Auction.WebApi.Authorization.Requirements;
 using Auction.WebApi.Authorization.Requirements.Handlers;
 using Auction.WebApi.Authorization.Services;
 using ImpromptuInterface;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Auction.WebApi.Authorization {
@@ -28,10 +31,7 @@ namespace Auction.WebApi.Authorization {
 
 		private static readonly Dictionary<string, IAuthorizationRequirement> requirements = new();
 
-		static Requirement() {
-			InitializeBaseRequirements();
-			InitializeBaseRequirementTypes();
-		}
+		static Requirement() => InitializeBaseRequirementTypes();
 
 		private static void InitializeBaseRequirementTypes() {
 			AddRequirementType(except, typeof(IExceptRequirement));
@@ -50,13 +50,6 @@ namespace Auction.WebApi.Authorization {
 					nameof(type));
 			}
 			baseRequirementTypes.TryAdd(key, type);
-		}
-
-		private static void InitializeBaseRequirements() {
-			requirements.Add(Admin, new AdminRequirement());
-			requirements.Add(OwnerOfUserId, new OwnerOfUserIdRequirement());
-			requirements.Add(OwnerOfAuctionItemId, new OwnerOfAuctionItemIdRequirement());
-			requirements.Add(OwnerOfAuctionItemImageId, new OwnerOfAuctionItemImageIdRequirement());
 		}
 
 		/// <summary>
@@ -83,8 +76,7 @@ namespace Auction.WebApi.Authorization {
 			=> options.AddPolicy(policy, policyBuilder => policyBuilder.AddRequirements(requirement));
 
 		public static void AddBasePolicy(AuthorizationOptions options, string policy) {
-			if(!requirements.TryGetValue(policy, out IAuthorizationRequirement requirement))
-				throw new ArgumentException($"Requirement for {policy} policy doesn't exist", nameof(policy));
+			var requirement = GetCombinedRequirement(policy, policy);
 			AddPolicy(options, policy, requirement);
 		}
 
@@ -153,18 +145,55 @@ namespace Auction.WebApi.Authorization {
 				options.DefaultPolicy = new AuthorizationPolicyBuilder()
 					.AddRequirements(new AuthenticationRequirement())
 					.Build();
-				options.AddExceptPolicy(OwnerOfAuctionItemId);
-				options.AddBasePolicy(Admin);
-				options.AddBasePolicy(OwnerOfAuctionItemId);
-				options.AddOrCombinedPolicy(Admin, OwnerOfUserId);
-				options.AddOrCombinedPolicy(Admin, OwnerOfAuctionItemId);
-				options.AddOrCombinedPolicy(Admin, OwnerOfAuctionItemImageId);
+				RegisterAllRequirements(options, Assembly.GetExecutingAssembly());
 			});
 
 			RegisterAuthorizationHandlers(services);
+			
 		}
 
-		//TODO try to get all policies from attributes and register them
+		private static void RegisterAllRequirements(AuthorizationOptions options, Assembly assembly) {
+			var authorizeAttributes = GetAuthorizeAttributes(assembly);
+			
+			var baseAuthorizeAttributes = authorizeAttributes
+				.Where(x => x.GetType() == typeof(AuthorizeAttribute));
+			foreach (var attribute in baseAuthorizeAttributes) {
+				options.AddBasePolicy(attribute.Policy);
+			}
+
+			var authorizeAnyAttributes = authorizeAttributes.OfType<AuthorizeAnyAttribute>();
+			foreach (var attribute in authorizeAnyAttributes) {
+				options.AddOrCombinedPolicy(attribute.Policies);
+			}
+
+			var authorizeExceptAttributes = authorizeAttributes.OfType<AuthorizeExceptAttribute>();
+			foreach (var attribute in authorizeExceptAttributes) {
+				options.AddExceptPolicy(attribute.Policies);
+			}
+
+		}
+
+		private static List<AuthorizeAttribute> GetAuthorizeAttributes(Assembly assembly) {
+			List<AuthorizeAttribute> result = new List<AuthorizeAttribute>();
+
+			foreach(Type type in assembly.GetTypes().Where(type => type.IsAssignableTo(typeof(ControllerBase)))) {
+				AddAttributes(type);
+				foreach(var methodInfo in type.GetMethods()) {
+					AddAttributes(methodInfo);
+				}
+			}
+
+			return result;
+
+			void AddAttributes(MemberInfo memberInfo) {
+				var classAttributes = Attribute.GetCustomAttributes(memberInfo, typeof(AuthorizeAttribute))
+					.Cast<AuthorizeAttribute>()
+					.Where(x => x.Policy != null);
+				result.AddRange(classAttributes);
+			}
+		}
+		
+		
 	}
 
 }
