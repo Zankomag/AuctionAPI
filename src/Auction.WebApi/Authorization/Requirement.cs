@@ -78,17 +78,17 @@ namespace Auction.WebApi.Authorization {
 		public static string GetOrCombinedPolicy(params string[] policies) => String.Join("Or", policies);
 
 		/// <summary>
-		///     Adds "Except" before policy
+		///     Adds "Except" before OR-combined policy
 		/// </summary>
 		public static string GetExceptPolicy(params string[] policies)
 			=> String.Concat(except, GetOrCombinedPolicy(policies));
 
 		// ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
 		private static void ValidatePolicies(string[] policies) {
-			if(policies is null) throw new ArgumentNullException(nameof(policies));
-			if(policies.Length != policies.Distinct().Count()) {
+			if(policies is null) 
+				throw new ArgumentNullException(nameof(policies));
+			if(policies.Length != policies.Distinct().Count()) 
 				throw new ArgumentException("Policies have duplicates", nameof(policies));
-			}
 		}
 
 		private static void AddPolicy(AuthorizationOptions options, string policy,
