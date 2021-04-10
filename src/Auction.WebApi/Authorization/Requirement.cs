@@ -98,13 +98,13 @@ namespace Auction.WebApi.Authorization {
 		private static void AddBasePolicy(AuthorizationOptions options, string policy)
 			=> AddCombinedRequirement(options, policy, new[] {policy});
 
-		private static void AddExceptPolicy(AuthorizationOptions options, params string[] policies) {
+		private static void AddExceptPolicy(AuthorizationOptions options, string[] policies) {
 			ValidatePolicies(policies);
 			string exceptPolicy = GetExceptPolicy(policies);
 			AddCombinedRequirement(options, exceptPolicy, policies.Append(except).ToArray());
 		}
 
-		private static void AddOrCombinedPolicy(AuthorizationOptions options, params string[] policies) {
+		private static void AddOrCombinedPolicy(AuthorizationOptions options, string[] policies) {
 			ValidatePolicies(policies);
 			string orCombinedPolicy = GetOrCombinedPolicy(policies);
 			AddCombinedRequirement(options, orCombinedPolicy, policies);
