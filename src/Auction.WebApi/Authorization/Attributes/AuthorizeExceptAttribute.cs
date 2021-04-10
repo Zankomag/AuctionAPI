@@ -1,5 +1,4 @@
 ﻿using System;
-using Auction.WebApi.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Auction.WebApi.Authorization.Attributes {
@@ -10,9 +9,11 @@ namespace Auction.WebApi.Authorization.Attributes {
 	/// </remarks>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
 	public class AuthorizeExceptAttribute : AuthorizeAttribute {
-		
-		public AuthorizeExceptAttribute(string policy) : base(Requirement.GetExceptPolicy(policy)) { }
-		
+
+		public string[] Policies { get; }
+
+		public AuthorizeExceptAttribute(string policy, string[] policies) : base(Requirement.GetExceptPolicy(policy))
+			=> Policies = policies;
 	}
 
 }
