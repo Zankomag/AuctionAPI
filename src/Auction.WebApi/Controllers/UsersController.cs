@@ -4,7 +4,6 @@ using Auction.Application.Models;
 using Auction.Application.Services.Abstractions;
 using Auction.WebApi.Authorization;
 using Auction.WebApi.Authorization.Attributes;
-using Auction.WebApi.Authorization.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -87,7 +86,6 @@ namespace Auction.WebApi.Controllers {
 				return BadRequest();
 			return Ok();
 		}
-		
 	}
 
 }

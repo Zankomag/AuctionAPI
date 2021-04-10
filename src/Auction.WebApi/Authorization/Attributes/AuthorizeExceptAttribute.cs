@@ -12,7 +12,7 @@ namespace Auction.WebApi.Authorization.Attributes {
 
 		public string[] Policies { get; }
 
-		public AuthorizeExceptAttribute(string policy, string[] policies) : base(Requirement.GetExceptPolicy(policy))
+		public AuthorizeExceptAttribute(params string[] policies) : base(Requirement.GetExceptPolicy(policies))
 			=> Policies = policies;
 	}
 

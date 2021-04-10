@@ -6,7 +6,6 @@ using Auction.Application.Services.Abstractions;
 using Auction.WebApi.Authorization;
 using Auction.WebApi.Authorization.Attributes;
 using Auction.WebApi.Authorization.Extensions;
-using Auction.WebApi.Authorization.Requirements;
 using Auction.WebApi.Authorization.Types;
 using Auction.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -47,10 +46,10 @@ namespace Auction.WebApi.Controllers {
 		// GET api/AuctionItems/war%20and%20peace
 		[HttpGet("search/{name}")]
 		public async Task<ActionResult<IEnumerable<AuctionItemModel>>> GetByName(string name) {
-			if (name == null)
+			if(name == null)
 				return BadRequest();
 			var result = await auctionItemService.GetByNameAsync(name);
-			if (result == null)
+			if(result == null)
 				return NotFound();
 			return Ok(result);
 		}
@@ -58,7 +57,7 @@ namespace Auction.WebApi.Controllers {
 		// POST api/AuctionItems
 		[HttpPost]
 		public async Task<ActionResult<AuctionItemInputModel>> Add([FromBody] AuctionItemInputModel model) {
-			if(!User.TryGetUserIdentity(out UserIdentity userIdentity)) 
+			if(!User.TryGetUserIdentity(out UserIdentity userIdentity))
 				return StatusCode(500);
 			model.SellerId = userIdentity.Id;
 			var result = await auctionItemService.AddAsync(model);
@@ -103,12 +102,12 @@ namespace Auction.WebApi.Controllers {
 		[HttpPut("{id:int}")]
 		public async Task<ActionResult<AuctionItemInputModel>> Update(int id,
 			[FromBody] AuctionItemInputModel model) {
-			
+
 			if(!User.TryGetUserIdentity(out UserIdentity userIdentity))
 				return StatusCode(500);
 			model.SellerId = userIdentity.Id;
 			var result = await auctionItemService.UpdateAsync(id, model);
-			if (result == null)
+			if(result == null)
 				return BadRequest();
 			return result;
 		}
@@ -118,7 +117,7 @@ namespace Auction.WebApi.Controllers {
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> Delete(int id) {
 			bool result = await auctionItemService.DeleteByIdAsync(id);
-			if (!result)
+			if(!result)
 				return BadRequest();
 			return Ok();
 		}
@@ -152,7 +151,7 @@ namespace Auction.WebApi.Controllers {
 				return NotFound();
 			return result;
 		}
-		
+
 		// DELETE api/images/5
 		[AuthorizeAny(Requirement.Admin, Requirement.OwnerOfAuctionItemImageId)]
 		[HttpDelete("images/{id:int}")]
@@ -162,7 +161,6 @@ namespace Auction.WebApi.Controllers {
 				return BadRequest();
 			return Ok();
 		}
-
 	}
 
 }
