@@ -6,9 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Auction.WebApi.Authorization.Abstractions;
 using Auction.WebApi.Authorization.Attributes;
-using Auction.WebApi.Authorization.Extensions;
 using Auction.WebApi.Authorization.Requirements;
-using Auction.WebApi.Authorization.Requirements.Handlers;
 using Auction.WebApi.Authorization.Services;
 using ImpromptuInterface;
 using Microsoft.AspNetCore.Authorization;
@@ -75,7 +73,7 @@ namespace Auction.WebApi.Authorization {
 			IAuthorizationRequirement requirement)
 			=> options.AddPolicy(policy, policyBuilder => policyBuilder.AddRequirements(requirement));
 
-		private static void AddBasePolicy(AuthorizationOptions options, string policy) 
+		private static void AddBasePolicy(AuthorizationOptions options, string policy)
 			=> AddCombinedRequirement(options, policy, new[] {policy});
 
 		private static void AddExceptPolicy(AuthorizationOptions options, params string[] policies) {
@@ -90,7 +88,7 @@ namespace Auction.WebApi.Authorization {
 			AddCombinedRequirement(options, orCombinedPolicy, policies);
 		}
 
-		private static void AddCombinedRequirement(AuthorizationOptions options, string combinedPolicy, 
+		private static void AddCombinedRequirement(AuthorizationOptions options, string combinedPolicy,
 			string[] policies) {
 
 			if(!requirements.ContainsKey(combinedPolicy)) {
@@ -145,25 +143,25 @@ namespace Auction.WebApi.Authorization {
 			});
 
 			RegisterAuthorizationHandlers(services);
-			
+
 		}
 
 		private static void RegisterAllRequirements(AuthorizationOptions options, Assembly assembly) {
 			var authorizeAttributes = GetAuthorizeAttributes(assembly);
-			
+
 			var baseAuthorizeAttributes = authorizeAttributes
 				.Where(x => x.GetType() == typeof(AuthorizeAttribute));
-			foreach (var attribute in baseAuthorizeAttributes) {
+			foreach(var attribute in baseAuthorizeAttributes) {
 				AddBasePolicy(options, attribute.Policy);
 			}
 
 			var authorizeAnyAttributes = authorizeAttributes.OfType<AuthorizeAnyAttribute>();
-			foreach (var attribute in authorizeAnyAttributes) {
+			foreach(var attribute in authorizeAnyAttributes) {
 				AddOrCombinedPolicy(options, attribute.Policies);
 			}
 
 			var authorizeExceptAttributes = authorizeAttributes.OfType<AuthorizeExceptAttribute>();
-			foreach (var attribute in authorizeExceptAttributes) {
+			foreach(var attribute in authorizeExceptAttributes) {
 				AddExceptPolicy(options, attribute.Policies);
 			}
 
@@ -188,8 +186,6 @@ namespace Auction.WebApi.Authorization {
 				result.AddRange(classAttributes);
 			}
 		}
-		
-		
 	}
 
 }

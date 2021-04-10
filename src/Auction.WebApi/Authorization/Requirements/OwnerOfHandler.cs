@@ -4,7 +4,7 @@ using Auction.WebApi.Authorization.Extensions;
 using Auction.WebApi.Authorization.Types;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Auction.WebApi.Authorization.Requirements.Handlers {
+namespace Auction.WebApi.Authorization.Requirements {
 
 	public abstract class OwnerOfHandler<TRequirement> : AuthorizationHandler<TRequirement>
 		where TRequirement : IAuthorizationRequirement {

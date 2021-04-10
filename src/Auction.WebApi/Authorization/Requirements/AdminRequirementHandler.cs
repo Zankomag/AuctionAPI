@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Auction.Application.Authorization;
 using Auction.WebApi.Authorization.Extensions;
 using Microsoft.AspNetCore.Authorization;
 
 // ReSharper disable InheritdocConsiderUsage
 
-namespace Auction.WebApi.Authorization.Requirements.Handlers {
+namespace Auction.WebApi.Authorization.Requirements {
 
 	public interface IAdminRequirement : IAuthorizationRequirement { }
 
