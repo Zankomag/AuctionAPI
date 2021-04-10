@@ -75,33 +75,29 @@ namespace Auction.WebApi.Authorization {
 			IAuthorizationRequirement requirement)
 			=> options.AddPolicy(policy, policyBuilder => policyBuilder.AddRequirements(requirement));
 
-		public static void AddBasePolicy(AuthorizationOptions options, string policy) {
-			var requirement = GetCombinedRequirement(policy, policy);
-			AddPolicy(options, policy, requirement);
-		}
+		public static void AddBasePolicy(AuthorizationOptions options, string policy) 
+			=> AddCombinedRequirement(options, policy, new[] {policy});
 
 		public static void AddExceptPolicy(AuthorizationOptions options, params string[] policies) {
 			ValidatePolicies(policies);
 			string exceptPolicy = GetExceptPolicy(policies);
-			var requirement = GetCombinedRequirement(exceptPolicy, policies.Append(except).ToArray());
-			AddPolicy(options, exceptPolicy, requirement);
+			AddCombinedRequirement(options, exceptPolicy, policies.Append(except).ToArray());
 		}
 
 		public static void AddOrCombinedPolicy(AuthorizationOptions options, params string[] policies) {
 			ValidatePolicies(policies);
 			string orCombinedPolicy = GetOrCombinedPolicy(policies);
-			var requirement = GetCombinedRequirement(orCombinedPolicy, policies);
-			AddPolicy(options, orCombinedPolicy, requirement);
+			AddCombinedRequirement(options, orCombinedPolicy, policies);
 		}
 
-		private static IAuthorizationRequirement GetCombinedRequirement(string combinedPolicy,
-			params string[] policies) {
+		private static void AddCombinedRequirement(AuthorizationOptions options, string combinedPolicy, 
+			string[] policies) {
 
-			if(requirements.TryGetValue(combinedPolicy, out IAuthorizationRequirement requirement))
-				return requirement;
-			var newRequirement = CreateCombinedRequirement(policies);
-			requirements.Add(combinedPolicy, newRequirement);
-			return newRequirement;
+			if(!requirements.ContainsKey(combinedPolicy)) {
+				var newRequirement = CreateCombinedRequirement(policies);
+				requirements.Add(combinedPolicy, newRequirement);
+				AddPolicy(options, combinedPolicy, newRequirement);
+			}
 		}
 
 		private static IAuthorizationRequirement CreateCombinedRequirement(string[] policies) {
