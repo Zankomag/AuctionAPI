@@ -9,8 +9,5 @@ namespace Auction.WebApi.Authorization.Requirements {
 	/// </summary>
 	public interface IOwnerOfAuctionItemImageIdRequirement : IAuthorizationRequirement { }
 	
-	/// <inheritdoc cref="IOwnerOfAuctionItemImageIdRequirement"/>
-	public class OwnerOfAuctionItemImageIdRequirement : IOwnerOfAuctionItemImageIdRequirement { }
-	
 
 }

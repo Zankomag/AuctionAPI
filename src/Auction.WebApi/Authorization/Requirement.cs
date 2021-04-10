@@ -22,10 +22,10 @@ namespace Auction.WebApi.Authorization {
 	/// </summary>
 	public static class Requirement {
 		private const string except = "Except";
-		public const string Admin = nameof(AdminRequirement);
-		public const string OwnerOfUserId = nameof(OwnerOfUserIdRequirement);
-		public const string OwnerOfAuctionItemId = nameof(OwnerOfAuctionItemIdRequirement);
-		public const string OwnerOfAuctionItemImageId = nameof(OwnerOfAuctionItemImageIdRequirement);
+		public const string Admin = nameof(IAdminRequirement);
+		public const string OwnerOfUserId = nameof(IOwnerOfUserIdRequirement);
+		public const string OwnerOfAuctionItemId = nameof(IOwnerOfAuctionItemIdRequirement);
+		public const string OwnerOfAuctionItemImageId = nameof(IOwnerOfAuctionItemImageIdRequirement);
 
 		private static readonly Dictionary<string, Type> baseRequirementTypes = new();
 
@@ -75,16 +75,16 @@ namespace Auction.WebApi.Authorization {
 			IAuthorizationRequirement requirement)
 			=> options.AddPolicy(policy, policyBuilder => policyBuilder.AddRequirements(requirement));
 
-		public static void AddBasePolicy(AuthorizationOptions options, string policy) 
+		private static void AddBasePolicy(AuthorizationOptions options, string policy) 
 			=> AddCombinedRequirement(options, policy, new[] {policy});
 
-		public static void AddExceptPolicy(AuthorizationOptions options, params string[] policies) {
+		private static void AddExceptPolicy(AuthorizationOptions options, params string[] policies) {
 			ValidatePolicies(policies);
 			string exceptPolicy = GetExceptPolicy(policies);
 			AddCombinedRequirement(options, exceptPolicy, policies.Append(except).ToArray());
 		}
 
-		public static void AddOrCombinedPolicy(AuthorizationOptions options, params string[] policies) {
+		private static void AddOrCombinedPolicy(AuthorizationOptions options, params string[] policies) {
 			ValidatePolicies(policies);
 			string orCombinedPolicy = GetOrCombinedPolicy(policies);
 			AddCombinedRequirement(options, orCombinedPolicy, policies);
@@ -112,7 +112,7 @@ namespace Auction.WebApi.Authorization {
 			return newRequirement;
 		}
 
-		public static void RegisterAuthorizationHandlers(IServiceCollection services) {
+		private static void RegisterAuthorizationHandlers(IServiceCollection services) {
 			//This handler must be registered as the very first among all handlers
 			services.AddSingleton<IAuthorizationHandler, AuthenticationRequirementHandler>();
 
@@ -154,17 +154,17 @@ namespace Auction.WebApi.Authorization {
 			var baseAuthorizeAttributes = authorizeAttributes
 				.Where(x => x.GetType() == typeof(AuthorizeAttribute));
 			foreach (var attribute in baseAuthorizeAttributes) {
-				options.AddBasePolicy(attribute.Policy);
+				AddBasePolicy(options, attribute.Policy);
 			}
 
 			var authorizeAnyAttributes = authorizeAttributes.OfType<AuthorizeAnyAttribute>();
 			foreach (var attribute in authorizeAnyAttributes) {
-				options.AddOrCombinedPolicy(attribute.Policies);
+				AddOrCombinedPolicy(options, attribute.Policies);
 			}
 
 			var authorizeExceptAttributes = authorizeAttributes.OfType<AuthorizeExceptAttribute>();
 			foreach (var attribute in authorizeExceptAttributes) {
-				options.AddExceptPolicy(attribute.Policies);
+				AddExceptPolicy(options, attribute.Policies);
 			}
 
 		}
