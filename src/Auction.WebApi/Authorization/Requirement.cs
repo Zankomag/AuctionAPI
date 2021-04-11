@@ -98,15 +98,14 @@ namespace Auction.WebApi.Authorization {
 		private static void AddBasePolicy(AuthorizationOptions options, string policy)
 			=> AddCombinedRequirement(options, policy, new[] {policy});
 
-		private static void AddExceptPolicy(AuthorizationOptions options, string[] policies) {
+		private static void AddExceptPolicy(AuthorizationOptions options, string exceptPolicy, string[] policies) {
 			ValidatePolicies(policies);
-			string exceptPolicy = GetExceptPolicy(policies);
 			AddCombinedRequirement(options, exceptPolicy, policies.Append(except).ToArray());
 		}
 
-		private static void AddOrCombinedPolicy(AuthorizationOptions options, string[] policies) {
+		private static void AddOrCombinedPolicy(AuthorizationOptions options, string orCombinedPolicy,
+			string[] policies) {
 			ValidatePolicies(policies);
-			string orCombinedPolicy = GetOrCombinedPolicy(policies);
 			AddCombinedRequirement(options, orCombinedPolicy, policies);
 		}
 
@@ -157,12 +156,12 @@ namespace Auction.WebApi.Authorization {
 
 			var authorizeAnyAttributes = authorizeAttributes.OfType<AuthorizeAnyAttribute>();
 			foreach(var attribute in authorizeAnyAttributes) {
-				AddOrCombinedPolicy(options, attribute.Policies);
+				AddOrCombinedPolicy(options, attribute.Policy, attribute.Policies);
 			}
 
 			var authorizeExceptAttributes = authorizeAttributes.OfType<AuthorizeExceptAttribute>();
 			foreach(var attribute in authorizeExceptAttributes) {
-				AddExceptPolicy(options, attribute.Policies);
+				AddExceptPolicy(options, attribute.Policy, attribute.Policies);
 			}
 
 		}
