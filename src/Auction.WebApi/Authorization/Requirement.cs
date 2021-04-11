@@ -180,10 +180,10 @@ namespace Auction.WebApi.Authorization {
 			return result;
 
 			void AddAttributes(MemberInfo memberInfo) {
-				var classAttributes = Attribute.GetCustomAttributes(memberInfo, typeof(AuthorizeAttribute))
+				var attributes = Attribute.GetCustomAttributes(memberInfo, typeof(AuthorizeAttribute))
 					.Cast<AuthorizeAttribute>()
 					.Where(x => x.Policy != null);
-				result.AddRange(classAttributes);
+				result.AddRange(attributes);
 			}
 		}
 	}
